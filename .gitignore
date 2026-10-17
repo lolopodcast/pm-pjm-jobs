@@ -11,6 +11,8 @@ __pycache__/
 # Node / build output
 node_modules/
 dist/
+web/public/data/
+web/dev-dist/
 
 # Test scratch data (tests must use temp folders, PRD 6)
 .tmp/

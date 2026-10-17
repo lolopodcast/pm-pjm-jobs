@@ -3,26 +3,13 @@
 Rules are checked in order and the first match wins, so specific names ("醫務管理") come
 before broad ones ("醫").
 """
+import json
 import re
+from pathlib import Path
 
-MAJOR_GROUPS = {
-    "MAJ_BUS": ("商業及管理", "Business & management"),
-    "MAJ_CS": ("資訊", "Computer science / IT"),
-    "MAJ_EE": ("電機電子", "Electrical & electronic eng."),
-    "MAJ_IE": ("工業工程", "Industrial engineering"),
-    "MAJ_ME": ("機械", "Mechanical engineering"),
-    "MAJ_CHEM": ("化學化工", "Chemistry & chemical eng."),
-    "MAJ_MAT": ("材料", "Materials science"),
-    "MAJ_BIO": ("生醫", "Biomedical & life sciences"),
-    "MAJ_CIVIL": ("土木建築環工", "Civil, architecture & environmental eng."),
-    "MAJ_SCI": ("數理", "Mathematics & natural sciences"),
-    "MAJ_DESIGN": ("設計", "Design"),
-    "MAJ_COMM": ("傳播", "Communication"),
-    "MAJ_LANG": ("外語", "Foreign languages"),
-    "MAJ_ECON": ("經濟社會", "Economics & social sciences"),
-    "MAJ_SCI_ENG": ("理工不限", "Any science or engineering"),
-    "MAJ_OTHER": ("其他", "Other"),
-}
+# Group names are shared with the website through vocab/major_vocabulary.json.
+_VOCAB = json.loads((Path(__file__).resolve().parent.parent / "vocab/major_vocabulary.json").read_text(encoding="utf-8"))
+MAJOR_GROUPS = {i["id"]: (i["zh"], i["en"]) for i in _VOCAB["items"]}
 
 _RULES = [
     (r"醫務管理|運輸管理|文書管理|圖書管理", ["MAJ_BUS"]),

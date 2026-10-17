@@ -1,0 +1,22 @@
+{
+ "version": "1.0",
+ "note": "Major groups for education_req.majors (PRD 2.2 第 3 點). Mapping rules from 104 names live in pipeline/majors.py.",
+ "items": [
+  {"id": "MAJ_BUS", "zh": "商業及管理", "en": "Business & management"},
+  {"id": "MAJ_CS", "zh": "資訊", "en": "Computer science / IT"},
+  {"id": "MAJ_EE", "zh": "電機電子", "en": "Electrical & electronic eng."},
+  {"id": "MAJ_IE", "zh": "工業工程", "en": "Industrial engineering"},
+  {"id": "MAJ_ME", "zh": "機械", "en": "Mechanical engineering"},
+  {"id": "MAJ_CHEM", "zh": "化學化工", "en": "Chemistry & chemical eng."},
+  {"id": "MAJ_MAT", "zh": "材料", "en": "Materials science"},
+  {"id": "MAJ_BIO", "zh": "生醫", "en": "Biomedical & life sciences"},
+  {"id": "MAJ_CIVIL", "zh": "土木建築環工", "en": "Civil, architecture & environmental eng."},
+  {"id": "MAJ_SCI", "zh": "數理", "en": "Mathematics & natural sciences"},
+  {"id": "MAJ_DESIGN", "zh": "設計", "en": "Design"},
+  {"id": "MAJ_COMM", "zh": "傳播", "en": "Communication"},
+  {"id": "MAJ_LANG", "zh": "外語", "en": "Foreign languages"},
+  {"id": "MAJ_ECON", "zh": "經濟社會", "en": "Economics & social sciences"},
+  {"id": "MAJ_SCI_ENG", "zh": "理工不限", "en": "Any science or engineering"},
+  {"id": "MAJ_OTHER", "zh": "其他", "en": "Other"}
+ ]
+}

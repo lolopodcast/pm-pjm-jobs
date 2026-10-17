@@ -70,3 +70,14 @@ jobs:
               print(f"| {k} | {s.get(k)} |")
           EOF
           fi
+
+  # Rebuild the website with today's data. Runs even if the crawl job failed late (data may still
+  # have been committed); a crawl that wrote nothing just redeploys yesterday's data.
+  deploy:
+    needs: crawl
+    if: ${{ !cancelled() }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml

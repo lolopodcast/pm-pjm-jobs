@@ -504,7 +504,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
    * 好處：開發者在本機改程式時，不會和每天自動寫入的資料發生衝突；`main` 的歷史也不會被每日資料 commit 淹沒。
 2. **同一個 workflow 完成全部步驟：** 爬取與分析 → commit 到 `data` 分支 → 建置前端並合併資料 → 部署到 GitHub Pages。
    * 原因：workflow 用內建 `GITHUB_TOKEN` 推送的 commit 不會觸發其他 workflow，若拆成兩個 workflow，部署不會自動執行。
-   * 目前進度（2026-10-17）：`.github/workflows/daily.yml` 已完成「爬取與資料更新 → commit 到 `data` 分支」；前端完成後再加上建置與部署步驟。
+   * 實作（2026-10-17）：`daily.yml` 完成爬取、AI 分析並 commit 到 `data` 分支後，呼叫 `deploy.yml` 建置前端並部署到 GitHub Pages（https://lolopodcast.github.io/pm-pjm-jobs/）。`deploy.yml` 也會在 `web/`、`vocab/` 有程式更新時，或手動執行時，用 `data` 分支最新資料重新部署（即第 6 點）。
 3. **防止重複執行：** 設定 `concurrency`，排程與手動執行不會同時進行。
 4. **執行時間上限：** `timeout-minutes: 150`（爬取約 38 分鐘＋最多 300 筆 AI 分析，每筆約 14 秒），避免卡住時耗盡資源。（原訂 90 分鐘）
 5. **權限：** 只開 `contents: write`（寫入 `data` 分支）、`pages: write` 與 `id-token: write`（部署 Pages），其餘關閉。

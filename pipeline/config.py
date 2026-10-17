@@ -2,14 +2,13 @@
 
 # 104 job categories queried one at a time (the API accepts at most 10 per query, and a
 # single category keeps result counts manageable). Names are for logs only.
-# 產品行銷企劃 (2004001004) was dropped on 2026-10-17: 150+ pages a day for ~25 extra
-# targets, mostly marketing roles.
+# Dropped on 2026-10-17: 產品行銷企劃 (2004001004) — 150+ pages a day for ~25 extra targets,
+# mostly marketing roles; 專案助理 (2004003007) — assistant roles are excluded from the start.
 JOB_CATEGORIES = {
     "2004003009": "產品經理",
     "2004003005": "產品管理師",
     "2004002002": "產品企劃",
     "2004003006": "專案經理",
-    "2004003007": "專案助理",
     "2004003003": "軟體專案管理師",
     "2004003004": "其他專案管理師",
 }

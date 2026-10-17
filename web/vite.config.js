@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import pkg from "./package.json" with { type: "json" };
 
 // PRD 8.2: only our own origin, no inline scripts, no eval. Added at build time only, because the
 // dev server injects an inline script for hot reload.
@@ -16,7 +17,9 @@ const cspPlugin = {
 // Served from https://lolopodcast.github.io/pm-pjm-jobs/
 export default defineConfig({
   base: "/pm-pjm-jobs/",
-  define: { __BUILD_DATE__: JSON.stringify(new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10).replace(/-/g, ".")) },
+  // Only the code version goes into the bundle. A build date here would change the bundle on every
+  // daily deploy and make returning visitors see an "update available" prompt each day.
+  define: { __APP_VERSION__: JSON.stringify(pkg.version) },
   plugins: [
     react(),
     cspPlugin,

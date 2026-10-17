@@ -160,7 +160,9 @@ export default function App() {
 
       <footer className="ftr">
         <div className="ftr-in">
-          <span>Version {__BUILD_DATE__} · For Educational Use Only · {t.lang === "zh" ? "非 104 人力銀行官方網站" : "Not an official 104 Job Bank site"}</span>
+          <span>
+            v{__APP_VERSION__}{updatedAt ? ` · ${t("data_date")} ${updatedAt.slice(0, 10)}` : ""} · For Educational Use Only · {t.lang === "zh" ? "非 104 人力銀行官方網站" : "Not an official 104 Job Bank site"}
+          </span>
           <span className="flex gap-3.5 items-center">
             <span>Architect:&nbsp;<a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" rel="noopener noreferrer">Prof. Shihmin Lo</a></span>
             <button onClick={lock}>{t("gate_lock")}</button>

@@ -63,6 +63,18 @@ class AnalyzeTest(unittest.TestCase):
         self.assertEqual(len(calls), 1)
         self.assertTrue(all(j["ai_status"] == "pending" and j["ai_fail_count"] == 0 for j in js))
 
+    def test_vocab_fields_and_candidates(self):
+        js = jobs(1)
+        raw = good()
+        raw["tasks"].append({"zh": "定期向客戶報告", "en": "Customer reporting", "evidence": "定期向客戶報告專案狀態", "id": "NEW"})
+        st = self.run_ai(js, analyze_fn=lambda t, jd: raw)
+        j = js[0]
+        self.assertEqual((j["vocab_version"], j["tasks_normalized"]), ("1.0", ["T_SCHEDULE"]))
+        self.assertEqual([c["zh"] for c in st["candidates"]], ["定期向客戶報告"])
+        merged = analyze.merge_candidates({}, st["candidates"] * 2, "2026-10-20", "1.0")
+        self.assertEqual(merged["items"]["T|定期向客戶報告"]["count"], 2)
+        self.assertEqual(analyze.merge_candidates(merged, [], "2026-10-21", "1.1")["items"], {})   # reset on new version
+
     def test_majors_from_jd_text(self):
         js = jobs(1)
         raw = good()

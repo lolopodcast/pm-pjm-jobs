@@ -18,7 +18,7 @@ from . import config
 from .companies import Whitelist, fetch_company_lists, load_subsidiaries
 from .crawler import StructureError, crawl, crawl_category, select_targets, to_job
 from .http_client import Blocked, FetchError, polite_sleep
-from . import analyze, env
+from . import analyze, env, vocab
 from .store import apply_crawl, load_db, save_db
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -102,6 +102,12 @@ def run_ai(data_dir: Path, today: str):
     db = load_db(data_dir)
     stats = analyze.run(db["jobs"], today, on_progress=lambda: save_db(data_dir, db))
     save_db(data_dir, db)
+    cpath = data_dir / "vocab_candidates.json"
+    existing = json.loads(cpath.read_text(encoding="utf-8")) if cpath.exists() else {}
+    found = stats.pop("candidates")
+    merged = analyze.merge_candidates(existing, found, today, vocab.version())
+    cpath.write_text(json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
+    stats["vocab_new_terms"] = len(found)
     stats["pending_ai"] = sum(1 for j in db["jobs"] if j.get("ai_status") != "done")
     log.info("AI: %s", stats)
     return stats

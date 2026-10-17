@@ -2,7 +2,7 @@
 import logging
 import time
 
-from . import env, llm
+from . import env, llm, vocab
 from .ai_validate import ValidationError, validate
 from .http_client import FetchError, polite_sleep
 from .jd import JobGone, fetch_jd
@@ -33,7 +33,15 @@ def apply_result(job, clean, today):
         edu["major_required"] = not text["major_preferred"]
     job.update(clean)
     job.update(education_req=edu, ai_status="done", ai_fail_count=0, ai_model=llm.model_name(),
-               prompt_version=llm.PROMPT_VERSION, vocab_version=None, ai_analyzed_at=today)
+               prompt_version=llm.PROMPT_VERSION, vocab_version=vocab.version(), ai_analyzed_at=today)
+    job.pop("ai_last_error", None)
+
+
+def new_terms(job):
+    """Tags the AI could not map to the vocabulary (PRD 2.2 第 3 點: candidates for review)."""
+    cats = [(vocab.CATEGORY_OF[k], job["ksa"][k]) for k in ("knowledge", "skills", "attributes")] + [("T", job["tasks"])]
+    return [{"category": c, "zh": t["zh"], "en": t["en"], "job_id": job["job_id"]}
+            for c, tags in cats for t in tags if t["id"] == vocab.NEW]
 
 
 def mark_failed(job, reason):
@@ -49,7 +57,8 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
     cap = d_cap if cap is None else cap
     interval = d_interval if interval is None else interval
     todo = queue(jobs)[:cap]
-    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_quota_stop": False, "ai_queue": len(queue(jobs))}
+    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_quota_stop": False, "ai_queue": len(queue(jobs)),
+             "candidates": []}
     for i, job in enumerate(todo):
         if i:
             pause()
@@ -60,6 +69,7 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
             raw = analyze(job["title"], jd)
             clean, _ = validate(raw, jd, job["title"])
             apply_result(job, clean, today)
+            stats["candidates"].extend(new_terms(job))
             stats["ai_done"] += 1
         except llm.LLMError as e:
             if e.quota:
@@ -77,3 +87,17 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
         sleep(interval)
     stats["ai_queue_left"] = len(queue(jobs))
     return stats
+
+
+def merge_candidates(existing: dict, found, today, version):
+    """Accumulate NEW terms across runs: {"version", "items": {"K|中文": {...count, examples}}}."""
+    items = dict(existing.get("items") or {}) if existing.get("version") == version else {}
+    for t in found:
+        key = f"{t['category']}|{t['zh']}"
+        it = items.setdefault(key, {"category": t["category"], "zh": t["zh"], "en": t["en"], "count": 0,
+                                    "first_seen": today, "examples": []})
+        it["count"] += 1
+        if t["job_id"] not in it["examples"] and len(it["examples"]) < 3:
+            it["examples"].append(t["job_id"])
+    return {"version": version, "updated": today,
+            "items": dict(sorted(items.items(), key=lambda kv: -kv[1]["count"]))}

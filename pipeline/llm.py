@@ -4,9 +4,9 @@ import time
 import urllib.error
 import urllib.request
 
-from . import env
+from . import env, vocab
 
-PROMPT_VERSION = "0.1-open"   # open vocabulary; becomes 1.x once the reviewed vocabulary is in use
+PROMPT_VERSION = "1.0"   # 1.x = tags carry ids from the approved vocabulary (0.1-open had none)
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 RETRY_DELAYS = (2, 4, 8)
 
@@ -37,21 +37,28 @@ SYSTEM = """你是協助大學生理解職場的職缺分析助理。一律使�
    S1 行銷：規劃與提案；S2 可行性：規格；S3 產品設計：原型驗證；S4 模具：驗證與工程樣品；S5 工程：試產與可靠度；S6 產品上市：量產、品保與客服；EOL 產品終止或換代。
 9. context：職缺未提及的項目一律為 null，不得推測。
    collaborators 主要協作單位代碼：GM 總經理室、MKT 行銷、SA 業務、RD 研發、DQA 設計品保、TE 研技、QA 品保、PE 生技、PUR 採購、PC 生管、MC 物管、MFG 生產、QC 品管、FAE 應用工程、CS 客服。
-10. jd_lang：職缺原文主要語言（zh 中文、en 英文、mixed 中英夾雜）。
+10. jd_lang：職缺原文主要語言（zh 中文、en 英文、mixed 中英夾雜）。判斷時忽略【】括起來的欄位標題（例如【職務內容】），那是系統加上的，不是職缺原文。
 11. education：majors_text 為職缺內文提到的科系（照原文）；major_preferred 為 true 表示內文寫「尤佳」「佳」等加分用語，為 false 表示必要條件，未提及為 null。
+12. 標準詞彙對應：ksa 與 tasks 的每個標籤都要在 id 欄位填入下方【標準詞彙表】中意思最接近的代碼（必須是同一類別的代碼）。只有在沒有任何一項合適時才填 NEW。zh 仍寫職缺中的具體說法，不要改成詞彙表名稱。
 """
 
 
-def _tag(desc):
-    return {"type": "OBJECT", "description": desc, "required": ["zh", "en", "evidence"],
-            "properties": {"zh": {"type": "STRING"}, "en": {"type": "STRING"}, "evidence": {"type": "STRING"}}}
+def system_text():
+    return SYSTEM + "\n【標準詞彙表】（代碼 中文名稱）\n" + vocab.prompt_block()
+
+
+def _tag(desc, cat):
+    return {"type": "OBJECT", "description": desc, "required": ["zh", "en", "evidence", "id"],
+            "properties": {"zh": {"type": "STRING"}, "en": {"type": "STRING"}, "evidence": {"type": "STRING"},
+                           "id": {"type": "STRING", "enum": sorted(vocab.ids(cat)) + [vocab.NEW]}}}
 
 
 def _enum(values, nullable=True):
     return {"type": "STRING", "enum": values, "nullable": nullable}
 
 
-SCHEMA = {
+def schema():
+    return {
     "type": "OBJECT",
     "required": ["title_zh", "title_en", "jd_lang", "role_type", "ksa", "tasks", "jd_summary", "pm_domains",
                  "stage_gate", "context", "compliance_flags", "education"],
@@ -61,10 +68,10 @@ SCHEMA = {
         "jd_lang": _enum(["zh", "en", "mixed"], nullable=False),
         "role_type": _enum(["PM", "PjM", "Other"], nullable=False),
         "ksa": {"type": "OBJECT", "required": ["knowledge", "skills", "attributes"], "properties": {
-            "knowledge": {"type": "ARRAY", "items": _tag("知識")},
-            "skills": {"type": "ARRAY", "items": _tag("技能")},
-            "attributes": {"type": "ARRAY", "items": _tag("特質")}}},
-        "tasks": {"type": "ARRAY", "items": _tag("工作職責")},
+            "knowledge": {"type": "ARRAY", "items": _tag("知識", "K")},
+            "skills": {"type": "ARRAY", "items": _tag("技能", "S")},
+            "attributes": {"type": "ARRAY", "items": _tag("特質", "A")}}},
+        "tasks": {"type": "ARRAY", "items": _tag("工作職責", "T")},
         "jd_summary": {"type": "OBJECT", "required": ["zh", "en"], "properties": {"zh": {"type": "STRING"}, "en": {"type": "STRING"}}},
         "pm_domains": {"type": "OBJECT", "required": DOMAINS, "properties": {d: {"type": "INTEGER"} for d in DOMAINS}},
         "stage_gate": {"type": "ARRAY", "items": _enum(STAGES, nullable=False)},
@@ -105,9 +112,9 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
     if not key:
         raise LLMError("GEMINI_API_KEY is not set")
     body = {
-        "systemInstruction": {"parts": [{"text": SYSTEM}]},
+        "systemInstruction": {"parts": [{"text": system_text()}]},
         "contents": [{"role": "user", "parts": [{"text": f"職稱：{title}\n<<<JD>>>\n{jd_text}\n<<<END>>>"}]}],
-        "generationConfig": {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0.2},
+        "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema(), "temperature": 0.2},
     }
     req = urllib.request.Request(API.format(model=model or model_name()), data=json.dumps(body).encode("utf-8"), method="POST",
                                  headers={"Content-Type": "application/json", "x-goog-api-key": key})

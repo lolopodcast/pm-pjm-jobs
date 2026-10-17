@@ -15,11 +15,11 @@ def good():
         "title_zh": "專案經理", "title_en": "Project Manager", "jd_lang": "zh", "role_type": "PjM",
         "ksa": {
             "knowledge": [],
-            "skills": [{"zh": "MS Project", "en": "MS Project", "evidence": "熟悉 MS Project 與 Excel"},
-                       {"zh": "英文溝通", "en": "English communication", "evidence": "具備良好英文溝通能力"}],
-            "attributes": [{"zh": "抗壓性", "en": "Stress tolerance", "evidence": "抗壓性高"}],
+            "skills": [{"zh": "MS Project", "en": "MS Project", "evidence": "熟悉 MS Project 與 Excel", "id": "S_PM_TOOLS"},
+                       {"zh": "英文溝通", "en": "English communication", "evidence": "具備良好英文溝通能力", "id": "S_ENGLISH"}],
+            "attributes": [{"zh": "抗壓性", "en": "Stress tolerance", "evidence": "抗壓性高", "id": "A_STRESS_TOLERANCE"}],
         },
-        "tasks": [{"zh": "時程規劃", "en": "Schedule planning", "evidence": "負責新產品專案時程規劃與跨部門協調"}],
+        "tasks": [{"zh": "時程規劃", "en": "Schedule planning", "evidence": "負責新產品專案時程規劃與跨部門協調", "id": "T_SCHEDULE"}],
         "jd_summary": {"zh": "統籌新產品開發的時程與各部門協作，並定期向客戶說明進度。", "en": "Coordinates new product schedules across teams and updates customers."},
         "pm_domains": {"D1": 0, "D2": 0, "D3": 30, "D4": 10, "D5": 0, "D6": 30, "D7": 33},
         "stage_gate": ["S3", "S5", "BOGUS"],
@@ -40,6 +40,15 @@ class ValidateTest(unittest.TestCase):
         self.assertEqual(clean["compliance_flags"], ["GENDER", "MILITARY_SERVICE"])
         self.assertEqual(dropped, [])
 
+    def test_normalized_ids(self):
+        raw = good()
+        raw["ksa"]["skills"].append({"zh": "Excel", "en": "Excel", "evidence": "MS Project 與 Excel", "id": "BOGUS_ID"})
+        clean, _ = validate(raw, JD, "專案經理")
+        self.assertEqual(clean["ksa_normalized"], {"knowledge": [], "skills": ["S_PM_TOOLS", "S_ENGLISH"],
+                                                   "attributes": ["A_STRESS_TOLERANCE"]})
+        self.assertEqual(clean["tasks_normalized"], ["T_SCHEDULE"])
+        self.assertEqual(clean["ksa"]["skills"][2]["id"], "NEW")      # unknown id becomes a candidate
+
     def test_taiwan_terms(self):
         raw = good()
         raw["ksa"]["skills"][1]["zh"] = "專案管理知識框架與軟件"
@@ -48,14 +57,14 @@ class ValidateTest(unittest.TestCase):
 
     def test_unsupported_tag_dropped(self):
         raw = good()
-        raw["ksa"]["knowledge"].append({"zh": "半導體製程", "en": "Semiconductor process", "evidence": "熟悉半導體製程"})
+        raw["ksa"]["knowledge"].append({"zh": "半導體製程", "en": "Semiconductor process", "evidence": "熟悉半導體製程", "id": "K_SEMICONDUCTOR"})
         clean, dropped = validate(raw, JD, "專案經理")
         self.assertEqual(clean["ksa"]["knowledge"], [])
         self.assertTrue(any("no evidence" in d for d in dropped))
 
     def test_discriminatory_tag_dropped(self):
         raw = good()
-        raw["ksa"]["attributes"].append({"zh": "男性", "en": "Male", "evidence": "限男性，役畢"})
+        raw["ksa"]["attributes"].append({"zh": "男性", "en": "Male", "evidence": "限男性，役畢", "id": "NEW"})
         clean, dropped = validate(raw, JD, "專案經理")
         self.assertEqual([t["zh"] for t in clean["ksa"]["attributes"]], ["抗壓性"])
         self.assertTrue(any("discriminatory" in d for d in dropped))

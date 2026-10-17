@@ -1,6 +1,6 @@
 {
- "version": "1.0-draft",
- "note": "Draft from 50 sampled jobs analysed by gemini-3.1-flash-lite on 2026-10-17. domain = PM seven domains D1-D7 (null if none). aliases = examples of raw AI tags seen in the sample.",
+ "version": "1.0",
+ "note": "Approved by the project owner on 2026-10-17 (all items). Built from 50 sampled jobs analysed by gemini-3.1-flash-lite on 2026-10-17. domain = PM seven domains D1-D7 (null if none). aliases = examples of raw AI tags seen in the sample.",
  "items": [
   {"id": "T_PRODUCT_STRATEGY", "zh": "產品策略與路線圖", "en": "Product strategy and roadmap", "domain": "D1", "aliases": ["定義產品願景與路線圖", "擬訂產品發展策略與企劃", "競品分析與策略制定", "產品方向討論"]},
   {"id": "T_PRODUCT_PLANNING", "zh": "產品規劃與功能定義", "en": "Product planning and feature definition", "domain": "D2", "aliases": ["產品功能規劃落地", "商品規劃與執行", "數據產品需求規劃", "數據產品企劃提案", "產品規劃與市場分析"]},

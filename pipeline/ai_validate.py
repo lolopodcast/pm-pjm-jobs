@@ -6,6 +6,7 @@ copied summary, nonsense structure) raise ValidationError so the job is retried 
 import re
 import unicodedata
 
+from . import vocab
 from .llm import COLLABORATORS, DOMAINS, FLAGS, STAGES
 
 
@@ -50,7 +51,8 @@ def _check_text(label, s):
         raise ValidationError(f"{label}: contains personal contact data")
 
 
-def _clean_tags(items, jd_norm, label, dropped):
+def _clean_tags(items, jd_norm, label, dropped, cat):
+    valid_ids = vocab.ids(cat)
     out, seen = [], set()
     for it in items or []:
         zh, en, ev = tw((it.get("zh") or "").strip()), (it.get("en") or "").strip(), it.get("evidence") or ""
@@ -70,7 +72,16 @@ def _clean_tags(items, jd_norm, label, dropped):
             continue
         _check_text(label, zh + " " + en)
         seen.add(zh)
-        out.append({"zh": zh, "en": en})
+        vid = it.get("id")
+        out.append({"zh": zh, "en": en, "id": vid if vid in valid_ids else vocab.NEW})
+    return out
+
+
+def _normalized(tags):
+    out = []
+    for t in tags:
+        if t["id"] != vocab.NEW and t["id"] not in out:
+            out.append(t["id"])
     return out
 
 
@@ -91,8 +102,8 @@ def validate(raw: dict, jd_text: str, title: str):
     jd_norm = norm(jd_text)
     dropped = []
     ksa_raw = raw.get("ksa") or {}
-    ksa = {k: _clean_tags(ksa_raw.get(k), jd_norm, k, dropped) for k in ("knowledge", "skills", "attributes")}
-    tasks = _clean_tags(raw.get("tasks"), jd_norm, "tasks", dropped)
+    ksa = {k: _clean_tags(ksa_raw.get(k), jd_norm, k, dropped, vocab.CATEGORY_OF[k]) for k in ("knowledge", "skills", "attributes")}
+    tasks = _clean_tags(raw.get("tasks"), jd_norm, "tasks", dropped, "T")
     if not any(ksa.values()) and not tasks:
         raise ValidationError("no supported KSA or tasks")
 
@@ -119,6 +130,8 @@ def validate(raw: dict, jd_text: str, title: str):
         "role_type": raw.get("role_type") if raw.get("role_type") in ("PM", "PjM", "Other") else "Other",
         "ksa": ksa,
         "tasks": tasks,
+        "ksa_normalized": {k: _normalized(v) for k, v in ksa.items()},
+        "tasks_normalized": _normalized(tasks),
         "jd_summary": {"zh": s_zh, "en": s_en},
         "pm_domains": _domains(raw.get("pm_domains") or {}),
         "stage_gate": [s for s in STAGES if s in (raw.get("stage_gate") or [])],

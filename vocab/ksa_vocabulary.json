@@ -1,6 +1,6 @@
 {
- "version": "1.0-draft",
- "note": "Draft from 50 sampled jobs analysed by gemini-3.1-flash-lite on 2026-10-17. domain = PM seven domains D1-D7 (null if none). aliases = raw AI tags seen in the sample.",
+ "version": "1.0",
+ "note": "Approved by the project owner on 2026-10-17 (all items). Built from 50 sampled jobs analysed by gemini-3.1-flash-lite on 2026-10-17. domain = PM seven domains D1-D7 (null if none). aliases = raw AI tags seen in the sample.",
  "items": [
   {"id": "K_PM_METHOD", "category": "K", "zh": "專案管理方法論", "en": "Project management methodology", "domain": "D7", "aliases": ["專案管理知識", "專案管理方法論", "專案管理架構"]},
   {"id": "K_AGILE", "category": "K", "zh": "敏捷開發方法", "en": "Agile methods", "domain": "D3", "aliases": ["敏捷式專案管理", "敏捷開發方法"]},

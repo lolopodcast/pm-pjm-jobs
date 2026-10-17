@@ -85,7 +85,9 @@ def run(sleep=time.sleep, interval=7):
         if problems:
             failures.append(f"{name}: {problems}")
         else:
-            print(f"[OK]   {name}: {len(tags)} tags, role={clean['role_type']}, lang={clean['jd_lang']}, dropped={len(dropped)}")
+            new = sum(1 for t in tags if t.get("id") == "NEW")
+            print(f"[OK]   {name}: {len(tags)} tags ({len(tags) - new} mapped, {new} NEW), role={clean['role_type']}, "
+                  f"lang={clean['jd_lang']}, dropped={len(dropped)}")
     for f in failures:
         print(f"[FAIL] {f}")
     return 0 if not failures else 1

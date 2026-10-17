@@ -68,6 +68,32 @@ export default function App() {
     return () => { removeEventListener("click", close); removeEventListener("keydown", esc); };
   }, []);
 
+  // "Smart" copyright reminder (PRD 5.6): blocks only where nobody needs the browser menu.
+  // Selected text, links and form fields keep the normal menu; printing and Save As stay allowed.
+  // A courtesy, not protection: code and data are public on GitHub.
+  useEffect(() => {
+    const remind = () => flash(t("copyright"));
+    const onMenu = (e) => {
+      if (String(getSelection()).trim()) return;
+      if (e.target.closest?.("a, input, textarea, select, [contenteditable]")) return;
+      e.preventDefault();
+      remind();
+    };
+    const onKey = (e) => {
+      const k = e.key.toLowerCase();
+      const ctrl = e.ctrlKey || e.metaKey;
+      if (k === "f12" || (ctrl && k === "u") || (ctrl && (e.shiftKey || e.altKey) && ["i", "j", "c"].includes(k))) {
+        e.preventDefault();
+        remind();
+      }
+    };
+    const onDrag = (e) => { if (e.target.closest?.("svg, img")) e.preventDefault(); };
+    addEventListener("contextmenu", onMenu);
+    addEventListener("keydown", onKey);
+    addEventListener("dragstart", onDrag);
+    return () => { removeEventListener("contextmenu", onMenu); removeEventListener("keydown", onKey); removeEventListener("dragstart", onDrag); };
+  }, [t]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const go = useCallback((p) => {
     setPage(p); setMenuOpen(false);
     history.replaceState(null, "", "#" + p);
@@ -92,7 +118,14 @@ export default function App() {
   const unlock = () => { store.set("gate", 1); setUnlocked(true); };
   const lock = () => { store.set("gate", 0); setUnlocked(false); scrollTo({ top: 0 }); };
 
-  if (!unlocked) return <Gate t={t} onUnlock={unlock} toggleLang={toggleLang} toggleTheme={toggleTheme} isDark={isDark} />;
+  if (!unlocked) {
+    return (
+      <>
+        <Gate t={t} onUnlock={unlock} toggleLang={toggleLang} toggleTheme={toggleTheme} isDark={isDark} />
+        {toast && <div className="toast" role="status">{toast}</div>}
+      </>
+    );
+  }
 
   return (
     <>

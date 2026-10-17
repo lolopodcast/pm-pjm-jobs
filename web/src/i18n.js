@@ -82,6 +82,8 @@ export const T = {
   gate_hint: ["輸入一次後，這台裝置會記住，下次不用再輸入。", "This device will remember it, so you only need to enter it once."],
   gate_wrong: ["進入碼不正確，請再試一次。", "That code is not correct. Please try again."],
   gate_lock: ["鎖定", "Lock"],
+  copyright: ["網站設計與分析 © Prof. Shihmin Lo · 職缺資料來源：104 人力銀行 · 僅供教學使用",
+    "Site design and analysis © Prof. Shihmin Lo · Job data: 104 Job Bank · For educational use only"],
   theme_l: ["切換為淺色", "Switch to light"], theme_d: ["切換為深色", "Switch to dark"], menu: ["選單", "Menu"], home: ["首頁", "Home"],
 };
 

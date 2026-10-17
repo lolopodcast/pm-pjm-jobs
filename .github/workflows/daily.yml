@@ -16,7 +16,9 @@ concurrency:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 150   # ~38 min crawl + up to 300 AI analyses (~14 s each)
+    # ~38 min crawl + up to 300 AI analyses (~19 s each). The pipeline stops AI work 140 min after it
+    # starts (RUN_TIME_BUDGET_MIN), leaving time to commit; a job timeout would lose the whole day's work.
+    timeout-minutes: 180
     steps:
       - name: Check out code (main)
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -66,7 +68,7 @@ jobs:
           print("| 項目 | 數值 |\n|---|---|")
           for k in ("date", "crawl_complete", "jobs_seen", "targets", "new", "seen_existing", "reopened",
                     "newly_closed", "archived", "open", "closed", "ai_attempted", "ai_done", "ai_failed",
-                    "ai_quota_stop", "pending_ai", "unmatched_companies"):
+                    "ai_quota_stop", "ai_time_stop", "pending_ai", "unmatched_companies"):
               print(f"| {k} | {s.get(k)} |")
           EOF
           fi

@@ -75,6 +75,15 @@ class AnalyzeTest(unittest.TestCase):
         self.assertEqual(merged["items"]["T|定期向客戶報告"]["count"], 2)
         self.assertEqual(analyze.merge_candidates(merged, [], "2026-10-21", "1.1")["items"], {})   # reset on new version
 
+    def test_time_budget_stops_without_blame(self):
+        js = jobs(5)
+        ticks = iter(range(100))          # each clock() call advances one "second"
+        st = analyze.run(js, "2026-10-20", cap=10, interval=0, fetch=lambda code: JD, analyze=ok_analyze,
+                         sleep=lambda s: None, pause=lambda: None, deadline=2, clock=lambda: next(ticks))
+        self.assertTrue(st["ai_time_stop"])
+        self.assertEqual(st["ai_done"], 2)
+        self.assertEqual(sum(1 for j in js if j["ai_status"] == "pending" and j["ai_fail_count"] == 0), 3)
+
     def test_majors_from_jd_text(self):
         js = jobs(1)
         raw = good()

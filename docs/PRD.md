@@ -128,7 +128,7 @@
    * 在 workflow 輸出警告（warning annotation），但不讓 workflow 失敗。
 3. **前端顯示：** `pending` 職缺照常出現在列表，KSA 區塊顯示「分析中 / Analyzing」，不列入統計圖表。
 4. **冷啟動：** 第一次執行時預期會有數百筆，依上述機制約數天內消化完畢，期間網站可正常使用。
-5. **Gemini 免費額度節流：** 每次呼叫之間依該模型的每分鐘請求上限（RPM）間隔，預設 5 秒（`LLM_INTERVAL_SEC`）。若遇到額度用盡（HTTP 429），當天立即停止分析，剩餘職缺維持 `pending`，不計入失敗次數。
+5. **Gemini 免費額度節流：** 每次呼叫之間依該模型的每分鐘請求上限（RPM）間隔，預設 5 秒（`LLM_INTERVAL_SEC`）。若遇到額度用盡（HTTP 429）或時間預算用完（見 11.3 第 4 點），當天立即停止分析，剩餘職缺維持 `pending`，不計入失敗次數。
 6. **分析失敗處理：** 單筆職缺經重試後仍無法取得合格結果（格式不符、驗證失敗）時，標為 `ai_status: "failed"` 並記錄 `ai_fail_count`，隔天重試；連續 3 天失敗改標為 `"error"`，不再自動重試，列入 workflow 摘要供人工檢查。前端對 `failed`、`error` 的顯示與 `pending` 相同。
 
 ### 2.4 下架判定與一個月自動歸檔
@@ -507,7 +507,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
    * 原因：workflow 用內建 `GITHUB_TOKEN` 推送的 commit 不會觸發其他 workflow，若拆成兩個 workflow，部署不會自動執行。
    * 實作（2026-10-17）：`daily.yml` 完成爬取、AI 分析並 commit 到 `data` 分支後，呼叫 `deploy.yml` 建置前端並部署到 GitHub Pages（https://lolopodcast.github.io/pm-pjm-jobs/）。`deploy.yml` 也會在 `web/`、`vocab/` 有程式更新時，或手動執行時，用 `data` 分支最新資料重新部署（即第 6 點）。
 3. **防止重複執行：** 設定 `concurrency`，排程與手動執行不會同時進行。
-4. **執行時間上限：** `timeout-minutes: 150`（爬取約 38 分鐘＋最多 300 筆 AI 分析，每筆約 14 秒），避免卡住時耗盡資源。（原訂 90 分鐘）
+4. **執行時間上限：** `timeout-minutes: 180`（爬取約 38 分鐘＋最多 300 筆 AI 分析，每筆約 19 秒），避免卡住時耗盡資源。**AI 分析另有時間預算：** 自排程開始滿 140 分鐘即停止分析並存檔（`RUN_TIME_BUDGET_MIN`），剩餘職缺隔天處理，避免工作逾時被中止而遺失當天全部成果。（原訂 90 分鐘，2026-10-18 調整）
 5. **權限：** 只開 `contents: write`（寫入 `data` 分支）、`pages: write` 與 `id-token: write`（部署 Pages），其餘關閉。
 6. `main` 有程式更新時，另以一個建置部署 workflow 用 `data` 分支的最新資料重新部署。
 

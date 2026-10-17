@@ -10,6 +10,7 @@ import argparse
 import json
 import logging
 import sys
+import time
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -64,6 +65,8 @@ def gh_warning(msg):
 
 
 def cmd_run(data_dir: Path):
+    # AI analysis must stop in time for the workflow to commit (job timeout 180 min, PRD 11.3).
+    deadline = time.monotonic() + float(env.get("RUN_TIME_BUDGET_MIN", "140")) * 60
     now = datetime.now(TPE)
     today = now.date().isoformat()
     wl = build_whitelist()
@@ -71,7 +74,7 @@ def cmd_run(data_dir: Path):
     result = crawl()
     targets, unmatched = select_targets(result["jobs"], wl)
     stats = apply_crawl(data_dir, targets, result["complete"], today, now.isoformat(timespec="seconds"))
-    ai_stats = run_ai(data_dir, today)
+    ai_stats = run_ai(data_dir, today, deadline)
     stats.update(ai_stats)
     (data_dir / "unmatched_companies.json").write_text(json.dumps(
         {"date": today, "companies": dict(sorted(unmatched.items(), key=lambda kv: -kv[1]))},
@@ -87,6 +90,8 @@ def cmd_run(data_dir: Path):
         gh_warning("far fewer open jobs seen than expected; closures skipped — check 104 for changes")
     if stats.get("ai_quota_stop"):
         gh_warning("Gemini daily quota reached; remaining jobs will be analysed tomorrow")
+    if stats.get("ai_time_stop"):
+        gh_warning("AI time budget reached; remaining jobs will be analysed tomorrow")
     tried = stats.get("ai_attempted", 0)
     if tried >= 5 and stats.get("ai_failed", 0) / tried > 0.5:
         # PRD 11.4: more than half of today's analyses failed -> fail the run so the maintainer is emailed.
@@ -95,12 +100,12 @@ def cmd_run(data_dir: Path):
     return 0
 
 
-def run_ai(data_dir: Path, today: str):
+def run_ai(data_dir: Path, today: str, deadline=None):
     if not env.get("GEMINI_API_KEY"):
         gh_warning("GEMINI_API_KEY not set; AI analysis skipped")
         return {"ai_skipped": True}
     db = load_db(data_dir)
-    stats = analyze.run(db["jobs"], today, on_progress=lambda: save_db(data_dir, db))
+    stats = analyze.run(db["jobs"], today, on_progress=lambda: save_db(data_dir, db), deadline=deadline)
     save_db(data_dir, db)
     cpath = data_dir / "vocab_candidates.json"
     existing = json.loads(cpath.read_text(encoding="utf-8")) if cpath.exists() else {}

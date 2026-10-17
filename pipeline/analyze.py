@@ -51,15 +51,20 @@ def mark_failed(job, reason):
 
 
 def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyze, sleep=time.sleep,
-        pause=polite_sleep, on_progress=None):
-    """Mutates jobs in place. Returns stats. Stops early (without blaming jobs) when the quota is used up."""
+        pause=polite_sleep, on_progress=None, deadline=None, clock=time.monotonic):
+    """Mutates jobs in place. Returns stats. Stops early (without blaming jobs) when the quota is used up
+    or when `deadline` (a clock() value) passes, so the workflow always has time to save its work."""
     d_cap, d_interval = settings()
     cap = d_cap if cap is None else cap
     interval = d_interval if interval is None else interval
     todo = queue(jobs)[:cap]
-    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_quota_stop": False, "ai_queue": len(queue(jobs)),
-             "candidates": []}
+    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_quota_stop": False, "ai_time_stop": False,
+             "ai_queue": len(queue(jobs)), "candidates": []}
     for i, job in enumerate(todo):
+        if deadline is not None and clock() >= deadline:
+            stats["ai_time_stop"] = True
+            log.warning("AI time budget used after %d jobs; the rest wait for tomorrow", stats["ai_done"])
+            break
         if i:
             pause()
         code = job["url"].rstrip("/").rsplit("/", 1)[-1]

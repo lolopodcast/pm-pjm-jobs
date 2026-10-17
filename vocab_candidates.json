@@ -1,0 +1,56 @@
+{
+ "version": "1.0",
+ "updated": "2026-10-18",
+ "items": {
+  "S|工程能力": {
+   "category": "S",
+   "zh": "工程能力",
+   "en": "Engineering skills",
+   "count": 1,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_3b7c7"
+   ]
+  },
+  "S|Bloomberg": {
+   "category": "S",
+   "zh": "Bloomberg",
+   "en": "Bloomberg",
+   "count": 1,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6fhpf"
+   ]
+  },
+  "A|耐心": {
+   "category": "A",
+   "zh": "耐心",
+   "en": "Patience",
+   "count": 1,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6kb6q"
+   ]
+  },
+  "S|業務銷售能力": {
+   "category": "S",
+   "zh": "業務銷售能力",
+   "en": "Sales and business development",
+   "count": 1,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6wdh4"
+   ]
+  },
+  "A|獨立駕駛能力": {
+   "category": "A",
+   "zh": "獨立駕駛能力",
+   "en": "Independent driving ability",
+   "count": 1,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6wdh4"
+   ]
+  }
+ }
+}

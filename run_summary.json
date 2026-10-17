@@ -1,91 +1,91 @@
 {
- "date": "2026-10-17",
- "finished_at": "2026-10-17T20:21:42+08:00",
+ "date": "2026-10-18",
+ "finished_at": "2026-10-18T07:26:30+08:00",
  "crawl_complete": true,
  "whitelist": {
   "L": 1096,
   "O": 893,
   "E": 365
  },
- "jobs_seen": 6683,
- "targets": 977,
- "unmatched_companies": 1299,
+ "jobs_seen": 6672,
+ "targets": 962,
+ "unmatched_companies": 1294,
  "slices": {
   "2004003009": {
    "name": "產品經理",
    "pages": 19,
-   "rows": 276,
-   "new_unique": 276,
+   "rows": 275,
+   "new_unique": 275,
    "complete": true
   },
   "2004003005": {
    "name": "產品管理師",
    "pages": 72,
-   "rows": 1231,
+   "rows": 1229,
    "new_unique": 1100,
    "complete": true
   },
   "2004002002": {
    "name": "產品企劃",
    "pages": 105,
-   "rows": 1936,
-   "new_unique": 1405,
+   "rows": 1942,
+   "new_unique": 1441,
    "complete": true
   },
   "2004003006": {
    "name": "專案經理",
    "pages": 62,
-   "rows": 1054,
-   "new_unique": 827,
+   "rows": 1052,
+   "new_unique": 826,
    "complete": true
   },
   "2004003003": {
    "name": "軟體專案管理師",
    "pages": 51,
-   "rows": 871,
-   "new_unique": 565,
+   "rows": 861,
+   "new_unique": 547,
    "complete": true
   },
   "2004003004/台北": {
    "name": "其他專案管理師／台北",
    "pages": 78,
    "rows": 1542,
-   "new_unique": 1031,
+   "new_unique": 1010,
    "complete": true
   },
   "2004003004/新北基宜": {
    "name": "其他專案管理師／新北基宜",
    "pages": 31,
    "rows": 605,
-   "new_unique": 371,
+   "new_unique": 373,
    "complete": true
   },
   "2004003004/桃竹苗": {
    "name": "其他專案管理師／桃竹苗",
    "pages": 39,
    "rows": 767,
-   "new_unique": 498,
+   "new_unique": 501,
    "complete": true
   },
   "2004003004/中彰投": {
    "name": "其他專案管理師／中彰投",
    "pages": 18,
    "rows": 344,
-   "new_unique": 250,
+   "new_unique": 243,
    "complete": true
   },
   "2004003004/雲嘉南": {
    "name": "其他專案管理師／雲嘉南",
    "pages": 10,
    "rows": 184,
-   "new_unique": 134,
+   "new_unique": 136,
    "complete": true
   },
   "2004003004/高屏東花離島": {
    "name": "其他專案管理師／高屏東花離島",
    "pages": 11,
    "rows": 219,
-   "new_unique": 176,
+   "new_unique": 170,
    "complete": true
   },
   "2004003004/海外": {
@@ -96,14 +96,22 @@
    "complete": true
   }
  },
- "new": 977,
- "seen_existing": 0,
+ "new": 46,
+ "seen_existing": 916,
  "reopened": 0,
- "missed": 0,
+ "missed": 61,
  "newly_closed": 0,
  "closures_applied": true,
  "archived": 0,
- "open": 977,
+ "open": 1023,
  "closed": 0,
- "pending_ai": 977
+ "pending_ai": 834,
+ "ai_attempted": 267,
+ "ai_done": 189,
+ "ai_failed": 78,
+ "ai_quota_stop": true,
+ "ai_time_stop": false,
+ "ai_queue": 1023,
+ "ai_queue_left": 834,
+ "vocab_new_terms": 5
 }

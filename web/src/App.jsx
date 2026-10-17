@@ -9,6 +9,7 @@ import Insights from "./pages/Insights.jsx";
 import Fit from "./pages/Fit.jsx";
 import Archive from "./pages/Archive.jsx";
 import About from "./pages/About.jsx";
+import Gate from "./Gate.jsx";
 
 // Per-viewer conveniences only; every read/write tolerates blocked storage.
 const store = {
@@ -22,6 +23,7 @@ export default function App() {
   const [lang, setLang] = useState(() => store.get("lang", (navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en"));
   const [theme, setTheme] = useState(() => store.get("theme", null));
   const [page, setPage] = useState(pageFromHash);
+  const [unlocked, setUnlocked] = useState(() => store.get("gate", 0) === 1);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,7 +36,7 @@ export default function App() {
   const menuRef = useRef(null);
   const t = useMemo(() => makeT(lang), [lang]);
 
-  useEffect(() => { loadData().then(setData).catch((e) => setError(String(e))); }, []);
+  useEffect(() => { if (unlocked && !data) loadData().then(setData).catch((e) => setError(String(e))); }, [unlocked, data]);
   useEffect(() => {
     const sw = registerSW({ onNeedRefresh: () => setUpdateSW(() => () => sw(true)) });
   }, []);
@@ -81,6 +83,10 @@ export default function App() {
   ));
   const props = { t, data, go, flash, fit, setFit, me, setMe, filters, setFilters };
   const Page = { overview: Overview, jobs: Jobs, insights: Insights, fit: Fit, archive: Archive, about: About }[page];
+  const unlock = () => { store.set("gate", 1); setUnlocked(true); };
+  const lock = () => { store.set("gate", 0); setUnlocked(false); scrollTo({ top: 0 }); };
+
+  if (!unlocked) return <Gate t={t} onUnlock={unlock} toggleLang={toggleLang} toggleTheme={toggleTheme} isDark={isDark} />;
 
   return (
     <>
@@ -118,6 +124,7 @@ export default function App() {
           <span>Version {__BUILD_DATE__} · For Educational Use Only · {t.lang === "zh" ? "非 104 人力銀行官方網站" : "Not an official 104 Job Bank site"}</span>
           <span className="flex gap-3.5 items-center">
             <span>Architect:&nbsp;<a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" rel="noopener noreferrer">Prof. Shihmin Lo</a></span>
+            <button onClick={lock}>{t("gate_lock")}</button>
             <button onClick={() => scrollTo({ top: 0, behavior: "smooth" })}>Top ↑</button>
           </span>
         </div>

@@ -69,6 +69,11 @@ export const T = {
   src_line: ["資料來源：104 人力銀行、TWSE／TPEx；本站整理於 {d}；AI 分析可能有誤，以 104 原始職缺為準。",
     "Sources: 104 Job Bank, TWSE/TPEx; compiled {d}; AI analysis may contain errors, the 104 posting is authoritative."],
   ab_src: ["資料來源", "Data sources"], ab_ai: ["AI 分析方式與限制", "How the AI analysis works, and its limits"], ab_fw: ["分析架構", "Analytical structure"], ab_disc: ["聲明", "Disclaimer"],
+  gate_lede: ["網站目前開放測試中，請輸入進入碼。", "This site is open for testing. Please enter the access code."],
+  gate_label: ["進入碼", "Access code"], gate_enter: ["進入網站", "Enter"],
+  gate_hint: ["輸入一次後，這台裝置會記住，下次不用再輸入。", "This device will remember it, so you only need to enter it once."],
+  gate_wrong: ["進入碼不正確，請再試一次。", "That code is not correct. Please try again."],
+  gate_lock: ["鎖定", "Lock"],
   theme_l: ["切換為淺色", "Switch to light"], theme_d: ["切換為深色", "Switch to dark"], menu: ["選單", "Menu"], home: ["首頁", "Home"],
 };
 

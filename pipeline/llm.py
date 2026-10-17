@@ -91,8 +91,13 @@ def model_name():
     return env.get("GEMINI_MODEL", "gemini-3.8-flash")
 
 
-def analyze(title: str, jd_text: str, sleep=time.sleep) -> dict:
+# Token usage of the most recent successful call (promptTokenCount, candidatesTokenCount, thoughtsTokenCount...).
+last_usage = {}
+
+
+def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
     """One Gemini call. Returns the parsed JSON (not yet validated)."""
+    global last_usage
     key = env.get("GEMINI_API_KEY")
     if not key:
         raise LLMError("GEMINI_API_KEY is not set")
@@ -101,7 +106,7 @@ def analyze(title: str, jd_text: str, sleep=time.sleep) -> dict:
         "contents": [{"role": "user", "parts": [{"text": f"職稱：{title}\n<<<JD>>>\n{jd_text}\n<<<END>>>"}]}],
         "generationConfig": {"responseMimeType": "application/json", "responseSchema": SCHEMA, "temperature": 0.2},
     }
-    req = urllib.request.Request(API.format(model=model_name()), data=json.dumps(body).encode("utf-8"), method="POST",
+    req = urllib.request.Request(API.format(model=model or model_name()), data=json.dumps(body).encode("utf-8"), method="POST",
                                  headers={"Content-Type": "application/json", "x-goog-api-key": key})
     last = None
     for attempt in range(len(RETRY_DELAYS) + 1):
@@ -109,6 +114,7 @@ def analyze(title: str, jd_text: str, sleep=time.sleep) -> dict:
             with urllib.request.urlopen(req, timeout=120) as r:
                 resp = json.loads(r.read())
             text = resp["candidates"][0]["content"]["parts"][0]["text"]
+            last_usage = resp.get("usageMetadata") or {}
             return json.loads(text)
         except urllib.error.HTTPError as e:
             if e.code not in (429, 500, 502, 503, 504):

@@ -8,6 +8,13 @@ import "@fontsource/merriweather/900.css";
 import "./styles.css";
 import App from "./App.jsx";
 
+// Keep the browser's install prompt for the "Install app" button (it can fire before React mounts).
+addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  window.__pwaPrompt = e;
+  dispatchEvent(new Event("pwa-prompt"));
+});
+
 // PRD 5.6: refuse to run inside someone else's frame, and only on our own domain (plus local dev).
 const ALLOWED = ["lolopodcast.github.io", "localhost", "127.0.0.1"];
 if (window.top !== window.self) {

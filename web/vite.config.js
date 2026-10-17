@@ -25,7 +25,7 @@ export default defineConfig({
     cspPlugin,
     VitePWA({
       registerType: "prompt",
-      includeAssets: ["icon.svg"],
+      includeAssets: ["icon.svg", "apple-touch-icon.png"],
       manifest: {
         name: "上市櫃 PM／PjM 新人職缺觀測站",
         short_name: "PM 職缺觀測",
@@ -34,12 +34,21 @@ export default defineConfig({
         theme_color: "#004030",
         background_color: "#f4f4f4",
         display: "standalone",
-        icons: [{ src: "icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any maskable" }],
+        id: "/pm-pjm-jobs/",
+        start_url: "/pm-pjm-jobs/",
+        scope: "/pm-pjm-jobs/",
+        // PNG icons for Android and installers that ignore SVG; maskable one keeps the mark in the safe zone.
+        icons: [
+          { src: "icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: "icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+          { src: "icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+          { src: "icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+        ],
       },
       workbox: {
         // App files are precached (hashed names). Data JSON is network-first so users get today's
         // data when online and the last copy when offline (PRD 11.4).
-        globPatterns: ["**/*.{js,css,html,svg,woff2}"],
+        globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
         runtimeCaching: [{
           urlPattern: ({ url }) => url.pathname.includes("/data/") && url.pathname.endsWith(".json"),
           handler: "NetworkFirst",

@@ -10,6 +10,7 @@ import Fit from "./pages/Fit.jsx";
 import Archive from "./pages/Archive.jsx";
 import About from "./pages/About.jsx";
 import Gate from "./Gate.jsx";
+import { InstallButton, IOSHelp, useInstall } from "./Install.jsx";
 
 // Per-viewer conveniences only; every read/write tolerates blocked storage.
 const store = {
@@ -40,6 +41,8 @@ export default function App() {
   const [me, setMeState] = useState(() => store.get("me", { edu: "", majors: [] }));
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const menuRef = useRef(null);
+  const { mode: installMode, install } = useInstall();
+  const [iosHelp, setIosHelp] = useState(false);
   const t = useMemo(() => makeT(lang), [lang]);
 
   useEffect(() => { if (unlocked && !data) loadData().then(setData).catch((e) => setError(String(e))); }, [unlocked, data]);
@@ -140,6 +143,7 @@ export default function App() {
             <button className="brand" onClick={() => scrollTo({ top: 0, behavior: "smooth" })}><b>PMJ</b><span>{t("title")}</span></button>
           </div>
           <div className="flex items-center gap-1">
+            <InstallButton t={t} mode={installMode} install={install} onIOS={() => setIosHelp(true)} />
             <button className="pill-btn" onClick={toggleLang}>{lang === "zh" ? "EN" : "中"}</button>
             <button className="ib" onClick={toggleTheme} aria-label={isDark ? t("theme_l") : t("theme_d")} title={isDark ? t("theme_l") : t("theme_d")}>
               <Icon name={isDark ? "sun" : "moon"} size={19} />
@@ -171,6 +175,7 @@ export default function App() {
         </div>
       </footer>
       {toast && <div className="toast" role="status">{toast}</div>}
+      {iosHelp && <IOSHelp t={t} onClose={() => setIosHelp(false)} />}
     </>
   );
 }

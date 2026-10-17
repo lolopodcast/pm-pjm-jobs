@@ -164,6 +164,14 @@
   .tbl th { color: var(--muted); font-weight: 600; }
   .prose p { margin: 0 0 10px; } .prose ul { margin: 0 0 10px; padding-left: 20px; list-style: disc; }
 
+  .install-btn { display: inline-flex; align-items: center; gap: 5px; }
+  @media (max-width: 520px) { .install-btn span { display: none; } .install-btn { padding: 5px 8px; } }
+  .modal-back { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.45); display: flex; align-items: flex-end; justify-content: center;
+    padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+  @media (min-width: 640px) { .modal-back { align-items: center; } }
+  .modal { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 12px; }
+  .install-steps { margin: 0; padding-left: 22px; list-style: decimal; display: flex; flex-direction: column; gap: 8px; }
+
   .gate { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
     background: var(--bg); padding: calc(24px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
   .gate-bar { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); display: flex; gap: 6px;

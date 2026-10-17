@@ -11,6 +11,7 @@ const PATHS = {
   fit: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z",
   archive: "M3 5h18v4H3zM5 9v10h14V9M10 13h4",
   about: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 11v6M12 7h.01",
+  download: "M12 3v12M7 10l5 5 5-5M5 20h14",
 };
 
 export function Icon({ name, size = 20 }) {

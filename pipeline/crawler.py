@@ -56,28 +56,35 @@ def to_job(row):
     }
 
 
-def crawl_category(cat, max_pages=config.MAX_PAGES, sleep=polite_sleep, fetch=get_json):
-    """Page through one category until a page holds no row that truly carries it.
+def crawl_category(cat, max_pages=config.MAX_PAGES, sleep=polite_sleep, fetch=get_json, area=None, allow_empty=False):
+    """Page through one category (optionally one region) until a page holds no row that truly carries it.
 
-    Returns (rows, pages_fetched). Raises StructureError if the very first page is empty.
+    Returns (rows, pages_fetched, complete). `complete` is False when the page cap cut the crawl short.
+    Raises StructureError if the very first page is empty (unless allow_empty, used for small regions).
     """
+    params = {**config.LIST_PARAMS, "jobcat": cat}
+    if area:
+        params["area"] = area
     rows, page = [], 1
-    while page <= max_pages:
+    while True:
         if page > 1:
             sleep()
-        data = fetch(config.LIST_API, {**config.LIST_PARAMS, "jobcat": cat, "page": str(page)}, config.LIST_REFERER)
+        data = fetch(config.LIST_API, {**params, "page": str(page)}, config.LIST_REFERER)
         batch = data.get("data") if isinstance(data, dict) else None
         if batch is None:
             raise StructureError(f"category {cat} page {page}: no 'data' field")
         if page == 1 and not batch:
+            if allow_empty:
+                return rows, page, True
             raise StructureError(f"category {cat}: first page returned 0 jobs")
         exact = [r for r in batch if int(cat) in (r.get("jobCat") or [])]
         rows.extend(exact)
         last = ((data.get("metadata") or {}).get("pagination") or {}).get("lastPage") or page
         if not exact or page >= last:
-            break
+            return rows, page, True
+        if page >= max_pages:
+            return rows, page, False
         page += 1
-    return rows, page
 
 
 def check_structure(jobs):
@@ -90,24 +97,35 @@ def check_structure(jobs):
             raise StructureError(f"{missing}/{len(jobs)} records missing '{field}'")
 
 
+def _slices(cat):
+    if cat in config.SPLIT_BY_REGION:
+        return list(config.REGIONS.items())
+    return [(None, None)]
+
+
 def crawl(categories=config.JOB_CATEGORIES, max_pages=config.MAX_PAGES, sleep=polite_sleep, fetch=get_json):
-    """Crawl all categories. Returns dict with deduplicated jobs (all titles) and per-category stats."""
-    seen, stats = {}, {}
-    for i, (cat, name) in enumerate(categories.items()):
-        if i:
-            sleep()
-        rows, pages = crawl_category(cat, max_pages, sleep, fetch)
-        jobs = [to_job(r) for r in rows]
-        new = 0
-        for j in jobs:
-            if j["job_id"] and j["job_id"] not in seen:
-                seen[j["job_id"]] = j
-                new += 1
-        stats[cat] = {"name": name, "pages": pages, "rows": len(rows), "new_unique": new}
-        log.info("%s %s: %d pages, %d rows, %d new", cat, name, pages, len(rows), new)
+    """Crawl all categories. Returns deduplicated jobs (all titles), per-slice stats and overall completeness."""
+    seen, stats, complete, first = {}, {}, True, True
+    for cat, name in categories.items():
+        for region, area in _slices(cat):
+            if not first:
+                sleep()
+            first = False
+            rows, pages, ok = crawl_category(cat, max_pages, sleep, fetch, area=area, allow_empty=area is not None)
+            new = 0
+            for j in (to_job(r) for r in rows):
+                if j["job_id"] and j["job_id"] not in seen:
+                    seen[j["job_id"]] = j
+                    new += 1
+            key = f"{cat}/{region}" if region else cat
+            stats[key] = {"name": name + (f"／{region}" if region else ""), "pages": pages, "rows": len(rows),
+                          "new_unique": new, "complete": ok}
+            complete = complete and ok
+            log.log(logging.INFO if ok else logging.WARNING, "%s %s: %d pages, %d rows, %d new%s",
+                    key, stats[key]["name"], pages, len(rows), new, "" if ok else " (HIT PAGE CAP - incomplete)")
     all_jobs = list(seen.values())
     check_structure(all_jobs)
-    return {"jobs": all_jobs, "stats": stats}
+    return {"jobs": all_jobs, "stats": stats, "complete": complete}
 
 
 def select_targets(jobs, whitelist):

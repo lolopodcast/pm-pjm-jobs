@@ -28,9 +28,20 @@ class FakeAPI:
 class CrawlerTest(unittest.TestCase):
     def test_stops_when_no_exact_rows(self):
         api = FakeAPI()
-        rows, pages = crawl_category("2004003006", sleep=lambda: None, fetch=api)
+        rows, pages, complete = crawl_category("2004003006", sleep=lambda: None, fetch=api)
         self.assertEqual(api.calls, [1, 2, 3])
         self.assertEqual(len(rows), 4)
+        self.assertTrue(complete)
+
+    def test_page_cap_marks_incomplete(self):
+        rows, pages, complete = crawl_category("2004003006", max_pages=2, sleep=lambda: None, fetch=FakeAPI())
+        self.assertEqual(pages, 2)
+        self.assertFalse(complete)
+
+    def test_empty_region_allowed(self):
+        rows, _, complete = crawl_category("2004003004", sleep=lambda: None, fetch=FakeAPI(first_empty=True),
+                                           area="6008000000", allow_empty=True)
+        self.assertEqual((rows, complete), ([], True))
 
     def test_first_page_empty_aborts(self):
         with self.assertRaises(StructureError):

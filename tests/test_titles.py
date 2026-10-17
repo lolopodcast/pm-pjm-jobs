@@ -23,6 +23,14 @@ class TitleFilterTest(unittest.TestCase):
             with self.subTest(t=t):
                 self.assertFalse(is_target_title(t))
 
+    def test_product_engineer_needs_planning_word(self):
+        for t in ["產品開發工程師", "產品設計工程師", "產品品質工程師", "蘆竹廠-產品技術服務工程師"]:
+            with self.subTest(t=t):
+                self.assertFalse(is_target_title(t))
+        for t in ["產品企劃工程師", "產品規劃工程師", "產品專案工程師", "產品專案管理工程師", "產品研發專案管理師"]:
+            with self.subTest(t=t):
+                self.assertTrue(is_target_title(t))
+
     def test_pm_inside_chinese(self):
         self.assertTrue(is_target_title("資深PM"))
         self.assertFalse(is_target_title("PMC專員"))

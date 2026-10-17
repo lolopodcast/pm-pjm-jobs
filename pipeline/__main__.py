@@ -37,7 +37,7 @@ def cmd_crawl(out_path: Path):
     targets, unmatched = select_targets(result["jobs"], wl)
     summary = {
         "crawled_at": datetime.now(TPE).isoformat(timespec="seconds"),
-        "crawl_complete": True,
+        "crawl_complete": result["complete"],
         "whitelist": wl.counts(),
         "categories": result["stats"],
         "jobs_seen": len(result["jobs"]),
@@ -58,7 +58,7 @@ def cmd_test_crawl():
     wl = build_whitelist()
     polite_sleep()
     cat = next(iter(config.JOB_CATEGORIES))
-    rows, _ = crawl_category(cat, max_pages=1)
+    rows, _, _ = crawl_category(cat, max_pages=1)
     jobs = [to_job(r) for r in rows[:5]]
     print(f"whitelist {wl.counts()}; first 5 jobs of {config.JOB_CATEGORIES[cat]}:")
     for j in jobs:

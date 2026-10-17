@@ -2,16 +2,29 @@
 
 # 104 job categories queried one at a time (the API accepts at most 10 per query, and a
 # single category keeps result counts manageable). Names are for logs only.
+# 產品行銷企劃 (2004001004) was dropped on 2026-10-17: 150+ pages a day for ~25 extra
+# targets, mostly marketing roles.
 JOB_CATEGORIES = {
     "2004003009": "產品經理",
     "2004003005": "產品管理師",
     "2004002002": "產品企劃",
-    "2004001004": "產品行銷企劃",
     "2004003006": "專案經理",
     "2004003007": "專案助理",
     "2004003003": "軟體專案管理師",
     "2004003004": "其他專案管理師",
 }
+
+# Categories too large for the 150-page cap are queried region by region (104 area codes).
+REGIONS = {
+    "台北": "6001001000",
+    "新北基宜": "6001002000,6001004000,6001003000",
+    "桃竹苗": "6001005000,6001006000,6001007000",
+    "中彰投": "6001008000,6001010000,6001011000",
+    "雲嘉南": "6001012000,6001013000,6001014000",
+    "高屏東花離島": "6001016000,6001018000,6001019000,6001020000,6001021000,6001022000,6001023000",
+    "海外": "6002000000,6003000000,6004000000,6005000000,6006000000,6007000000,6008000000",
+}
+SPLIT_BY_REGION = {"2004003004"}
 
 LIST_API = "https://www.104.com.tw/jobs/search/api/jobs"
 LIST_REFERER = "https://www.104.com.tw/jobs/search/"

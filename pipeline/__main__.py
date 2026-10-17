@@ -3,6 +3,7 @@
     python -m pipeline run --data-dir DIR     daily job: crawl, then update DIR/data.json (PRD 2, 4)
     python -m pipeline crawl [--out PATH]     crawl only, writes a JSON summary (for analysis)
     python -m pipeline --test-crawl           PRD 6 測項 1 (unit tests + 5 live jobs; writes nothing)
+    python -m pipeline --test-llm             PRD 6 測項 2 (live Gemini on fake JDs; needs GEMINI_API_KEY)
     python -m pipeline --test-archive         PRD 6 測項 3 (state changes on fake data in a temp folder)
 """
 import argparse
@@ -118,10 +119,14 @@ def main(argv=None):
     ap.add_argument("--out", type=Path, default=ROOT / ".tmp" / "crawl_result.json")
     ap.add_argument("--test-crawl", action="store_true")
     ap.add_argument("--test-archive", action="store_true")
+    ap.add_argument("--test-llm", action="store_true")
     args = ap.parse_args(argv)
     try:
         if args.test_crawl:
             return cmd_test_crawl()
+        if args.test_llm:
+            from . import llm_selftest
+            return llm_selftest.run()
         if args.test_archive:
             return cmd_test_archive()
         if args.command == "run":

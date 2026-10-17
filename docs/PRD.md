@@ -59,7 +59,7 @@
 
 1. **增量比對：** 讀取現有 `data.json`。職缺 ID 已存在且 `ai_status: "done"` 時，只更新狀態欄位，嚴禁重複呼叫 AI API。
 2. **雙語 KSA 萃取：**
-   * 新職缺的 JD 送交 Gemini。模型名稱由環境變數 `GEMINI_MODEL` 設定，預設值為 `gemini-2.5-flash`，換模型不需改程式。
+   * 新職缺的 JD 送交 Gemini。模型名稱由環境變數 `GEMINI_MODEL` 設定，預設值為 `gemini-3.8-flash`，換模型不需改程式。（原訂 `gemini-2.5-flash`，2026-10-17 實測已不開放新使用者，改用當時最新的穩定版；固定版本號，不使用 `*-latest` 別名，確保分析結果一致。）
    * 原始 JD 不論是全中文、全英文或中英夾雜，都整篇送出。K、S、A 的每個標籤**一律輸出中英兩個欄位** `{ "zh": "...", "en": "..." }`，不存成「中文 (English)」單一字串。
    * Gemini 同時回傳 `jd_lang`（`zh` / `en` / `mixed`），標記原文語言。
    * Gemini 同時回傳職稱翻譯 `title_zh`、`title_en`（原文為中文者，`title_zh` 即原文，反之亦然）。
@@ -352,7 +352,7 @@
       "miss_count": 0,
       "ai_status": "done",
       "ai_fail_count": 0,
-      "ai_model": "gemini-2.5-flash",
+      "ai_model": "gemini-3.8-flash",
       "prompt_version": "1.0",
       "vocab_version": "1.0",
       "ksa": {

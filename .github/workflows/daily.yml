@@ -16,7 +16,7 @@ concurrency:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 150   # ~38 min crawl + up to 300 AI analyses (~14 s each)
     steps:
       - name: Check out code (main)
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -34,12 +34,16 @@ jobs:
       - name: Unit tests
         run: python -m unittest discover -s tests -t .
 
-      - name: Crawl and update data
+      - name: Crawl, analyse and update data
         env:
           TZ: Asia/Taipei
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python -m pipeline run --data-dir data
 
+      # Runs even when the previous step failed (e.g. too many AI failures), so the day's crawl is kept.
+      # If the crawl itself aborted, nothing was written and there is nothing to commit.
       - name: Commit to data branch
+        if: ${{ !cancelled() }}
         working-directory: data
         run: |
           git config user.name "github-actions[bot]"
@@ -61,7 +65,8 @@ jobs:
           s = json.load(open("data/run_summary.json", encoding="utf-8"))
           print("| 項目 | 數值 |\n|---|---|")
           for k in ("date", "crawl_complete", "jobs_seen", "targets", "new", "seen_existing", "reopened",
-                    "newly_closed", "archived", "open", "closed", "pending_ai", "unmatched_companies"):
+                    "newly_closed", "archived", "open", "closed", "ai_attempted", "ai_done", "ai_failed",
+                    "ai_quota_stop", "pending_ai", "unmatched_companies"):
               print(f"| {k} | {s.get(k)} |")
           EOF
           fi

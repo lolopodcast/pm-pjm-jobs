@@ -83,7 +83,9 @@ SCHEMA = {
 
 
 class LLMError(Exception):
-    pass
+    def __init__(self, msg, quota=False):
+        super().__init__(msg)
+        self.quota = quota   # True when the daily/minute quota is used up (HTTP 429 after retries)
 
 
 def model_name():
@@ -125,4 +127,4 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
             last = repr(e)
         if attempt < len(RETRY_DELAYS):
             sleep(RETRY_DELAYS[attempt])
-    raise LLMError(f"Gemini failed after retries: {last}")
+    raise LLMError(f"Gemini failed after retries: {last}", quota=last == "HTTP 429")

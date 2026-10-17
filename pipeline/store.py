@@ -18,9 +18,9 @@ BACKUP_KEEP_DAYS = 30      # PRD 4
 MIN_SEEN_RATIO = 0.30
 
 # Fields filled by the AI step (later). Kept null until then (PRD 7).
-AI_FIELDS = ("title_zh", "title_en", "jd_lang", "role_type", "ksa", "ksa_normalized", "jd_summary",
+AI_FIELDS = ("title_zh", "title_en", "jd_lang", "role_type", "ksa", "ksa_normalized", "jd_summary", "tasks",
              "tasks_normalized", "pm_domains", "stage_gate", "context", "compliance_flags",
-             "ai_model", "prompt_version", "vocab_version")
+             "ai_model", "prompt_version", "vocab_version", "ai_analyzed_at")
 # Basic fields refreshed from 104 every time a job is seen.
 BASIC_FIELDS = ("url", "title", "company", "company_en", "stock_code", "listing_type", "parent_company",
                 "industry", "location", "salary_desc", "experience_desc", "education_req")
@@ -144,6 +144,14 @@ def backup(data_dir: Path, today: str):
         m = _BACKUP_DATE.search(p.name)
         if m and date(int(m[1][:4]), int(m[1][4:6]), int(m[1][6:])) < cutoff:
             p.unlink()
+
+
+def load_db(data_dir: Path):
+    return _read(data_dir / "data.json", {"jobs": []})
+
+
+def save_db(data_dir: Path, db):
+    _write(data_dir / "data.json", db)
 
 
 def apply_crawl(data_dir: Path, targets, crawl_complete: bool, today: str, updated_at: str):

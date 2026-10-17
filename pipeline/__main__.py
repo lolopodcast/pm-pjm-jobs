@@ -18,7 +18,8 @@ from . import config
 from .companies import Whitelist, fetch_company_lists, load_subsidiaries
 from .crawler import StructureError, crawl, crawl_category, select_targets, to_job
 from .http_client import Blocked, FetchError, polite_sleep
-from .store import apply_crawl
+from . import analyze, env
+from .store import apply_crawl, load_db, save_db
 
 ROOT = Path(__file__).resolve().parent.parent
 TPE = timezone(timedelta(hours=8))
@@ -70,6 +71,8 @@ def cmd_run(data_dir: Path):
     result = crawl()
     targets, unmatched = select_targets(result["jobs"], wl)
     stats = apply_crawl(data_dir, targets, result["complete"], today, now.isoformat(timespec="seconds"))
+    ai_stats = run_ai(data_dir, today)
+    stats.update(ai_stats)
     (data_dir / "unmatched_companies.json").write_text(json.dumps(
         {"date": today, "companies": dict(sorted(unmatched.items(), key=lambda kv: -kv[1]))},
         ensure_ascii=False, indent=1), encoding="utf-8")
@@ -82,6 +85,26 @@ def cmd_run(data_dir: Path):
         gh_warning("crawl incomplete (a query hit the 150-page cap); no jobs were closed today")
     if stats.get("suspicious_drop"):
         gh_warning("far fewer open jobs seen than expected; closures skipped — check 104 for changes")
+    if stats.get("ai_quota_stop"):
+        gh_warning("Gemini daily quota reached; remaining jobs will be analysed tomorrow")
+    tried = stats.get("ai_attempted", 0)
+    if tried >= 5 and stats.get("ai_failed", 0) / tried > 0.5:
+        # PRD 11.4: more than half of today's analyses failed -> fail the run so the maintainer is emailed.
+        log.error("AI analysis failure rate too high: %d of %d failed", stats["ai_failed"], tried)
+        return 1
+    return 0
+
+
+def run_ai(data_dir: Path, today: str):
+    if not env.get("GEMINI_API_KEY"):
+        gh_warning("GEMINI_API_KEY not set; AI analysis skipped")
+        return {"ai_skipped": True}
+    db = load_db(data_dir)
+    stats = analyze.run(db["jobs"], today, on_progress=lambda: save_db(data_dir, db))
+    save_db(data_dir, db)
+    stats["pending_ai"] = sum(1 for j in db["jobs"] if j.get("ai_status") != "done")
+    log.info("AI: %s", stats)
+    return stats
 
 
 def cmd_test_archive():
@@ -130,8 +153,7 @@ def main(argv=None):
         if args.test_archive:
             return cmd_test_archive()
         if args.command == "run":
-            cmd_run(args.data_dir)
-            return 0
+            return cmd_run(args.data_dir)
         if args.command == "crawl":
             cmd_crawl(args.out)
             return 0

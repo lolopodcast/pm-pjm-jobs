@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PageHead } from "../components.jsx";
 import { DOM_FULL, STG } from "../i18n.js";
 
@@ -22,7 +23,8 @@ const TEXT = {
     "This is an educational project, not an official 104 Job Bank site. Fit scores are a guide only. The site uses no cookies and no analytics or tracking; your self-assessment stays in your browser."],
 };
 
-export default function About({ t }) {
+export default function About({ t, resetSite }) {
+  const [armed, setArmed] = useState(false);
   const p = (pair) => t.pick(pair);
   return (
     <section className="page">
@@ -39,6 +41,13 @@ export default function About({ t }) {
         </div>
       </div>
       <div className="card prose"><h2 className="h2 mb-2">{t("ab_disc")}</h2><p>{p(TEXT.disc)}</p></div>
+      <div className="card prose">
+        <h2 className="h2 mb-2">{t("reset_title")}</h2>
+        <p>{t("reset_desc")}</p>
+        <button className={"btn danger" + (armed ? " armed" : "")} onClick={() => (armed ? resetSite() : setArmed(true))}>
+          {armed ? t("reset_confirm") : t("reset_btn")}
+        </button>
+      </div>
     </section>
   );
 }

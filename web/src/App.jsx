@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { registerSW } from "virtual:pwa-register";
 import { makeT } from "./i18n.js";
-import { loadData } from "./data.js";
+import { DEFAULT_FILTERS, loadData } from "./data.js";
 import { Icon, PAGES } from "./components.jsx";
 import Overview from "./pages/Overview.jsx";
 import Jobs from "./pages/Jobs.jsx";
@@ -19,6 +19,12 @@ const store = {
 const ICON = { overview: "overview", jobs: "jobs", insights: "insights", fit: "fit", archive: "archive", about: "about" };
 const pageFromHash = () => (PAGES.includes(location.hash.slice(1)) ? location.hash.slice(1) : "overview");
 
+/** Clear everything this site keeps on the device and start over at the access-code screen. */
+function resetSite() {
+  try { Object.keys(localStorage).filter((k) => k.startsWith("pmj_")).forEach((k) => localStorage.removeItem(k)); } catch { /* storage unavailable */ }
+  location.replace(location.pathname);
+}
+
 export default function App() {
   const [lang, setLang] = useState(() => store.get("lang", (navigator.language || "").toLowerCase().startsWith("zh") ? "zh" : "en"));
   const [theme, setTheme] = useState(() => store.get("theme", null));
@@ -32,7 +38,7 @@ export default function App() {
   const [updateSW, setUpdateSW] = useState(null);
   const [fit, setFitState] = useState(() => store.get("fit", {}));
   const [me, setMeState] = useState(() => store.get("me", { edu: "", majors: [] }));
-  const [filters, setFilters] = useState({ q: "", role: "all", lst: "all", ind: "all", status: "open", sort: "new", tag: null });
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
   const menuRef = useRef(null);
   const t = useMemo(() => makeT(lang), [lang]);
 
@@ -81,7 +87,7 @@ export default function App() {
       <span className="num">{i}</span><Icon name={ICON[p]} size={18} /><span>{t("p_" + p)}</span>
     </button>
   ));
-  const props = { t, data, go, flash, fit, setFit, me, setMe, filters, setFilters };
+  const props = { t, data, go, flash, fit, setFit, me, setMe, filters, setFilters, resetSite };
   const Page = { overview: Overview, jobs: Jobs, insights: Insights, fit: Fit, archive: Archive, about: About }[page];
   const unlock = () => { store.set("gate", 1); setUnlocked(true); };
   const lock = () => { store.set("gate", 0); setUnlocked(false); scrollTo({ top: 0 }); };

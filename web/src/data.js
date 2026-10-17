@@ -1,5 +1,6 @@
 // Data loading and small shared helpers.
 const BASE = import.meta.env.BASE_URL + "data/";
+export const DEFAULT_FILTERS = { q: "", role: "all", lst: "all", ind: "all", status: "open", sort: "new", tag: null };
 
 async function get(path) {
   const r = await fetch(BASE + path, { cache: "no-cache" });

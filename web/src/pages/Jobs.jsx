@@ -5,6 +5,7 @@ import { companyName, tagText, titles, todayTPE, vname } from "../data.js";
 import { download, fileName, printPdf, toCSV } from "../exporting.js";
 import { eduItems, fitLevel, fitScore, hasProfile, requirements } from "../fit.js";
 import { COL, DOM, OPT, STG } from "../i18n.js";
+import { DEFAULT_FILTERS } from "../data.js";
 
 const PAGE_SIZE = 30;
 const REPO = "https://github.com/lolopodcast/pm-pjm-jobs";
@@ -224,6 +225,9 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
       <div className="flex gap-2.5 items-center flex-wrap">
         <span className="mini">{t("n_jobs", { n: list.length })}</span>
         {f.tag && <button className="tagfilter" onClick={() => setFilters({ ...f, tag: null })}>{t("tagf")}{t.colon}{vname(data.vocab, f.tag, t)} ✕</button>}
+        {JSON.stringify(f) !== JSON.stringify(DEFAULT_FILTERS) && (
+          <button className="link-btn text-[13px]" onClick={() => { setFilters(DEFAULT_FILTERS); setShown(PAGE_SIZE); setOpenIds(new Set()); }}>{t("clear_filters")}</button>
+        )}
         <button className="btn ml-auto" onClick={exportCsv}>{t("x_csv_jobs", { n: list.length })}</button>
       </div>
       <div className="jobs flex flex-col gap-3">

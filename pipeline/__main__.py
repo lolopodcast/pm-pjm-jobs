@@ -46,6 +46,9 @@ def cmd_crawl(out_path: Path):
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
+    # Every crawled job (all titles, no JD text), so filters can be re-run without crawling again.
+    all_path = out_path.with_name(out_path.stem + "_all_jobs.json")
+    all_path.write_text(json.dumps(result["jobs"], ensure_ascii=False), encoding="utf-8")
     log.info("seen %d jobs, %d targets, %d unmatched companies -> %s",
              len(result["jobs"]), len(targets), len(unmatched), out_path)
 

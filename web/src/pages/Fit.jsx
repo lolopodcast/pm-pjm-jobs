@@ -56,6 +56,7 @@ export default function Fit({ t, data, fit, setFit, me, setMe, go, setFilters, f
   return (
     <section className="page">
       <PageHead page="fit" t={t} lede={t("fit_lede")} />
+      {done.length === 0 && <div className="notice" role="note"><span>{t("fit_no_ai")}</span></div>}
       <div className="fit-layout">
         <div className="card">
           <div className="sec-h">

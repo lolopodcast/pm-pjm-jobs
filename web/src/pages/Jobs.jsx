@@ -16,6 +16,15 @@ function majorsText(job, data, t) {
   return `${names}${t.lang === "zh" ? "（" : " ("}${t(e.major_required ? "req" : "pref")}${t.lang === "zh" ? "）" : ")"}`;
 }
 
+// Defined at module level so the <select> is not re-created on every render (stable on mobile browsers).
+function Sel({ id, label, value, opts, onChange }) {
+  return (
+    <div className="field"><label htmlFor={id}>{label}</label>
+      <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>{opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
+    </div>
+  );
+}
+
 export function filterJobs(jobs, f, ctx) {
   const q = f.q.trim().toLowerCase();
   const list = jobs.filter((j) => {
@@ -182,14 +191,17 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
   const [shown, setShown] = useState(PAGE_SIZE);
   const ctx = { vocab: data.vocab, majors: data.majors, fit, me };
   const list = useMemo(() => filterJobs(data.db.jobs, f, ctx), [data, f, fit, me]); // eslint-disable-line react-hooks/exhaustive-deps
-  const industries = useMemo(() => [...new Set(data.db.jobs.map((j) => j.industry).filter(Boolean))].sort((a, b) => a.localeCompare(b, "zh-Hant-TW")), [data]);
-  const set = (k) => (e) => { setFilters({ ...f, [k]: e.target.value }); setShown(PAGE_SIZE); };
+  // Industry options follow the other filters and show how many jobs each would give.
+  const industries = useMemo(() => {
+    const counts = new Map();
+    for (const j of filterJobs(data.db.jobs, { ...f, ind: "all", sort: "none" }, ctx)) if (j.industry) counts.set(j.industry, (counts.get(j.industry) || 0) + 1);
+    if (f.ind !== "all" && !counts.has(f.ind)) counts.set(f.ind, 0);
+    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-Hant-TW"));
+  }, [data, f, fit, me]); // eslint-disable-line react-hooks/exhaustive-deps
+  const set = (k) => (v) => { setFilters({ ...f, [k]: v }); setShown(PAGE_SIZE); };
+  const setQ = (e) => { setFilters({ ...f, q: e.target.value }); setShown(PAGE_SIZE); };
   const today = todayTPE();
-  const Sel = ({ id, label, k, opts }) => (
-    <div className="field"><label htmlFor={id}>{label}</label>
-      <select id={id} value={f[k]} onChange={set(k)}>{opts.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
-    </div>
-  );
+  const pendingCount = data.db.jobs.filter((j) => (f.status === "all" || j.status === f.status) && j.ai_status !== "done").length;
   const exportCsv = () => {
     download(fileName(t.lang === "zh" ? "職缺總表" : "jobs", "csv", today), "text/csv;charset=utf-8", jobsCSV(list, ctx, t, today));
     flash(t("x_csv_jobs", { n: list.length }));
@@ -199,13 +211,16 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
       <PageHead page="jobs" t={t} />
       <div className="card controls">
         <div className="field q"><label htmlFor="f-q">{t("f_search")}</label>
-          <input id="f-q" type="search" placeholder={t("f_q")} value={f.q} onChange={set("q")} /></div>
-        <Sel id="f-role" label={t("f_role")} k="role" opts={[["all", t("all")], ["PM", "PM"], ["PjM", "PjM"], ["Other", "Other"]]} />
-        <Sel id="f-lst" label={t("f_listing")} k="lst" opts={[["all", t("all")], ...Object.keys(OPT.listing).map((k) => [k, t.pick(OPT.listing[k])])]} />
-        <Sel id="f-ind" label={t("f_ind")} k="ind" opts={[["all", t("all")], ...industries.map((i) => [i, i])]} />
-        <Sel id="f-status" label={t("f_status")} k="status" opts={[["all", t("all")], ["open", t("open")], ["closed", t("closed")]]} />
-        <Sel id="f-sort" label={t("f_sort")} k="sort" opts={[["new", t("s_new")], ["co", t("s_co")], ["fit", t("s_fit")]]} />
+          <input id="f-q" type="search" placeholder={t("f_q")} value={f.q} onChange={setQ} /></div>
+        <Sel id="f-role" label={t("f_role")} value={f.role} onChange={set("role")} opts={[["all", t("all")], ["PM", "PM"], ["PjM", "PjM"], ["Other", "Other"]]} />
+        <Sel id="f-lst" label={t("f_listing")} value={f.lst} onChange={set("lst")} opts={[["all", t("all")], ...Object.keys(OPT.listing).map((k) => [k, t.pick(OPT.listing[k])])]} />
+        <Sel id="f-ind" label={t("f_ind")} value={f.ind} onChange={set("ind")} opts={[["all", t("all")], ...industries.map(([i, n]) => [i, t.lang === "zh" ? `${i}（${n}）` : `${i} (${n})`])]} />
+        <Sel id="f-status" label={t("f_status")} value={f.status} onChange={set("status")} opts={[["all", t("all")], ["open", t("open")], ["closed", t("closed")]]} />
+        <Sel id="f-sort" label={t("f_sort")} value={f.sort} onChange={set("sort")} opts={[["new", t("s_new")], ["co", t("s_co")], ["fit", t("s_fit")]]} />
       </div>
+      {(f.role !== "all" || f.sort === "fit") && pendingCount > 0 && (
+        <div className="notice" role="note"><span>{t("role_pending", { n: pendingCount })}</span></div>
+      )}
       <div className="flex gap-2.5 items-center flex-wrap">
         <span className="mini">{t("n_jobs", { n: list.length })}</span>
         {f.tag && <button className="tagfilter" onClick={() => setFilters({ ...f, tag: null })}>{t("tagf")}{t.colon}{vname(data.vocab, f.tag, t)} ✕</button>}

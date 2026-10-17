@@ -1,0 +1,67 @@
+name: daily
+
+# PRD 2.1 第 5 點: 03:05 Asia/Taipei = 19:05 UTC. workflow_dispatch allows a manual re-run (PRD 3 第 6 點).
+on:
+  schedule:
+    - cron: "5 19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit to the data branch (PRD 11.3 第 5 點)
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out code (main)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Check out data branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: data
+          path: data
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -t .
+
+      - name: Crawl and update data
+        env:
+          TZ: Asia/Taipei
+        run: python -m pipeline run --data-dir data
+
+      - name: Commit to data branch
+        working-directory: data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -q -m "Daily update $(TZ=Asia/Taipei date +%F)"
+            git push -q origin HEAD:data
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f data/run_summary.json ]; then
+            python - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          s = json.load(open("data/run_summary.json", encoding="utf-8"))
+          print("| 項目 | 數值 |\n|---|---|")
+          for k in ("date", "crawl_complete", "jobs_seen", "targets", "new", "seen_existing", "reopened",
+                    "newly_closed", "archived", "open", "closed", "pending_ai", "unmatched_companies"):
+              print(f"| {k} | {s.get(k)} |")
+          EOF
+          fi

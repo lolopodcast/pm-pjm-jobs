@@ -1,7 +1,9 @@
 """Command line entry point.
 
-    python -m pipeline crawl [--out PATH]     full crawl + whitelist, writes a JSON summary
+    python -m pipeline run --data-dir DIR     daily job: crawl, then update DIR/data.json (PRD 2, 4)
+    python -m pipeline crawl [--out PATH]     crawl only, writes a JSON summary (for analysis)
     python -m pipeline --test-crawl           PRD 6 測項 1 (unit tests + 5 live jobs; writes nothing)
+    python -m pipeline --test-archive         PRD 6 測項 3 (state changes on fake data in a temp folder)
 """
 import argparse
 import json
@@ -15,6 +17,7 @@ from . import config
 from .companies import Whitelist, fetch_company_lists, load_subsidiaries
 from .crawler import StructureError, crawl, crawl_category, select_targets, to_job
 from .http_client import Blocked, FetchError, polite_sleep
+from .store import apply_crawl
 
 ROOT = Path(__file__).resolve().parent.parent
 TPE = timezone(timedelta(hours=8))
@@ -53,6 +56,39 @@ def cmd_crawl(out_path: Path):
              len(result["jobs"]), len(targets), len(unmatched), out_path)
 
 
+def gh_warning(msg):
+    """Shows as a yellow annotation on the GitHub Actions run without failing it."""
+    print(f"::warning::{msg}")
+
+
+def cmd_run(data_dir: Path):
+    now = datetime.now(TPE)
+    today = now.date().isoformat()
+    wl = build_whitelist()
+    polite_sleep()
+    result = crawl()
+    targets, unmatched = select_targets(result["jobs"], wl)
+    stats = apply_crawl(data_dir, targets, result["complete"], today, now.isoformat(timespec="seconds"))
+    (data_dir / "unmatched_companies.json").write_text(json.dumps(
+        {"date": today, "companies": dict(sorted(unmatched.items(), key=lambda kv: -kv[1]))},
+        ensure_ascii=False, indent=1), encoding="utf-8")
+    summary = {"date": today, "finished_at": datetime.now(TPE).isoformat(timespec="seconds"),
+               "crawl_complete": result["complete"], "whitelist": wl.counts(), "jobs_seen": len(result["jobs"]),
+               "targets": len(targets), "unmatched_companies": len(unmatched), "slices": result["stats"], **stats}
+    (data_dir / "run_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
+    log.info("run summary: %s", {k: v for k, v in summary.items() if k != "slices"})
+    if not result["complete"]:
+        gh_warning("crawl incomplete (a query hit the 150-page cap); no jobs were closed today")
+    if stats.get("suspicious_drop"):
+        gh_warning("far fewer open jobs seen than expected; closures skipped — check 104 for changes")
+
+
+def cmd_test_archive():
+    """PRD 6 測項 3: state transitions on fake data (tests/test_store.py), temp folders only."""
+    suite = unittest.defaultTestLoader.loadTestsFromName("tests.test_store")
+    return 0 if unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful() else 1
+
+
 def cmd_test_crawl():
     """PRD 6 測項 1. Runs in a temp folder and never touches real data."""
     suite = unittest.defaultTestLoader.discover(str(ROOT / "tests"), pattern="test_*.py", top_level_dir=str(ROOT))
@@ -77,13 +113,20 @@ def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser(prog="pipeline")
-    ap.add_argument("command", nargs="?", choices=["crawl"])
+    ap.add_argument("command", nargs="?", choices=["run", "crawl"])
+    ap.add_argument("--data-dir", type=Path, default=ROOT / "data")
     ap.add_argument("--out", type=Path, default=ROOT / ".tmp" / "crawl_result.json")
     ap.add_argument("--test-crawl", action="store_true")
+    ap.add_argument("--test-archive", action="store_true")
     args = ap.parse_args(argv)
     try:
         if args.test_crawl:
             return cmd_test_crawl()
+        if args.test_archive:
+            return cmd_test_archive()
+        if args.command == "run":
+            cmd_run(args.data_dir)
+            return 0
         if args.command == "crawl":
             cmd_crawl(args.out)
             return 0

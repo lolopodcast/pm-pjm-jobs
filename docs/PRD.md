@@ -71,7 +71,8 @@
    * 前端的統計圖表一律以 `ksa_normalized` 計算。
    * **學歷與科系要求（歸入 K 知識）：** 以 104 職缺的結構化欄位「學歷要求」「科系要求」為主要來源，Gemini 再從 JD 內文補充（例：「理工背景尤佳」）。結果存於 `education_req`：
      * `level`：最低學歷（`none` 不拘 / `hs` 高中職 / `as` 專科 / `ba` 大學 / `ma` 碩士 / `phd` 博士）。
-     * `majors`：科系要求，對應到標準科系群組詞彙表 `major_vocabulary.json` 的 id（例：`MAJ_BUS` 商業及管理、`MAJ_CS` 資訊、`MAJ_EE` 電機電子、`MAJ_IE` 工業工程、`MAJ_ME` 機械、`MAJ_CHEM` 化學化工、`MAJ_MAT` 材料、`MAJ_BIO` 生醫、`MAJ_DESIGN` 設計、`MAJ_COMM` 傳播、`MAJ_LANG` 外語、`MAJ_ECON` 經濟、`MAJ_SCI_ENG` 理工不限）；空陣列代表科系不拘。
+     * `majors`：科系要求，對應到標準科系群組的 id（`MAJ_BUS` 商業及管理、`MAJ_CS` 資訊、`MAJ_EE` 電機電子、`MAJ_IE` 工業工程、`MAJ_ME` 機械、`MAJ_CHEM` 化學化工、`MAJ_MAT` 材料、`MAJ_BIO` 生醫、`MAJ_CIVIL` 土木建築環工、`MAJ_SCI` 數理、`MAJ_DESIGN` 設計、`MAJ_COMM` 傳播、`MAJ_LANG` 外語、`MAJ_ECON` 經濟社會、`MAJ_SCI_ENG` 理工不限、`MAJ_OTHER` 其他）；空陣列代表科系不拘。對應規則見 `pipeline/majors.py`（2026-10-17 依 104 人力銀行職缺實際出現的 67 種科系名稱建立）。
+     * `majors_104`：104 人力銀行職缺「科系要求」欄位的原始文字（例：「電機電子工程相關」），保留以便日後調整對應規則。欄位名稱中的「104」指 104 人力銀行，與年度無關。
      * `major_required`：`true` 為必要條件，`false` 為「尤佳」等加分條件。
      * `source`：`104`（結構化欄位）或 `jd`（由 Gemini 從內文判讀）。
 4. **JD 語意分析（與 KSA 在同一次 Gemini 呼叫中完成，不增加呼叫次數）：**
@@ -129,7 +130,8 @@
 
 ### 2.4 下架判定與一個月自動歸檔
 
-1. **只有完整成功的爬取才會更新下架狀態。** 任一列表頁失敗（重試後仍失敗）時，當天不變更任何職缺的狀態。
+1. **只有完整成功的爬取才會更新下架狀態。** 任一列表頁失敗（重試後仍失敗），或任一查詢碰到 150 頁上限時，當天不變更任何職缺的狀態。
+   * **異常驟減保護：** 即使爬取完整，若當天看到的職缺少於目前開放職缺的 30%，視為 104 異常，當天不做下架判定，並在 workflow 顯示警告。
 2. 完整爬取後未出現的 `open` 職缺，`miss_count + 1`。**連續 3 天**未出現才改為 `status: "closed"`，並記錄 `closed_date`。
 3. 職缺重新出現時，`miss_count` 歸零；若原本已 `closed`，改回 `open`，並清除 `closed_date`。
 4. `closed` 狀態**超過 30 天**的職缺，從 `data.json` 移到 `history_archive.json`。
@@ -338,6 +340,7 @@
         "level": "ma",
         "majors": ["MAJ_EE", "MAJ_MAT", "MAJ_CHEM"],
         "major_required": true,
+        "majors_104": ["電機電子工程相關", "材料工程相關", "化學工程相關"],
         "source": "104"
       },
       "salary_desc": "待遇面議",
@@ -496,6 +499,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
    * 好處：開發者在本機改程式時，不會和每天自動寫入的資料發生衝突；`main` 的歷史也不會被每日資料 commit 淹沒。
 2. **同一個 workflow 完成全部步驟：** 爬取與分析 → commit 到 `data` 分支 → 建置前端並合併資料 → 部署到 GitHub Pages。
    * 原因：workflow 用內建 `GITHUB_TOKEN` 推送的 commit 不會觸發其他 workflow，若拆成兩個 workflow，部署不會自動執行。
+   * 目前進度（2026-10-17）：`.github/workflows/daily.yml` 已完成「爬取與資料更新 → commit 到 `data` 分支」；前端完成後再加上建置與部署步驟。
 3. **防止重複執行：** 設定 `concurrency`，排程與手動執行不會同時進行。
 4. **執行時間上限：** `timeout-minutes: 90`，避免卡住時耗盡資源。
 5. **權限：** 只開 `contents: write`（寫入 `data` 分支）、`pages: write` 與 `id-token: write`（部署 Pages），其餘關閉。

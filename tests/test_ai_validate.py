@@ -40,6 +40,12 @@ class ValidateTest(unittest.TestCase):
         self.assertEqual(clean["compliance_flags"], ["GENDER", "MILITARY_SERVICE"])
         self.assertEqual(dropped, [])
 
+    def test_taiwan_terms(self):
+        raw = good()
+        raw["ksa"]["skills"][1]["zh"] = "專案管理知識框架與軟件"
+        clean, _ = validate(raw, JD, "專案經理")
+        self.assertEqual(clean["ksa"]["skills"][1]["zh"], "專案管理知識架構與軟體")
+
     def test_unsupported_tag_dropped(self):
         raw = good()
         raw["ksa"]["knowledge"].append({"zh": "半導體製程", "en": "Semiconductor process", "evidence": "熟悉半導體製程"})

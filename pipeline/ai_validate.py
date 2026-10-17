@@ -21,6 +21,18 @@ _PHONE = re.compile(r"(?<!\d)(09\d{2}[-\s]?\d{3}[-\s]?\d{3}|\(?0\d{1,2}\)?[-\s]?
 _DISCRIMINATION = re.compile(r"性別|男性|女性|限男|限女|年齡|\d+\s*歲|外貌|外型|容貌|顏值|身高|體重|役畢|兵役|未婚|已婚|婚姻|籍貫|出生地"
                              r"|\bgender\b|\bmale\b|\bfemale\b|\bage\b|appearance|military service|marital", re.I)
 
+# Second line of defence for Taiwan usage (the prompt already asks for it). Unambiguous swaps only.
+TW_TERMS = [("框架", "架構"), ("軟件", "軟體"), ("硬件", "硬體"), ("質量", "品質"), ("信息", "資訊"),
+            ("用戶", "使用者"), ("默認", "預設"), ("網絡", "網路"), ("數據庫", "資料庫"), ("服務器", "伺服器"),
+            ("視頻", "影片"), ("互聯網", "網際網路"), ("鏈接", "連結"), ("文檔", "文件"), ("屏幕", "螢幕")]
+
+
+def tw(s: str) -> str:
+    for a, b in TW_TERMS:
+        s = s.replace(a, b)
+    return s
+
+
 MAX_TAG_ZH, MAX_TAG_EN = 40, 80
 MAX_SUMMARY_ZH, MAX_SUMMARY_EN_WORDS = 100, 60
 COPY_WINDOW = 15
@@ -41,7 +53,7 @@ def _check_text(label, s):
 def _clean_tags(items, jd_norm, label, dropped):
     out, seen = [], set()
     for it in items or []:
-        zh, en, ev = (it.get("zh") or "").strip(), (it.get("en") or "").strip(), it.get("evidence") or ""
+        zh, en, ev = tw((it.get("zh") or "").strip()), (it.get("en") or "").strip(), it.get("evidence") or ""
         reason = None
         if not zh or not en:
             reason = "empty"
@@ -85,7 +97,7 @@ def validate(raw: dict, jd_text: str, title: str):
         raise ValidationError("no supported KSA or tasks")
 
     summ = raw.get("jd_summary") or {}
-    s_zh, s_en = (summ.get("zh") or "").strip(), (summ.get("en") or "").strip()
+    s_zh, s_en = tw((summ.get("zh") or "").strip()), (summ.get("en") or "").strip()
     if not s_zh or not s_en:
         raise ValidationError("summary missing")
     if len(s_zh) > MAX_SUMMARY_ZH * 1.2 or len(s_en.split()) > MAX_SUMMARY_EN_WORDS * 1.25:

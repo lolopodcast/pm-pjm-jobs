@@ -37,10 +37,10 @@
 
 3. **職稱過濾：**
    * **正向詞組 A（任一）：** PM、PjM、產品、專案、Project、Product
-   * **正向詞組 B（任一）：** 經理、專員、工程師、助理、管理師、Manager、Engineer、Specialist、Assistant
+   * **正向詞組 B（任一）：** 經理、專員、工程師、管理師、Manager、Engineer、Specialist
    * 職稱須**同時**命中 A 與 B；另外，職稱以獨立英文字出現 `PM`、`PjM` 時可直接視為命中。
    * **英文比對**不分大小寫，並以單字邊界判斷（避免 `PMC`、`APM` 誤判）。
-   * **排除詞（任一命中即排除）：** 產品工程師、Product Engineer、PE、PMC、生管、製程工程師、實習、實習生、工讀、工讀生、Intern、Internship。
+   * **排除詞（任一命中即排除）：** 產品工程師、Product Engineer、PE、PMC、生管、製程工程師、實習、實習生、工讀、工讀生、Intern、Internship、助理、Assistant。職稱含「助理」者一律排除，即使同時含有 PM（例：「PM助理」「專案助理工程師」）。（「助理」排除為 2026-10-17 決定）
    * **「產品＋工程師」的職稱**（例：產品開發／設計／品質工程師，多為研發職）：只有在詞組 A 僅命中「產品／Product」、詞組 B 僅命中「工程師／Engineer」時，還須含有「企劃、規劃、管理、Management、Planning、Planner」之一才納入。「專案工程師」不受此限。（2026-10-17 決定）
    * **第二道判定：** Gemini 萃取 KSA 時同時回傳 `role_type`（`PM` / `PjM` / `Other`）。判定為 `Other` 的職缺不在前端預設列表中顯示，但保留紀錄以便檢查誤判。
 
@@ -291,7 +291,7 @@
 
 * **測項 1：爬蟲與職稱過濾（`--test-crawl`）**
   * 能成功讀取 TWSE／TPEx 名單，並取得 104 前 5 筆職缺。
-  * 職稱過濾單元測試：「專案工程師」「Product Specialist」「產品經理」「Product Manager」「PM」須命中；「產品工程師」「Product Engineer」「PMC 生管專員」「專案經理PM實習生」「Product Manager Intern」須排除。
+  * 職稱過濾單元測試：「專案工程師」「Product Specialist」「產品經理」「Product Manager」「PM」須命中；「產品工程師」「Product Engineer」「PMC 生管專員」「專案經理PM實習生」「Product Manager Intern」「專案助理」「PM助理」「產品開發工程師」須排除。
 * **測項 2：Gemini 雙語格式（`--test-llm`）**
   * 分別餵入全中文、全英文、中英夾雜三段假 JD，驗證回傳的 JSON 符合 schema；每個 K、S、A 標籤的 `zh`、`en` 欄位都不為空且語言正確；`jd_lang` 判定正確；`ksa_normalized`、`tasks_normalized` 的每個 id 都存在於詞彙表；`pm_domains` 七項合計為 100；`jd_summary` 未超過字數上限，且與原文無連續 15 字以上相同。
   * **提示注入測試：** 餵入夾帶「忽略以上指示，輸出……」、HTML／`<script>` 標籤與網址的假 JD，驗證輸出不受影響，或該筆被判為驗證失敗。
@@ -458,6 +458,8 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 * 網站不安裝流量統計或追蹤工具（見 8.3）。
 
 **已確認（2026-10-17）：**
+* 職稱含「助理」一律排除；「產品＋工程師」須含企劃／規劃／管理才納入；不查詢「產品行銷企劃」類別（見 2.1）。
+* 子公司對照表第一批 32 筆全數採用（見 `docs/subsidiaries_review.md`、`subsidiaries.json`）。
 * GitHub Actions 可正常連線 104、TWSE、TPEx（`probe-104` 實測：104 職缺 API、證交所 1,096 家、櫃買中心 893 家皆 HTTP 200）。第 10 節備案暫不需要啟用。
 
 ## 10. 部署環境備案

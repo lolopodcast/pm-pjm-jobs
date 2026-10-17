@@ -59,7 +59,8 @@
 
 1. **增量比對：** 讀取現有 `data.json`。職缺 ID 已存在且 `ai_status: "done"` 時，只更新狀態欄位，嚴禁重複呼叫 AI API。
 2. **雙語 KSA 萃取：**
-   * 新職缺的 JD 送交 Gemini。模型名稱由環境變數 `GEMINI_MODEL` 設定，預設值為 `gemini-3.8-flash`，換模型不需改程式。（原訂 `gemini-2.5-flash`，2026-10-17 實測已不開放新使用者，改用當時最新的穩定版；固定版本號，不使用 `*-latest` 別名，確保分析結果一致。）
+   * 新職缺的 JD 送交 Gemini。模型名稱由環境變數 `GEMINI_MODEL` 設定，預設值為 `gemini-3.1-flash-lite`（免費版），換模型不需改程式。固定版本號，不使用 `*-latest` 別名，確保分析結果一致。
+     * **模型選定經過（2026-10-17）：** 原訂 `gemini-2.5-flash` 已不開放新使用者；`gemini-3.8-flash` 免費版每天僅 20 次請求。以同樣 18 筆真實職缺比較：3.1 Flash-Lite 的 PM／PjM 判斷與 3.8 Flash 17/18 一致、摘要品質相當，標籤較精簡（每筆 10.4 vs 14.4 個），實測每筆約 1,441 輸入／961 輸出 token；3.5 Flash-Lite 的工作職責常接近照抄原文，不採用。決定使用 3.1 Flash-Lite 免費版；若日後額度不足，改付費版（估計每月約 US$3）。
    * 原始 JD 不論是全中文、全英文或中英夾雜，都整篇送出。K、S、A 的每個標籤**一律輸出中英兩個欄位** `{ "zh": "...", "en": "..." }`，不存成「中文 (English)」單一字串。
    * Gemini 同時回傳 `jd_lang`（`zh` / `en` / `mixed`），標記原文語言。
    * Gemini 同時回傳職稱翻譯 `title_zh`、`title_en`（原文為中文者，`title_zh` 即原文，反之亦然）。
@@ -352,7 +353,7 @@
       "miss_count": 0,
       "ai_status": "done",
       "ai_fail_count": 0,
-      "ai_model": "gemini-3.8-flash",
+      "ai_model": "gemini-3.1-flash-lite",
       "prompt_version": "1.0",
       "vocab_version": "1.0",
       "ksa": {
@@ -444,7 +445,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 3. 頁尾註明：本站為教學用途，**非 104 人力銀行官方網站**；資料來源為 104 人力銀行與 TWSE／TPEx 公開資料。
 
 ### 8.6 Gemini 免費版的資料使用（已知風險，已接受）
-* 決定使用 Gemini API **免費版**。依 Google 條款，免費版的輸入與輸出可能被 Google 用於改善產品。
+* 決定使用 Gemini API **免費版**（模型 `gemini-3.1-flash-lite`，2026-10-17 再次確認）。依 Google 條款，免費版的輸入與輸出可能被 Google 用於改善產品。
 * 送出的內容僅為 104 上公開的 JD，不含任何使用者個資，風險可接受。
 * 104 robots.txt 標示 `Content-Signal: ai-train=no`，與免費版的資料使用條款可能衝突。申請 104 爬取許可時應一併說明此用途；若 104 不同意，改用付費版（付費版的資料不會用於訓練）。
 

@@ -87,8 +87,9 @@ class LLMError(Exception):
 
 
 def model_name():
-    # gemini-2.5-flash is closed to new users (checked 2026-10-17); pin a stable version, not a *-latest alias.
-    return env.get("GEMINI_MODEL", "gemini-3.8-flash")
+    # 2026-10-17: gemini-2.5-flash is closed to new users and gemini-3.8-flash allows only 20 free requests
+    # a day; gemini-3.1-flash-lite (free tier) was chosen after a side-by-side test. Pin a stable version.
+    return env.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 
 
 # Token usage of the most recent successful call (promptTokenCount, candidatesTokenCount, thoughtsTokenCount...).

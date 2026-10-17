@@ -1,0 +1,1 @@
+# Pinned dependencies (PRD 11.5). The connectivity probe uses only the standard library.

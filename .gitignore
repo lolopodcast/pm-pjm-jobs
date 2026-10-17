@@ -1,0 +1,22 @@
+# Secrets — never commit (PRD 11.5)
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node / build output
+node_modules/
+dist/
+
+# Test scratch data (tests must use temp folders, PRD 6)
+.tmp/
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/

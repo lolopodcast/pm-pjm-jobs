@@ -1,0 +1,1042 @@
+<title>PM／PjM 職缺觀測站</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: fixed deep-green header, left module rail (desktop) + content column, deep-green footer — interactive-learning-spa system */
+:root {
+  --bg: #f4f4f4;
+  --card: #ffffff;
+  --fg: #1d2b26;
+  --muted: #5b6b65;
+  --line: #dbe2df;
+  --primary: #004030;
+  --on-primary: #ffffff;
+  --gold: #D8C3A5;
+  --gold-ink: #7a5f38;
+  --header: #004030;
+  --soft: rgba(0, 64, 48, .07);
+  --c1: #004030; --c2: #b08a55; --c3: #3d8c78; --c4: #8a6fa8; --c5: #c76b4a;
+  --good: #1f7a4d; --warn: #b7791f; --bad: #b4443a;
+  --good-bg: #e3f3ea; --warn-bg: #fbf0dc; --bad-bg: #f8e4e1;
+  --font-display: "Merriweather", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", serif;
+  --font-body: "Inter", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --header-h: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121212; --card: #1e293b; --fg: #e8e6e1; --muted: #9aa8b8; --line: #334155;
+    --primary: #D8C3A5; --on-primary: #004030; --gold: #D8C3A5; --gold-ink: #e6d3b5; --header: #0f172a;
+    --soft: rgba(216, 195, 165, .08);
+    --c1: #D8C3A5; --c2: #6fb8a0; --c3: #e39a6b; --c4: #a99ad6; --c5: #e2c46a;
+    --good: #6fcf97; --warn: #f0b85a; --bad: #f08a7e;
+    --good-bg: rgba(111,207,151,.14); --warn-bg: rgba(240,184,90,.14); --bad-bg: rgba(240,138,126,.14);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121212; --card: #1e293b; --fg: #e8e6e1; --muted: #9aa8b8; --line: #334155;
+  --primary: #D8C3A5; --on-primary: #004030; --gold: #D8C3A5; --gold-ink: #e6d3b5; --header: #0f172a;
+  --soft: rgba(216, 195, 165, .08);
+  --c1: #D8C3A5; --c2: #6fb8a0; --c3: #e39a6b; --c4: #a99ad6; --c5: #e2c46a;
+  --good: #6fcf97; --warn: #f0b85a; --bad: #f08a7e;
+  --good-bg: rgba(111,207,151,.14); --warn-bg: rgba(240,184,90,.14); --bad-bg: rgba(240,138,126,.14);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+::selection { background: var(--primary); color: var(--on-primary); }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+a { color: var(--primary); }
+
+/* Header */
+.hdr { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: var(--header); color: #fff;
+  padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid rgba(216,195,165,.3); box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+.hdr-in { height: var(--header-h); max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hdr-l, .hdr-r { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.ib { background: none; border: 0; color: #fff; padding: 8px; border-radius: 8px; display: inline-flex; align-items: center; }
+.ib:hover { background: rgba(255,255,255,.1); }
+.brand { background: none; border: 0; color: #fff; display: flex; align-items: baseline; gap: 10px; min-width: 0; padding: 4px; }
+.brand b { font-family: var(--font-display); font-weight: 900; color: #D8C3A5; letter-spacing: .14em; font-size: 18px; }
+.brand span { font-family: var(--font-display); font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pill-btn { border: 1px solid rgba(216,195,165,.5); background: none; color: #D8C3A5; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; }
+.pill-btn:hover { background: rgba(216,195,165,.12); }
+.menu { position: absolute; top: calc(100% + 6px); left: 0; width: 260px; max-width: calc(100vw - 32px); background: var(--card); color: var(--fg);
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.25); overflow: hidden; z-index: 100; }
+.menu button { width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: none; border: 0; text-align: left; font-size: 14px; }
+.menu button:hover, .menu button.on { background: var(--soft); color: var(--primary); font-weight: 600; }
+.rel { position: relative; }
+
+/* Shell */
+.shell { max-width: 1240px; margin: 0 auto; padding-top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 20px); padding-bottom: 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; }
+.rail { position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top, 0px) + 20px); align-self: start; display: flex; flex-direction: column; gap: 2px; }
+.rail button { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 0; background: none; border-radius: 10px; text-align: left; color: var(--muted); font-size: 14px; }
+.rail button:hover { background: var(--soft); color: var(--fg); }
+.rail button.on { background: var(--soft); color: var(--primary); font-weight: 700; }
+.num { font-family: var(--font-display); font-weight: 700; font-size: 12px; opacity: .7; width: 14px; }
+main { min-width: 0; }
+@media (max-width: 899px) { .shell { grid-template-columns: minmax(0, 1fr); } .rail { display: none; } .brand span { font-size: 13px; } }
+@media (max-width: 420px) { .brand span { display: none; } }
+
+.notice { display: flex; gap: 10px; align-items: flex-start; background: var(--warn-bg); color: var(--fg); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 14px; font-size: 13px; margin-bottom: 20px; }
+.notice b { color: var(--warn); }
+.page { display: flex; flex-direction: column; gap: 20px; animation: fadeInUp .45s ease-out both; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+h1 { font-family: var(--font-display); font-weight: 900; color: var(--primary); font-size: clamp(24px, 3.4vw, 34px); line-height: 1.25; margin: 0; text-wrap: balance;
+  display: flex; align-items: baseline; gap: 12px; }
+h1 .n { font-size: .7em; opacity: .55; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin: 0; color: var(--fg); text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 68ch; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; }
+.grid { display: grid; gap: 16px; }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 899px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 720px) { .g2 { grid-template-columns: minmax(0, 1fr); } }
+.stat .v { font-family: var(--font-display); font-weight: 900; font-size: 30px; color: var(--primary); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.stat .k { color: var(--muted); font-size: 13px; }
+.stat .s { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.sec-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.link-btn { background: none; border: 0; color: var(--primary); font-weight: 600; padding: 0; font-size: 14px; }
+.link-btn:hover { text-decoration: underline; }
+
+/* chips */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; font-size: 12.5px; background: var(--soft); color: var(--primary); font-weight: 500; }
+.chip.k { box-shadow: inset 3px 0 0 var(--c1); }
+.chip.s { box-shadow: inset 3px 0 0 var(--c2); }
+.chip.a { box-shadow: inset 3px 0 0 var(--c3); }
+.badge { font-size: 11.5px; font-weight: 700; padding: 1px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.badge.listed { color: var(--gold-ink); border-color: var(--gold); }
+.st { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.st.open { background: var(--good-bg); color: var(--good); }
+.st.closed { background: var(--soft); color: var(--muted); }
+.st.pending { background: var(--warn-bg); color: var(--warn); }
+.fit { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fit.hi { background: var(--good-bg); color: var(--good); }
+.fit.mid { background: var(--warn-bg); color: var(--warn); }
+.fit.lo { background: var(--bad-bg); color: var(--bad); }
+.ai { font-size: 11px; font-weight: 700; color: var(--gold-ink); border: 1px dashed var(--gold); border-radius: 6px; padding: 0 6px; }
+
+/* controls */
+.controls { display: grid; grid-template-columns: minmax(0, 2fr) repeat(5, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 1100px) { .controls { grid-template-columns: repeat(3, minmax(0, 1fr)); } .controls .q { grid-column: 1 / -1; } }
+@media (max-width: 520px) { .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field label { font-size: 12px; color: var(--muted); font-weight: 600; }
+.field input, .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); min-width: 0; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--card); flex-wrap: wrap; }
+.seg button { border: 0; background: none; padding: 4px 12px; border-radius: 999px; font-size: 13px; color: var(--muted); }
+.seg button.on { background: var(--primary); color: var(--on-primary); font-weight: 600; }
+
+/* job cards */
+.jobs { display: flex; flex-direction: column; gap: 12px; }
+.job { padding: 0; overflow: hidden; }
+.job-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 16px 18px; }
+.job-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--fg); margin: 0; }
+.job-orig { font-size: 12.5px; color: var(--muted); }
+.job-co { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; margin-top: 4px; }
+.job-meta { display: flex; gap: 6px 14px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.job-side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.job-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); padding: 8px 18px; background: var(--soft); }
+.expand { background: none; border: 0; color: var(--primary); font-weight: 600; font-size: 13px; padding: 4px 0; }
+.job-detail { padding: 16px 18px; border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 760px) { .job-detail { grid-template-columns: minmax(0, 1fr); } .job-top { grid-template-columns: minmax(0, 1fr); } .job-side { flex-direction: row; align-items: center; flex-wrap: wrap; } }
+.dl { display: flex; flex-direction: column; gap: 12px; }
+.dl h4 { margin: 0 0 6px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+.summary { background: var(--soft); border-left: 3px solid var(--gold); border-radius: 8px; padding: 10px 12px; margin: 0; }
+.stages { display: flex; gap: 4px; flex-wrap: wrap; }
+.stg { font-size: 11.5px; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line); color: var(--muted); }
+.stg.on { background: var(--primary); color: var(--on-primary); border-color: var(--primary); font-weight: 600; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 12px; font-size: 13.5px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+.flagnote { font-size: 12.5px; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.empty { text-align: center; color: var(--muted); padding: 32px; }
+.mini { font-size: 12px; color: var(--muted); }
+.tagfilter { display: inline-flex; gap: 6px; align-items: center; background: var(--primary); color: var(--on-primary); border: 0; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 600; }
+
+/* charts */
+.bars { display: flex; flex-direction: column; gap: 7px; }
+.bar { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr) 3.2em; gap: 10px; align-items: center; background: none; border: 0; padding: 2px 0; text-align: left; font-size: 13px; width: 100%; }
+.bar:hover .lbl { color: var(--primary); text-decoration: underline; }
+.bar .lbl { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar .trk { height: 12px; background: var(--soft); border-radius: 6px; overflow: hidden; }
+.bar .fill { height: 100%; border-radius: 6px; }
+.bar .val { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.maj .bar { grid-template-columns: minmax(0, 9em) minmax(0, 1fr) minmax(0, 7.5em); }
+.edu-pick { display: flex; flex-direction: column; gap: 10px; padding: 8px 0 12px; border-bottom: 1px dashed var(--line); }
+.maj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5em, 1fr)); gap: 4px 12px; font-size: 13.5px; }
+.maj-grid label { display: flex; gap: 6px; align-items: center; }
+.heat { display: grid; grid-template-columns: 4em repeat(7, minmax(0, 1fr)); gap: 4px; font-size: 12px; }
+.heat .hd { color: var(--muted); text-align: center; font-weight: 600; }
+.heat .rh { color: var(--muted); font-weight: 700; display: flex; align-items: center; }
+.cell { position: relative; border-radius: 6px; height: 40px; background: var(--soft); overflow: hidden; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+.cell i { position: absolute; inset: 0; background: var(--c1); }
+.cell span { position: relative; }
+.stack { display: flex; height: 16px; border-radius: 6px; overflow: hidden; background: var(--soft); }
+.stack div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.dist { display: flex; flex-direction: column; gap: 14px; }
+.dist h5 { margin: 0 0 4px; font-size: 13px; font-weight: 600; }
+.radar-wrap { display: flex; justify-content: center; }
+.radar-wrap svg { width: 100%; max-width: 300px; height: auto; }
+.chart-note { font-size: 12px; color: var(--muted); margin: 10px 0 0; }
+
+/* fit */
+.fit-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 960px) { .fit-layout { grid-template-columns: minmax(0, 1fr); } }
+.skill-group { display: flex; flex-direction: column; gap: 4px; }
+.skill-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--line); font-size: 13.5px; }
+.skill-row .cnt { font-size: 11.5px; color: var(--muted); }
+.lv { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lv button { border: 0; background: var(--card); padding: 3px 9px; font-size: 12px; color: var(--muted); }
+.lv button + button { border-left: 1px solid var(--line); }
+.lv button.on { background: var(--primary); color: var(--on-primary); font-weight: 600; }
+.match { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); align-items: center; }
+.match:last-child { border-bottom: 0; }
+.btnrow { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--primary); background: none; color: var(--primary); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
+.btn.solid { background: var(--primary); color: var(--on-primary); }
+.btn.danger { border-color: var(--bad); color: var(--bad); }
+.btn.danger.armed { background: var(--bad); color: #fff; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+
+/* about */
+.prose { max-width: 70ch; }
+.prose p { margin: 0 0 10px; }
+.prose ul { margin: 0 0 10px; padding-left: 20px; }
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 13px; width: 100%; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+
+/* export */
+.tools { display: flex; gap: 6px; flex-wrap: wrap; }
+.tool { border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 2px 8px; font-size: 12px; color: var(--muted); }
+.tool:hover { color: var(--primary); border-color: var(--primary); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 200;
+  background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-size: 13px; max-width: calc(100vw - 32px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+@media print {
+  .hdr, .rail, .notice, .tools, .tool, .btn, .toast, .controls, .expand, .link-btn, .job-actions, .seg, .tabs, .ftr .r button { display: none !important; }
+  .shell { display: block; padding-top: 0; }
+  body { background: #fff; }
+  .card { break-inside: avoid; }
+  .print-one .page > :not(.jobs) { display: none !important; }
+  .print-one .jobs > :not(.print-target) { display: none !important; }
+}
+
+/* footer */
+.ftr { background: #004030; color: rgba(216,195,165,.7); font-size: 12px; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.ftr-in { max-width: 1240px; margin: 0 auto; min-height: 32px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 6px; }
+.ftr a, .ftr button { color: #D8C3A5; background: none; border: 0; padding: 0; font-size: 12px; }
+.ftr button { font-weight: 700; }
+.ftr .r { display: flex; gap: 14px; align-items: center; }
+</style>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-l">
+      <div class="rel" id="menuWrap">
+        <button class="ib" id="menuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false"></button>
+        <div class="menu" id="menu" hidden></div>
+      </div>
+      <button class="ib" id="homeBtn" aria-label="Home"></button>
+      <button class="brand" id="brandBtn"><b>PMJ</b><span id="brandTitle"></span></button>
+    </div>
+    <div class="hdr-r">
+      <button class="pill-btn" id="langBtn"></button>
+      <button class="ib" id="themeBtn" aria-label="Theme"></button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail" id="rail" aria-label="Pages"></nav>
+  <main id="main"></main>
+</div>
+
+<footer class="ftr">
+  <div class="ftr-in">
+    <span>Version 2026.10.16 · For Educational Use Only</span>
+    <span class="r"><span>Architect:&nbsp;<a href="https://www.ibs.ncnu.edu.tw/index.php/faculty/tenured-professor/299-smlo" target="_blank" rel="noopener noreferrer">Prof. Shihmin Lo</a></span><button id="topBtn">Top ↑</button></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+'use strict';
+/* ---------- i18n (zh / en always defined together) ---------- */
+const T = {
+  title: ['上市櫃 PM／PjM 新人職缺觀測站', 'PM/PjM Entry-Level Job Observatory'],
+  sample: ['所有公司、職缺與數字皆為虛構的示意資料，不代表真實職缺。', 'Every company, job and figure here is fictional sample data.'],
+  sampleTag: ['示意稿', 'Mockup'], demoTag: ['示範', 'Demo'],
+  p_overview: ['總覽', 'Overview'], p_jobs: ['職缺列表', 'Jobs'], p_insights: ['統計儀表板', 'Insights'],
+  p_fit: ['我的配適度', 'My Fit'], p_archive: ['歷史職缺', 'Archive'], p_about: ['關於與方法', 'About'],
+  ov_lede: ['每天凌晨自動整理 104 上市、上櫃、興櫃公司（含子公司）的 PM／PjM 新人職缺，並以 AI 分析職能需求與工作內容。', 'Every night we collect entry-level PM/PjM openings at TWSE, TPEx and emerging-market companies (and their subsidiaries) on 104, then use AI to analyse the skills and work each one asks for.'],
+  st_open: ['開放中職缺', 'Open jobs'], st_new: ['近 7 天新增', 'New in 7 days'], st_split: ['PM／PjM 比例', 'PM / PjM split'], st_upd: ['資料更新時間', 'Last updated'],
+  st_pending: ['另有 {n} 筆分析中', '{n} more being analysed'], st_fresh: ['每日凌晨 03:05 更新', 'Refreshed daily at 03:05'],
+  ov_new: ['最新職缺', 'Newest jobs'], ov_all: ['看全部職缺 →', 'See all jobs →'],
+  ov_top: ['本月最常被要求的技能', 'Most-requested skills this month'], ov_more: ['看統計儀表板 →', 'Open insights →'],
+  f_q: ['搜尋公司、職稱、技能（中英皆可）', 'Search company, title or skill'], f_search: ['搜尋', 'Search'],
+  f_role: ['職務類型', 'Role'], f_listing: ['上市別', 'Market'], f_ind: ['產業', 'Industry'], f_status: ['狀態', 'Status'], f_sort: ['排序', 'Sort'],
+  all: ['全部', 'All'], s_new: ['最新出現', 'Newest'], s_co: ['公司名稱', 'Company'], s_fit: ['配適度', 'Fit'],
+  n_jobs: ['共 {n} 筆職缺', '{n} jobs'], none: ['沒有符合條件的職缺，試著放寬篩選條件。', 'No jobs match. Try loosening the filters.'],
+  tagf: ['標籤', 'Tag'],
+  open: ['開放中', 'Open'], closed: ['已關閉', 'Closed'], analysing: ['分析中', 'Analysing'],
+  first_seen: ['首次出現', 'First seen'], closed_on: ['關閉於', 'Closed'],
+  more: ['展開分析', 'Show analysis'], less: ['收合', 'Hide'], to104: ['前往 104 原始職缺 ↗', 'Open on 104 ↗'],
+  report: ['回報錯誤', 'Report an error'], report_note: ['（示意）正式版會開啟回報表單，只帶入職缺編號 {id}，不含個人資料。', '(Mockup) The live site opens a report form carrying only job ID {id} and no personal data.'],
+  ai: ['AI 產生', 'AI-generated'], ai_note: ['可能有誤，以 104 原始職缺為準。', 'May contain errors; the 104 posting is authoritative.'],
+  d_sum: ['職缺摘要', 'Summary'], d_k: ['知識 Knowledge', 'Knowledge'], d_s: ['技能 Skills', 'Skills'], d_a: ['特質 Attributes', 'Attributes'],
+  d_t: ['工作職責', 'Main tasks'], d_dom: ['PM 七大構面', 'Seven PM domains'], d_stage: ['參與的 Stage-Gate 階段', 'Stage-Gate stages involved'],
+  d_ctx: ['職務情境', 'Work context'], c_collab: ['主要協作單位', 'Works with'], c_prod: ['產品類型', 'Product type'], c_mkt: ['市場', 'Market'],
+  c_travel: ['出差', 'Travel'], c_eng: ['英文使用', 'English use'], c_lang: ['JD 原文語言', 'JD language'],
+  flag_note: ['此職缺含可能不符《就業服務法》第 5 條之條件：{f}。此條件未列入任何統計與配適度計算。', 'This posting includes conditions that may conflict with Article 5 of the Employment Service Act: {f}. They are excluded from all statistics and fit scores.'],
+  law: ['查看法條 ↗', 'Read the law ↗'],
+  pending_note: ['AI 分析排隊中，預計明日完成。基本資料可先參考。', 'AI analysis is queued and should finish tomorrow. Basic details are shown meanwhile.'],
+  in_lede: ['所有圖表以「已完成 AI 分析」的開放中職缺計算。點選圖上的標籤可直接篩選職缺。', 'Charts count open jobs with finished AI analysis. Click any label to filter the job list.'],
+  in_range: ['時間範圍', 'Period'], r30: ['近 30 天', '30 days'], r90: ['近 90 天', '90 days'], rall: ['全部', 'All time'],
+  ch_ksa: ['KSA 出現次數 Top 20', 'Top 20 KSA tags'], tab_k: ['知識 K', 'Knowledge'], tab_s: ['技能 S', 'Skills'], tab_a: ['特質 A', 'Attributes'],
+  ch_task: ['新人最常做的工作 Top 20', 'Top 20 tasks for newcomers'],
+  ch_radar: ['PM 七大構面平均比重', 'Average weight of the seven PM domains'],
+  ch_heat: ['Stage-Gate 參與熱度', 'Stage-Gate involvement'], heat_note: ['格內數字為參與該階段的職缺比例。', 'Each cell shows the share of jobs involved in that stage.'],
+  ch_collab: ['進公司後主要跟誰共事', 'Who you will work with'],
+  ch_ctx: ['職務情境分布', 'Work context mix'],
+  ch_comp: ['職缺合規觀察', 'Posting compliance watch'],
+  comp_lede: ['含可能不符《就業服務法》第 5 條條件的職缺比例。只呈現統計，不列出公司排行。', 'Share of postings with conditions that may conflict with Article 5 of the Employment Service Act. Shown as statistics only, with no company ranking.'],
+  comp_any: ['含任一類條件', 'Any condition'],
+  jobs_unit: ['筆', 'jobs'],
+  fit_lede: ['勾選你具備的知識、技能、特質與做過的工作，系統會即時算出你和每個職缺的配適度。資料只存在你的瀏覽器，不會上傳。', 'Tick the knowledge, skills, traits and tasks you already have. Fit scores update instantly. Your choices stay in this browser and are never uploaded.'],
+  fit_demo: ['已預先勾選一組示範資料，方便你看結果。', 'A demo profile is pre-selected so you can see results.'],
+  lv0: ['無', 'No'], lv1: ['略懂', 'Some'], lv2: ['熟悉', 'Strong'],
+  fit_my: ['我的能力', 'My abilities'], fit_k: ['知識', 'Knowledge'], fit_s: ['技能', 'Skills'], fit_a: ['特質', 'Attributes'], fit_t: ['做過的工作', 'Tasks I have done'],
+  appear: ['{n} 筆職缺要求', 'in {n} jobs'],
+  fit_res: ['配適度最高的職缺', 'Best-matching jobs'], fit_gap: ['補強方向：最常被要求但你還沒勾的項目', 'What to build next: most-requested items you have not ticked'],
+  fit_radar: ['我的構面輪廓 vs 職缺平均', 'My domain profile vs the job average'], me: ['我', 'Me'], avg: ['職缺平均', 'Job average'],
+  hi: ['高度符合', 'Strong fit'], mid: ['部分符合', 'Partial fit'], lo: ['差距較大', 'Large gap'],
+  fit_disc: ['配適度僅依自評與職缺標籤計算，供參考，不代表錄取機會。', 'Fit is based only on your self-assessment and the job tags. It is a guide, not a prediction of being hired.'],
+  exp: ['匯出', 'Export'], imp: ['匯入', 'Import'], clr: ['清除我的資料', 'Clear my data'], clr2: ['再按一次確認清除', 'Click again to clear'],
+  io_note: ['（示意）正式版可選擇先前匯出的 JSON 檔，還原你的自評資料。', '(Mockup) The live site lets you pick a previously exported JSON file to restore your answers.'],
+  cleared: ['已清除，學歷、科系與所有項目都已重設。', 'Cleared. Degree, majors and every item have been reset.'],
+  have: ['已具備', 'You have'], lack: ['尚缺', 'Missing'],
+  ar_lede: ['關閉超過 30 天的職缺會移到這裡，依年份保存。', 'Jobs closed for more than 30 days move here, filed by year.'],
+  ar_year: ['年份', 'Year'], ar_stats: ['納入統計', 'Include in insights'], ar_stats_note: ['（示意）勾選後，統計儀表板會一併計算歷史職缺。', '(Mockup) When ticked, Insights also counts archived jobs.'],
+  ab_src: ['資料來源', 'Data sources'], ab_ai: ['AI 分析方式與限制', 'How the AI analysis works, and its limits'], ab_fw: ['分析架構', 'Analytical structure'], ab_disc: ['聲明', 'Disclaimer'],
+  edu_lbl: ['學歷', 'Degree'], maj_lbl: ['科系', 'Major'], maj_any: ['科系不拘', 'Any major'], req: ['必要', 'required'], pref: ['尤佳', 'preferred'],
+  my_edu: ['我的最高學歷', 'My highest degree'], my_maj: ['我的科系（可複選，含雙主修、輔系）', 'My field(s) of study (double majors and minors count)'], choose: ['請選擇', 'Select'],
+  ch_edu: ['學歷與科系要求', 'Degree and major requirements'], edu_dist: ['最低學歷', 'Minimum degree'], maj_top: ['最常被要求的科系群組', 'Most-requested fields of study'],
+  maj_any_share: ['科系不拘的職缺占 {p}%', '{p}% of jobs accept any major'], maj_sfx: ['（必要 {r}）', ' ({r} required)'],
+  edu_have: ['學歷符合', 'Degree met'], edu_lack: ['學歷未達', 'Degree not met'], maj_have: ['科系符合', 'Major matches'], maj_lack: ['科系不符', 'Major does not match'],
+  x_csv_jobs: ['匯出 CSV（{n} 筆）', 'Export CSV ({n} jobs)'], x_pdf: ['存成 PDF', 'Save as PDF'], x_page_pdf: ['整頁存成 PDF', 'Save page as PDF'],
+  x_report_pdf: ['配適度報告存成 PDF', 'Save fit report as PDF'],
+  dl_note: ['已產生檔案。若沒有開始下載，是目前的預覽環境封鎖下載；正式網站可正常下載。', 'File created. If no download starts, this preview blocks downloads; the live site allows them.'],
+  print_note: ['若沒有出現列印視窗，是目前的預覽環境不支援；正式網站可用「列印 → 另存為 PDF」。', 'If no print dialog opens, this preview does not support it; on the live site use Print → Save as PDF.'],
+  png_note: ['（示意）正式版會把這張圖表轉成 PNG 下載。', '(Mockup) The live site downloads this chart as a PNG.'],
+  src_line: ['資料來源：104 人力銀行、TWSE／TPEx；本站整理於 {d}；AI 分析可能有誤，以 104 原始職缺為準。', 'Sources: 104 Job Bank, TWSE/TPEx; compiled {d}; AI analysis may contain errors, the 104 posting is authoritative.'],
+  theme_l: ['切換為淺色', 'Switch to light'], theme_d: ['切換為深色', 'Switch to dark']
+};
+const V = {
+  K_PM_THEORY: ['K', '專案管理理論', 'Project management theory', 'D7'],
+  K_MKT: ['K', '行銷管理', 'Marketing management', 'D5'],
+  K_IND: ['K', '產業趨勢', 'Industry trends', 'D1'],
+  K_UX: ['K', '使用者體驗', 'User experience', 'D4'],
+  K_SEMI: ['K', '半導體製程', 'Semiconductor process', 'D4'],
+  K_SW: ['K', '軟體開發流程', 'Software development lifecycle', 'D3'],
+  K_QUALITY: ['K', '品質管理', 'Quality management', 'D3'],
+  K_FIN: ['K', '財務基礎', 'Financial basics', 'D2'],
+  S_SPEC: ['S', '規格撰寫', 'Spec writing', 'D3'],
+  S_MR: ['S', '市場調查', 'Market research', 'D5'],
+  S_PRESENT: ['S', '簡報表達', 'Presentation', 'D6'],
+  S_ENGLISH: ['S', '英文溝通', 'English communication', 'D6'],
+  S_PM_TOOLS: ['S', '專案管理工具', 'PM tools (MS Project etc.)', 'D4'],
+  S_FACIL: ['S', '跨部門會議主持', 'Cross-functional facilitation', 'D6'],
+  S_EXCEL: ['S', 'Excel 試算表', 'Excel', 'D4'],
+  S_DATA: ['S', '資料分析', 'Data analysis', 'D5'],
+  S_JIRA: ['S', '敏捷開發工具', 'Agile tools (Jira etc.)', 'D4'],
+  S_NEGOT: ['S', '談判協商', 'Negotiation', 'D6'],
+  A_STRESS: ['A', '抗壓性', 'Stress tolerance', null],
+  A_DETAIL: ['A', '嚴謹細心', 'Attention to detail', null],
+  A_PROACTIVE: ['A', '主動積極', 'Proactive', null],
+  A_LEARN: ['A', '學習能力', 'Learning agility', null],
+  A_TEAM: ['A', '團隊合作', 'Teamwork', 'D6'],
+  A_LOGIC: ['A', '邏輯思考', 'Logical thinking', null],
+  T_SCHEDULE: ['T', '時程管理', 'Schedule management', 'D7'],
+  T_COORD: ['T', '跨部門協調', 'Cross-team coordination', 'D6'],
+  T_REQ: ['T', '需求訪談', 'Requirement interviews', 'D5'],
+  T_SPEC: ['T', '規格制定', 'Defining specifications', 'D3'],
+  T_LAUNCH: ['T', '上市規劃', 'Launch planning', 'D3'],
+  T_VENDOR: ['T', '供應商管理', 'Supplier management', 'D7'],
+  T_REPORT: ['T', '進度回報', 'Progress reporting', 'D7'],
+  T_MR: ['T', '市場與競品研究', 'Market and competitor research', 'D5'],
+  T_CUSTOMER: ['T', '客戶溝通', 'Customer communication', 'D6'],
+  T_COST: ['T', '成本控管', 'Cost control', 'D2']
+};
+const DOM = { D1: ['策略', 'Strategy'], D2: ['組合', 'Portfolio'], D3: ['流程', 'Process'], D4: ['工具', 'Tools'], D5: ['市場', 'Market'], D6: ['團隊', 'Teams'], D7: ['管理', 'Mgmt'] };
+const DOM_FULL = { D1: ['策略', 'Strategy'], D2: ['產品線組合管理', 'Portfolio Management'], D3: ['產品創新流程', 'PI Process'], D4: ['產品設計開發工具', 'PDD Tools'], D5: ['市場研究', 'Market Research in PI'], D6: ['文化、團隊與領導', 'Culture, Teams & Leadership'], D7: ['產品創新管理', 'PI Management'] };
+const STG = { S1: ['行銷', 'Marketing'], S2: ['可行性', 'Feasibility'], S3: ['產品設計', 'Design'], S4: ['模具', 'Tooling'], S5: ['工程', 'Engineering'], S6: ['上市', 'Launch'], EOL: ['終止', 'EOL'] };
+const COL = { RD: ['研發', 'R&D'], MKT: ['行銷', 'Marketing'], SA: ['業務', 'Sales'], DQA: ['設計品保', 'Design QA'], TE: ['研技', 'Test eng.'], QA: ['品保', 'QA'], PE: ['生技', 'Process eng.'], PUR: ['採購', 'Purchasing'], PC: ['生管', 'Production control'], MC: ['物管', 'Materials'], MFG: ['生產', 'Manufacturing'], QC: ['品管', 'QC'], FAE: ['應用工程', 'FAE'], CS: ['客服', 'Customer service'], GM: ['總經理室', 'GM office'] };
+const OPT = {
+  listing: { L: ['上市', 'TWSE listed'], O: ['上櫃', 'TPEx OTC'], E: ['興櫃', 'Emerging'] },
+  product: { hardware: ['硬體', 'Hardware'], software: ['軟體', 'Software'], service: ['服務', 'Service'], mixed: ['綜合', 'Mixed'] },
+  market: { B2B: ['B2B', 'B2B'], B2C: ['B2C', 'B2C'], both: ['兩者皆有', 'Both'] },
+  travel: { none: ['不需出差', 'None'], occasional: ['偶爾出差', 'Occasional'], frequent: ['經常出差', 'Frequent'], overseas: ['需外派', 'Overseas posting'] },
+  english: { none: ['不需要', 'Not required'], reading: ['閱讀文件', 'Reading'], daily: ['日常溝通', 'Daily use'], primary: ['主要工作語言', 'Main language'] },
+  jdlang: { zh: ['中文', 'Chinese'], en: ['英文', 'English'], mixed: ['中英夾雜', 'Mixed'] },
+  flag: { GENDER: ['性別', 'Gender'], AGE: ['年齡', 'Age'], APPEARANCE: ['容貌', 'Appearance'], MILITARY_SERVICE: ['役畢', 'Military service'], MARITAL: ['婚姻', 'Marital status'], ORIGIN: ['籍貫', 'Place of origin'] },
+  edu: { none: ['學歷不拘', 'Any degree'], hs: ['高中職以上', 'High school+'], as: ['專科以上', 'Associate+'], ba: ['大學以上', "Bachelor's+"], ma: ['碩士以上', "Master's+"], phd: ['博士', 'PhD'] },
+  myedu: { hs: ['高中職', 'High school'], as: ['專科', 'Associate'], ba: ['大學', "Bachelor's"], ma: ['碩士', "Master's"], phd: ['博士', 'PhD'] }
+};
+const EDU_RANK = { none: 0, hs: 1, as: 2, ba: 3, ma: 4, phd: 5 };
+const MAJ = {
+  MAJ_BUS: ['商業及管理', 'Business & management'], MAJ_CS: ['資訊', 'Computer science / IT'], MAJ_EE: ['電機電子', 'Electrical & electronic eng.'],
+  MAJ_IE: ['工業工程', 'Industrial engineering'], MAJ_ME: ['機械', 'Mechanical engineering'], MAJ_CHEM: ['化學化工', 'Chemistry & chemical eng.'],
+  MAJ_MAT: ['材料', 'Materials science'], MAJ_BIO: ['生醫', 'Biomedical'], MAJ_DESIGN: ['設計', 'Design'], MAJ_COMM: ['傳播', 'Communication'],
+  MAJ_LANG: ['外語', 'Foreign languages'], MAJ_ECON: ['經濟', 'Economics'], MAJ_SCI_ENG: ['理工不限', 'Any science or engineering']
+};
+const SCI_ENG = ['MAJ_CS', 'MAJ_EE', 'MAJ_IE', 'MAJ_ME', 'MAJ_CHEM', 'MAJ_MAT', 'MAJ_BIO', 'MAJ_SCI_ENG'];
+/* ---------- fictional sample data ---------- */
+const J = (o) => o;
+const JOBS = [
+  J({ id: 'j01', t: ['產品經理', 'Product Manager'], orig: 'zh', co: ['瀚星電子股份有限公司', 'Hanxing Electronics'], lst: 'L', ind: ['電腦及週邊設備製造業', 'Computer peripherals'], loc: ['新北市汐止區', 'Xizhi, New Taipei'], edu: 'ba', sal: ['月薪 45,000～60,000 元', 'NT$45,000–60,000 / month'], seen: '2026-10-15', status: 'open', role: 'PM', ai: 'done', jl: 'mixed',
+    k: ['K_MKT', 'K_IND', 'K_UX'], s: ['S_SPEC', 'S_MR', 'S_PRESENT', 'S_ENGLISH'], a: ['A_PROACTIVE', 'A_LOGIC'], tk: ['T_REQ', 'T_SPEC', 'T_LAUNCH', 'T_MR'], dm: [20, 10, 15, 15, 25, 5, 10], sg: ['S1', 'S2', 'S3'],
+    cx: { col: ['RD', 'MKT', 'SA'], prod: 'hardware', mkt: 'B2B', tr: 'occasional', en: 'daily' }, fl: [],
+    sum: ['負責筆電週邊產品的市場需求蒐集與規格定義，與研發、業務共同規劃新品上市時程，並持續追蹤競品動態。', 'Gathers market needs and defines specs for notebook peripherals, plans launch timing with R&D and sales, and tracks competitors.'] }),
+  J({ id: 'j02', t: ['專案工程師', 'Project Engineer'], orig: 'zh', co: ['聚衡半導體股份有限公司', 'Juheng Semiconductor'], lst: 'L', ind: ['半導體製造業', 'Semiconductors'], loc: ['新竹市東區', 'East District, Hsinchu'], edu: 'ma', sal: ['待遇面議', 'Negotiable'], seen: '2026-10-14', status: 'open', role: 'PjM', ai: 'done', jl: 'zh',
+    k: ['K_SEMI', 'K_PM_THEORY', 'K_QUALITY'], s: ['S_PM_TOOLS', 'S_FACIL', 'S_EXCEL', 'S_ENGLISH'], a: ['A_STRESS', 'A_DETAIL'], tk: ['T_SCHEDULE', 'T_COORD', 'T_REPORT', 'T_VENDOR'], dm: [5, 0, 35, 10, 0, 20, 30], sg: ['S3', 'S4', 'S5'],
+    cx: { col: ['RD', 'MFG', 'QA', 'PE'], prod: 'hardware', mkt: 'B2B', tr: 'occasional', en: 'reading' }, fl: [],
+    sum: ['負責先進製程導入專案的時程與資源控管，協調研發、製造與品保單位，追蹤良率改善進度並定期向主管回報。', 'Runs schedules and resources for advanced-process introduction, coordinating R&D, manufacturing and QA, and reports yield progress.'] }),
+  J({ id: 'j03', t: ['數位產品專員', 'Digital Product Specialist'], orig: 'zh', co: ['沐雲軟體股份有限公司', 'Muyun Software'], lst: 'O', ind: ['電腦軟體服務業', 'Software services'], loc: ['台北市內湖區', 'Neihu, Taipei'], edu: 'ba', sal: ['月薪 40,000～50,000 元', 'NT$40,000–50,000 / month'], seen: '2026-10-13', status: 'open', role: 'PM', ai: 'done', jl: 'zh',
+    k: ['K_SW', 'K_UX', 'K_MKT'], s: ['S_DATA', 'S_JIRA', 'S_SPEC'], a: ['A_LEARN', 'A_TEAM'], tk: ['T_REQ', 'T_SPEC', 'T_CUSTOMER'], dm: [10, 5, 20, 25, 25, 10, 5], sg: ['S1', 'S2', 'S3', 'S6'],
+    cx: { col: ['RD', 'MKT', 'CS'], prod: 'software', mkt: 'B2C', tr: 'none', en: 'reading' }, fl: [],
+    sum: ['協助會員 App 的功能規劃，整理使用者回饋與數據，撰寫需求規格並與工程團隊以敏捷方式迭代。', 'Helps plan features for a membership app, turns user feedback and data into specs, and iterates with engineers in agile sprints.'] }),
+  J({ id: 'j04', t: ['專案管理專員', 'Project Management Specialist'], orig: 'en', co: ['凌峰通訊股份有限公司', 'Lingfeng Communications'], lst: 'L', ind: ['通訊機械器材業', 'Telecom equipment'], loc: ['台北市南港區', 'Nangang, Taipei'], edu: 'ba', sal: ['月薪 42,000 元以上', 'NT$42,000+ / month'], seen: '2026-10-12', status: 'open', role: 'PjM', ai: 'done', jl: 'en',
+    k: ['K_PM_THEORY', 'K_QUALITY'], s: ['S_PM_TOOLS', 'S_ENGLISH', 'S_PRESENT', 'S_NEGOT'], a: ['A_STRESS', 'A_PROACTIVE'], tk: ['T_SCHEDULE', 'T_CUSTOMER', 'T_REPORT', 'T_COST'], dm: [5, 5, 30, 10, 5, 20, 25], sg: ['S4', 'S5', 'S6'],
+    cx: { col: ['SA', 'RD', 'FAE', 'PUR'], prod: 'hardware', mkt: 'B2B', tr: 'overseas', en: 'primary' }, fl: [],
+    sum: ['擔任海外電信客戶專案窗口，管理網通設備交付時程與成本，協調業務、研發與應用工程團隊，需短期外派。', 'Acts as project contact for overseas telecom customers, managing delivery schedules and cost across sales, R&D and FAE; short overseas postings.'] }),
+  J({ id: 'j05', t: ['產品企劃專員', 'Product Planning Specialist'], orig: 'zh', co: ['禾豐食品股份有限公司', 'Hefeng Foods'], lst: 'L', ind: ['食品製造業', 'Food manufacturing'], loc: ['台中市西屯區', 'Xitun, Taichung'], edu: 'ba', sal: ['月薪 38,000～45,000 元', 'NT$38,000–45,000 / month'], seen: '2026-10-11', status: 'open', role: 'PM', ai: 'done', jl: 'zh',
+    k: ['K_MKT', 'K_IND'], s: ['S_MR', 'S_DATA', 'S_PRESENT', 'S_EXCEL'], a: ['A_PROACTIVE', 'A_TEAM', 'A_STRESS'], tk: ['T_MR', 'T_LAUNCH', 'T_VENDOR', 'T_COST'], dm: [15, 15, 10, 5, 30, 10, 15], sg: ['S1', 'S2', 'S6'],
+    cx: { col: ['MKT', 'SA', 'RD', 'PUR'], prod: 'mixed', mkt: 'B2C', tr: 'occasional', en: 'none' }, fl: ['AGE'],
+    sum: ['負責即飲茶系列新品企劃，執行消費者調查與銷售分析，與研發及採購合作推動上市。', 'Plans new ready-to-drink tea products, runs consumer surveys and sales analysis, and works with R&D and purchasing toward launch.'] }),
+  J({ id: 'j06', t: ['專案助理', 'Project Assistant'], orig: 'zh', co: ['北辰精密股份有限公司', 'Beichen Precision'], lst: 'E', ind: ['機械設備製造業', 'Machinery'], loc: ['桃園市龜山區', 'Guishan, Taoyuan'], edu: 'as', sal: ['月薪 35,000～40,000 元', 'NT$35,000–40,000 / month'], seen: '2026-10-10', status: 'open', role: 'PjM', ai: 'done', jl: 'zh',
+    k: ['K_PM_THEORY'], s: ['S_EXCEL', 'S_PM_TOOLS', 'S_FACIL'], a: ['A_DETAIL', 'A_TEAM'], tk: ['T_SCHEDULE', 'T_REPORT', 'T_VENDOR'], dm: [0, 0, 30, 15, 0, 25, 30], sg: ['S4', 'S5'],
+    cx: { col: ['PE', 'PUR', 'MFG', 'PC'], prod: 'hardware', mkt: 'B2B', tr: 'occasional', en: 'none' }, fl: ['MILITARY_SERVICE'],
+    sum: ['協助自動化設備專案的進度追蹤與文件管理，聯繫外包廠商並整理每週會議紀錄。', 'Supports automation-equipment projects with progress tracking and documents, liaises with subcontractors and keeps weekly minutes.'] }),
+  J({ id: 'j07', t: ['產品經理（新事業部）', 'Product Manager, New Ventures'], orig: 'zh', co: ['若水生醫股份有限公司', 'Ruoshui Biomedical'], lst: 'O', ind: ['醫療器材製造業', 'Medical devices'], loc: ['台北市內湖區', 'Neihu, Taipei'], edu: 'ma', sal: ['待遇面議', 'Negotiable'], seen: '2026-10-09', status: 'open', role: 'PM', ai: 'done', jl: 'mixed',
+    k: ['K_IND', 'K_QUALITY', 'K_FIN'], s: ['S_MR', 'S_SPEC', 'S_ENGLISH', 'S_DATA'], a: ['A_LOGIC', 'A_LEARN'], tk: ['T_MR', 'T_REQ', 'T_SPEC', 'T_LAUNCH'], dm: [25, 15, 15, 10, 20, 5, 10], sg: ['S1', 'S2', 'S3'],
+    cx: { col: ['RD', 'DQA', 'MKT', 'GM'], prod: 'hardware', mkt: 'B2B', tr: 'occasional', en: 'daily' }, fl: [],
+    sum: ['評估居家照護器材新市場，訪談醫療端需求並撰寫產品規格，協助新事業的商業評估。', 'Assesses a new home-care device market, interviews clinicians, writes product specs and supports the business case.'] }),
+  J({ id: 'j08', t: ['PM 專案經理', 'Project Manager'], orig: 'zh', co: ['澄映顯示科技股份有限公司', 'Chengying Display Tech'], parent: ['澄映光電', 'Chengying Optoelectronics'], lst: 'L', ind: ['光電產業', 'Optoelectronics'], loc: ['台南市新市區', 'Xinshi, Tainan'], edu: 'ba', sal: ['月薪 43,000～55,000 元', 'NT$43,000–55,000 / month'], seen: '2026-10-08', status: 'open', role: 'PjM', ai: 'done', jl: 'zh',
+    k: ['K_PM_THEORY', 'K_SEMI'], s: ['S_PM_TOOLS', 'S_FACIL', 'S_ENGLISH', 'S_PRESENT'], a: ['A_STRESS', 'A_PROACTIVE'], tk: ['T_SCHEDULE', 'T_COORD', 'T_CUSTOMER', 'T_COST'], dm: [5, 5, 30, 10, 5, 20, 25], sg: ['S3', 'S4', 'S5', 'S6'],
+    cx: { col: ['RD', 'TE', 'QA', 'SA', 'CS'], prod: 'hardware', mkt: 'B2B', tr: 'frequent', en: 'daily' }, fl: [],
+    sum: ['管理車用顯示模組的客戶專案，從樣品驗證到量產交貨，協調研發、測試與品保，掌握成本與時程。', 'Manages automotive display-module customer projects from sample validation to mass delivery, keeping cost and schedule on track.'] }),
+  J({ id: 'j09', t: ['產品行銷專員', 'Product Marketing Specialist'], orig: 'zh', co: ['晴川家電股份有限公司', 'Qingchuan Appliances'], lst: 'L', ind: ['家用電器製造業', 'Home appliances'], loc: ['新北市新店區', 'Xindian, New Taipei'], edu: 'ba', sal: ['月薪 40,000～48,000 元', 'NT$40,000–48,000 / month'], seen: '2026-10-06', status: 'open', role: 'PM', ai: 'done', jl: 'zh',
+    k: ['K_MKT', 'K_UX'], s: ['S_MR', 'S_PRESENT', 'S_DATA'], a: ['A_PROACTIVE', 'A_TEAM'], tk: ['T_LAUNCH', 'T_MR', 'T_CUSTOMER'], dm: [10, 10, 5, 5, 35, 15, 20], sg: ['S1', 'S6'],
+    cx: { col: ['MKT', 'SA', 'CS'], prod: 'hardware', mkt: 'B2C', tr: 'occasional', en: 'reading' }, fl: ['GENDER', 'APPEARANCE'],
+    sum: ['規劃小家電新品的上市溝通，整理競品與通路資訊，準備教育訓練與門市活動素材。', 'Plans launch messaging for small appliances, compiles competitor and channel data, and prepares training and in-store materials.'] }),
+  J({ id: 'j10', t: ['資訊專案管理師', 'IT Project Specialist'], orig: 'zh', co: ['鼎拓資訊股份有限公司', 'Dingtuo Information'], lst: 'O', ind: ['資訊服務業', 'IT services'], loc: ['台北市中山區', 'Zhongshan, Taipei'], edu: 'ba', sal: ['月薪 42,000～52,000 元', 'NT$42,000–52,000 / month'], seen: '2026-10-05', status: 'closed', closed: '2026-10-14', role: 'PjM', ai: 'done', jl: 'zh',
+    k: ['K_SW', 'K_PM_THEORY'], s: ['S_JIRA', 'S_PM_TOOLS', 'S_FACIL', 'S_ENGLISH'], a: ['A_LOGIC', 'A_STRESS'], tk: ['T_SCHEDULE', 'T_REQ', 'T_CUSTOMER', 'T_REPORT'], dm: [5, 5, 30, 20, 5, 15, 20], sg: ['S2', 'S3', 'S6'],
+    cx: { col: ['RD', 'SA', 'CS'], prod: 'software', mkt: 'B2B', tr: 'none', en: 'reading' }, fl: [],
+    sum: ['負責企業 ERP 導入專案，訪談客戶需求、排定時程並追蹤測試與上線進度。', 'Runs ERP implementation projects: gathers client needs, sets schedules and tracks testing and go-live.'] }),
+  J({ id: 'j11', t: ['產品專員', 'Product Specialist'], orig: 'zh', co: ['宇澄材料股份有限公司', 'Yucheng Materials'], lst: 'E', ind: ['化學材料製造業', 'Chemical materials'], loc: ['高雄市楠梓區', 'Nanzi, Kaohsiung'], edu: 'ba', sal: ['待遇面議', 'Negotiable'], seen: '2026-10-16', status: 'open', role: null, ai: 'pending' })
+];
+// Degree/major requirements: [majors, major_required]; level comes from j.edu (104 structured field).
+const EDU_REQ = {
+  j01: [['MAJ_BUS', 'MAJ_EE'], false], j02: [['MAJ_EE', 'MAJ_MAT', 'MAJ_CHEM'], true], j03: [[], false], j04: [['MAJ_BUS', 'MAJ_LANG'], false],
+  j05: [['MAJ_BUS', 'MAJ_BIO'], false], j06: [['MAJ_ME', 'MAJ_IE'], true], j07: [['MAJ_BIO', 'MAJ_BUS'], true], j08: [['MAJ_SCI_ENG'], false],
+  j09: [[], false], j10: [['MAJ_CS', 'MAJ_IE'], false], j11: [['MAJ_CHEM', 'MAJ_MAT'], true]
+};
+JOBS.forEach((j) => { j.mj = EDU_REQ[j.id][0]; j.mr = EDU_REQ[j.id][1]; });
+const ARCHIVE = [
+  { id: 'a01', t: ['專案工程師', 'Project Engineer'], co: ['北辰精密股份有限公司', 'Beichen Precision'], lst: 'E', role: 'PjM', seen: '2026-07-02', closed: '2026-08-20', k: ['K_PM_THEORY'], s: ['S_PM_TOOLS', 'S_EXCEL'], a: ['A_DETAIL'] },
+  { id: 'a02', t: ['產品經理', 'Product Manager'], co: ['若水生醫股份有限公司', 'Ruoshui Biomedical'], lst: 'O', role: 'PM', seen: '2026-07-18', closed: '2026-08-30', k: ['K_IND', 'K_MKT'], s: ['S_MR', 'S_SPEC'], a: ['A_LOGIC'] },
+  { id: 'a03', t: ['產品專員', 'Product Specialist'], co: ['凌峰通訊股份有限公司', 'Lingfeng Communications'], lst: 'L', role: 'PM', seen: '2026-08-01', closed: '2026-09-02', k: ['K_MKT'], s: ['S_DATA', 'S_PRESENT'], a: ['A_TEAM'] }
+];
+const UPDATED = '2026-10-16 03:41';
+const TODAY = '2026-10-16';
+const DEMO_ME = { edu: 'ba', majors: ['MAJ_BUS'] };
+const DEMO_FIT = { K_MKT: 1, K_PM_THEORY: 0.5, S_EXCEL: 1, S_PRESENT: 1, S_ENGLISH: 0.5, S_DATA: 0.5, A_TEAM: 1, A_LEARN: 1, A_PROACTIVE: 1, T_MR: 0.5, T_REPORT: 1 };
+
+/* ---------- state ---------- */
+const store = {
+  get(k, fb) { try { const v = localStorage.getItem('pmj_' + k); return v == null ? fb : JSON.parse(v); } catch (e) { return fb; } },
+  set(k, v) { try { localStorage.setItem('pmj_' + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+};
+const PAGES = ['overview', 'jobs', 'insights', 'fit', 'archive', 'about'];
+const browserZh = (navigator.language || '').toLowerCase().startsWith('zh');
+const S = {
+  lang: store.get('lang', browserZh ? 'zh' : 'en'),
+  page: PAGES.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'overview',
+  f: { q: '', role: 'all', lst: 'all', ind: 'all', status: 'open', sort: 'new', tag: null },
+  open: new Set(), reported: new Set(),
+  ins: { role: 'all', range: '30', ksa: 'S' },
+  fit: store.get('fit', null) || Object.assign({}, DEMO_FIT),
+  me: store.get('me', null) || { edu: DEMO_ME.edu, majors: [...DEMO_ME.majors] },
+  fitDemo: store.get('fit', null) == null,
+  clrArmed: false, fitMsg: '', arStats: false
+};
+const theme = store.get('theme', null);
+if (theme) document.documentElement.setAttribute('data-theme', theme);
+
+/* ---------- helpers ---------- */
+const zi = () => (S.lang === 'zh' ? 0 : 1);
+const tr = (k, vars) => { let s = T[k][zi()]; if (vars) for (const [a, b] of Object.entries(vars)) s = s.replace('{' + a + '}', b); return s; };
+const pick = (pair) => (pair ? pair[zi()] : '');
+const vz = (id) => V[id][zi() + 1];
+// All dynamic text goes through textContent (PRD 8.2: never innerHTML).
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  if (props) for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'style') el.setAttribute('style', v);
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat(Infinity)) { if (c == null || c === false) continue; el.append(c instanceof Node ? c : document.createTextNode(String(c))); }
+  return el;
+}
+const NS = 'http://www.w3.org/2000/svg';
+function s(tag, attrs, ...kids) {
+  const el = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, v);
+  for (const c of kids.flat()) { if (c == null) continue; el.append(c instanceof Node ? c : document.createTextNode(String(c))); }
+  return el;
+}
+function icon(name, size = 20) {
+  const paths = {
+    menu: 'M4 6h16M4 12h16M4 18h16',
+    home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',
+    sun: 'M12 4V2M12 22v-2M4.9 4.9 3.5 3.5M20.5 20.5l-1.4-1.4M4 12H2M22 12h-2M4.9 19.1l-1.4 1.4M20.5 3.5l-1.4 1.4M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z',
+    moon: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+    overview: 'M4 4h7v7H4zM13 4h7v4h-7zM13 10h7v10h-7zM4 13h7v7H4z',
+    jobs: 'M4 7h16v12H4zM9 7V5h6v2M4 12h16',
+    insights: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+    fit: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z',
+    archive: 'M3 5h18v4H3zM5 9v10h14V9M10 13h4',
+    about: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 11v6M12 7h.01'
+  };
+  return s('svg', { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.8', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }, s('path', { d: paths[name] }));
+}
+/* ---------- export (PRD 5.7) ---------- */
+let toastTimer = null;
+function flash(msg) {
+  document.querySelectorAll('.toast').forEach((t) => t.remove());
+  const t = h('div', { class: 'toast', role: 'status' }, msg); document.body.append(t);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 5000);
+}
+const csvCell = (v) => { let x = v == null ? '' : String(v); if (/^[=+\-@]/.test(x)) x = "'" + x; return /[",\r\n]/.test(x) ? '"' + x.replace(/"/g, '""') + '"' : x; };
+const toCSV = (rows) => '﻿' + [...rows, [], [tr('src_line', { d: TODAY })]].map((r) => r.map(csvCell).join(',')).join('\r\n');
+const fname = (what, ext) => `PMJ_${what}_${TODAY.replace(/-/g, '')}.${ext}`;
+function download(name, mime, content) {
+  try {
+    const url = URL.createObjectURL(new Blob([content], { type: mime }));
+    const a = h('a', { href: url, download: name }); document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  } catch (e) { /* blocked by host */ }
+  flash(tr('dl_note'));
+}
+function doPrint(target) {
+  if (target) { document.body.classList.add('print-one'); target.classList.add('print-target'); }
+  const cleanup = () => { document.body.classList.remove('print-one'); if (target) target.classList.remove('print-target'); };
+  window.addEventListener('afterprint', cleanup, { once: true });
+  flash(tr('print_note'));
+  try { window.print(); } catch (e) { /* not available */ }
+  setTimeout(cleanup, 1500);
+}
+function chartHead(titleKey, csvName, csvRows, extra) {
+  return h('div', { class: 'sec-h' }, h('h2', null, tr(titleKey)),
+    h('div', { class: 'tools' }, extra || null,
+      h('button', { class: 'tool', onclick: () => flash(tr('png_note')) }, 'PNG'),
+      csvRows ? h('button', { class: 'tool', onclick: () => download(fname(csvName, 'csv'), 'text/csv;charset=utf-8', toCSV(csvRows())) }, 'CSV') : null));
+}
+function jobsCSV(list) {
+  const ids = (arr) => (arr || []).map(vz).join('; ');
+  const head = ['job_id', S.lang === 'zh' ? '公司' : 'Company', 'Company (EN)', tr('f_listing'), S.lang === 'zh' ? '母公司' : 'Parent',
+    S.lang === 'zh' ? '原文職稱' : 'Original title', S.lang === 'zh' ? '職稱（中）' : 'Title (ZH)', S.lang === 'zh' ? '職稱（英）' : 'Title (EN)', tr('f_role'),
+    tr('f_ind'), S.lang === 'zh' ? '地區' : 'Location', tr('edu_lbl'), tr('maj_lbl'), S.lang === 'zh' ? '薪資' : 'Salary', tr('first_seen'), tr('f_status'), tr('closed_on'),
+    'K', 'S', 'A', tr('d_t'), ...Object.keys(DOM).map((d) => d + ' ' + pick(DOM[d])), 'Stage-Gate', tr('d_sum'), '104 URL'];
+  if (hasFit()) head.push(tr('s_fit'));
+  const rows = list.map((j) => {
+    const r = [j.id, j.co[0], j.co[1], pick(OPT.listing[j.lst]), j.parent ? pick(j.parent) : '', j.orig === 'en' ? j.t[1] : j.t[0], j.t[0], j.t[1], j.role || '',
+      pick(j.ind), pick(j.loc), pick(OPT.edu[j.edu]), majorsText(j), pick(j.sal), j.seen, tr(j.status), j.closed || '',
+      ids(j.k), ids(j.s), ids(j.a), ids(j.tk), ...(j.dm || Array(7).fill('')), (j.sg || []).join('; '), j.sum ? pick(j.sum) : '', 'https://www.104.com.tw/jobs/main/'];
+    if (hasFit()) { const f = fitScore(j); r.push(f == null ? '' : f + '%'); }
+    return r;
+  });
+  return toCSV([head, ...rows]);
+}
+const daysBetween = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
+const analysed = (list) => list.filter((j) => j.ai === 'done');
+
+/* ---------- fit ---------- */
+const FIT_W = [['s', 0.35], ['k', 0.25], ['tk', 0.25], ['a', 0.15]];
+const majorMatch = (mine, req) => mine.includes(req) || (req === 'MAJ_SCI_ENG' && mine.some((m) => SCI_ENG.includes(m)));
+// Degree and major are extra K items (PRD 5.5 第 3 點).
+function eduItems(j) {
+  const items = [];
+  if (j.edu && j.edu !== 'none') items.push({ kind: 'edu', score: S.me.edu && EDU_RANK[S.me.edu] >= EDU_RANK[j.edu] ? 1 : 0 });
+  if (j.mj && j.mj.length) {
+    const ok = j.mj.some((r) => majorMatch(S.me.majors, r));
+    items.push({ kind: 'maj', score: ok ? 1 : j.mr ? 0 : 0.5 });
+  }
+  return items;
+}
+function fitScore(j) {
+  if (j.ai !== 'done') return null;
+  let tot = 0, ws = 0;
+  for (const [cat, w] of FIT_W) {
+    const scores = (j[cat] || []).map((id) => S.fit[id] || 0);
+    if (cat === 'k') eduItems(j).forEach((it) => scores.push(it.score));
+    if (!scores.length) continue;
+    tot += w * (scores.reduce((a, b) => a + b, 0) / scores.length); ws += w;
+  }
+  return ws ? Math.round((tot / ws) * 100) : null;
+}
+const fitLevel = (v) => (v >= 70 ? 'hi' : v >= 40 ? 'mid' : 'lo');
+const hasFit = () => Object.values(S.fit).some((v) => v > 0) || !!S.me.edu || S.me.majors.length > 0;
+const sep = () => (S.lang === 'zh' ? '、' : ', ');
+const majorsText = (j) => (j.mj.length ? j.mj.map((m) => pick(MAJ[m])).join(sep()) + (S.lang === 'zh' ? '（' : ' (') + tr(j.mr ? 'req' : 'pref') + (S.lang === 'zh' ? '）' : ')') : tr('maj_any'));
+
+/* ---------- chrome ---------- */
+const PAGE_ICON = { overview: 'overview', jobs: 'jobs', insights: 'insights', fit: 'fit', archive: 'archive', about: 'about' };
+function go(p) {
+  S.page = p; closeMenu();
+  try { history.replaceState(null, '', '#' + p); } catch (e) { /* ignore */ }
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function navItems(container, onPick) {
+  container.replaceChildren(...PAGES.map((p, i) => h('button', { class: S.page === p ? 'on' : '', onclick: () => onPick(p), 'aria-current': S.page === p ? 'page' : null },
+    h('span', { class: 'num' }, i), icon(PAGE_ICON[p], 18), h('span', null, tr('p_' + p)))));
+}
+const menu = document.getElementById('menu'), menuBtn = document.getElementById('menuBtn');
+function closeMenu() { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); }
+menuBtn.append(icon('menu', 22));
+menuBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.hidden = !menu.hidden; menuBtn.setAttribute('aria-expanded', String(!menu.hidden)); });
+document.addEventListener('click', (e) => { if (!document.getElementById('menuWrap').contains(e.target)) closeMenu(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+document.getElementById('homeBtn').append(icon('home', 19));
+document.getElementById('homeBtn').addEventListener('click', () => go('overview'));
+document.getElementById('brandBtn').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('topBtn').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('langBtn').addEventListener('click', () => { S.lang = S.lang === 'zh' ? 'en' : 'zh'; store.set('lang', S.lang); render(); });
+const isDark = () => { const a = document.documentElement.getAttribute('data-theme'); return a ? a === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; };
+document.getElementById('themeBtn').addEventListener('click', () => { const n = isDark() ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); store.set('theme', n); renderChrome(); });
+function renderChrome() {
+  document.documentElement.lang = S.lang === 'zh' ? 'zh-Hant-TW' : 'en';
+  document.getElementById('brandTitle').textContent = tr('title');
+  document.getElementById('langBtn').textContent = S.lang === 'zh' ? 'EN' : '中';
+  const tb = document.getElementById('themeBtn');
+  tb.replaceChildren(icon(isDark() ? 'sun' : 'moon', 19));
+  tb.setAttribute('aria-label', isDark() ? tr('theme_l') : tr('theme_d'));
+  tb.title = tb.getAttribute('aria-label');
+  navItems(document.getElementById('rail'), go);
+  navItems(menu, go);
+}
+
+/* ---------- shared pieces ---------- */
+function pageHead(p, lede) {
+  return h('div', { style: 'display:flex;flex-direction:column;gap:8px' },
+    h('h1', null, h('span', { class: 'n' }, PAGES.indexOf(p) + '.'), h('span', null, tr('p_' + p))),
+    lede ? h('p', { class: 'lede' }, lede) : null);
+}
+const listingBadge = (j) => h('span', { class: 'badge listed' }, pick(OPT.listing[j.lst]));
+function statusChip(j) {
+  if (j.ai !== 'done' && j.status === 'open') return h('span', { class: 'st pending' }, tr('analysing'));
+  return h('span', { class: 'st ' + j.status }, tr(j.status));
+}
+function companyLine(j) {
+  return h('div', { class: 'job-co' }, h('span', null, pick(j.co)), listingBadge(j),
+    j.parent ? h('span', { class: 'mini' }, (S.lang === 'zh' ? '母公司：' : 'Parent: ') + pick(j.parent)) : null);
+}
+function titleBlock(j) {
+  const shown = pick(j.t);
+  const orig = j.orig === 'en' ? j.t[1] : j.t[0];
+  return [h('p', { class: 'job-title' }, shown), shown !== orig ? h('div', { class: 'job-orig' }, (S.lang === 'zh' ? '原文職稱：' : 'Original title: ') + orig) : null];
+}
+function radarSVG(series, size = 260) {
+  const c = size / 2, r = size / 2 - 40, n = 7, keys = Object.keys(DOM);
+  const max = Math.max(40, Math.ceil(Math.max(...series.flatMap((x) => x.v)) / 10) * 10);
+  const pt = (i, val) => { const ang = -Math.PI / 2 + (i * 2 * Math.PI) / n; return [c + Math.cos(ang) * r * (val / max), c + Math.sin(ang) * r * (val / max)]; };
+  const svg = s('svg', { viewBox: `0 0 ${size} ${size}`, role: 'img', 'aria-label': tr('d_dom') });
+  [0.25, 0.5, 0.75, 1].forEach((f) => svg.append(s('polygon', { points: keys.map((_, i) => pt(i, max * f).join(',')).join(' '), fill: 'none', stroke: 'var(--line)', 'stroke-width': 1 })));
+  keys.forEach((k, i) => {
+    const [x, y] = pt(i, max); svg.append(s('line', { x1: c, y1: c, x2: x, y2: y, stroke: 'var(--line)', 'stroke-width': 1 }));
+    const [lx, ly] = pt(i, max * 1.2);
+    svg.append(s('text', { x: lx, y: ly, 'text-anchor': Math.abs(lx - c) < 6 ? 'middle' : lx > c ? 'start' : 'end', 'dominant-baseline': 'middle', fill: 'var(--muted)', 'font-size': 11, 'font-family': 'var(--font-body)' }, pick(DOM[k])));
+  });
+  svg.append(s('text', { x: c + 3, y: c - r - 2, fill: 'var(--muted)', 'font-size': 9 }, max));
+  series.forEach((ser) => {
+    const pts = ser.v.map((v, i) => pt(i, v).join(',')).join(' ');
+    svg.append(s('polygon', { points: pts, fill: ser.color, 'fill-opacity': 0.16, stroke: ser.color, 'stroke-width': 2, 'stroke-linejoin': 'round' }));
+    ser.v.forEach((v, i) => { const [x, y] = pt(i, v); svg.append(s('circle', { cx: x, cy: y, r: 2.6, fill: ser.color })); });
+  });
+  return svg;
+}
+function legend(items) { return h('div', { class: 'legend' }, items.map(([label, color]) => h('span', null, h('i', { style: `background:${color}` }), label))); }
+function bars(rows, color, onPick) {
+  const max = Math.max(1, ...rows.map((r) => r.n));
+  return h('div', { class: 'bars' }, rows.map((r) => h(onPick ? 'button' : 'div', { class: 'bar', onclick: onPick ? () => onPick(r) : null, title: r.label },
+    h('span', { class: 'lbl' }, r.label),
+    h('span', { class: 'trk' }, h('span', { class: 'fill', style: `display:block;width:${(r.n / max) * 100}%;background:${color}` })),
+    h('span', { class: 'val' }, r.suffix != null ? r.suffix : r.n))));
+}
+function countBy(list, fn) { const m = new Map(); list.forEach((j) => fn(j).forEach((k) => m.set(k, (m.get(k) || 0) + 1))); return [...m.entries()].sort((a, b) => b[1] - a[1]); }
+
+/* ---------- pages ---------- */
+function pageOverview() {
+  const open = JOBS.filter((j) => j.status === 'open');
+  const done = analysed(open);
+  const fresh = open.filter((j) => daysBetween(j.seen, TODAY) <= 7);
+  const pm = done.filter((j) => j.role === 'PM').length, pj = done.filter((j) => j.role === 'PjM').length;
+  const pending = open.filter((j) => j.ai !== 'done').length;
+  const stat = (k, v, sub, small) => h('div', { class: 'card stat' }, h('div', { class: 'k' }, k), h('div', { class: 'v', style: small ? 'font-size:22px;padding-block:4px' : null }, v), sub ? h('div', { class: 's' }, sub) : null);
+  const skills = countBy(done, (j) => j.s).slice(0, 6).map(([id, n]) => ({ id, label: vz(id), n }));
+  const newest = [...open].sort((a, b) => b.seen.localeCompare(a.seen)).slice(0, 4);
+  return h('section', { class: 'page' },
+    pageHead('overview', tr('ov_lede')),
+    h('div', { class: 'grid g4' },
+      stat(tr('st_open'), open.length, pending ? tr('st_pending', { n: pending }) : null),
+      stat(tr('st_new'), fresh.length),
+      stat(tr('st_split'), `${pm} : ${pj}`, `PM ${Math.round((pm / (pm + pj)) * 100)}% · PjM ${Math.round((pj / (pm + pj)) * 100)}%`),
+      stat(tr('st_upd'), UPDATED.slice(5), tr('st_fresh'), true)),
+    h('div', { class: 'grid g2' },
+      h('div', { class: 'card' },
+        h('div', { class: 'sec-h' }, h('h2', null, tr('ov_new')), h('button', { class: 'link-btn', onclick: () => go('jobs') }, tr('ov_all'))),
+        h('div', null, newest.map((j) => h('div', { class: 'match' },
+          h('div', { style: 'min-width:0' }, h('div', { style: 'font-weight:600' }, pick(j.t)), h('div', { class: 'mini' }, pick(j.co) + ' · ' + j.seen)),
+          statusChip(j))))),
+      h('div', { class: 'card' },
+        h('div', { class: 'sec-h' }, h('h2', null, tr('ov_top')), h('button', { class: 'link-btn', onclick: () => go('insights') }, tr('ov_more'))),
+        bars(skills, 'var(--c2)', (r) => { S.f.tag = r.id; go('jobs'); }))));
+}
+
+function filteredJobs() {
+  const q = S.f.q.trim().toLowerCase();
+  let list = JOBS.filter((j) => {
+    if (S.f.status !== 'all' && j.status !== S.f.status) return false;
+    if (S.f.role !== 'all' && j.role !== S.f.role) return false;
+    if (S.f.lst !== 'all' && j.lst !== S.f.lst) return false;
+    if (S.f.ind !== 'all' && j.ind[0] !== S.f.ind) return false;
+    if (S.f.tag && ![...(j.k || []), ...(j.s || []), ...(j.a || []), ...(j.tk || [])].includes(S.f.tag)) return false;
+    if (q) {
+      const tags = [...(j.k || []), ...(j.s || []), ...(j.a || []), ...(j.tk || [])].flatMap((id) => [V[id][1], V[id][2]]);
+      const majors = (j.mj || []).flatMap((m) => MAJ[m]);
+      const hay = [...j.t, ...j.co, ...(j.parent || []), ...tags, ...majors].join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  if (S.f.sort === 'new') list.sort((a, b) => b.seen.localeCompare(a.seen));
+  if (S.f.sort === 'co') list.sort((a, b) => pick(a.co).localeCompare(pick(b.co), S.lang === 'zh' ? 'zh-Hant-TW' : 'en'));
+  if (S.f.sort === 'fit') list.sort((a, b) => (fitScore(b) ?? -1) - (fitScore(a) ?? -1));
+  return list;
+}
+function jobCard(j) {
+  const isOpen = S.open.has(j.id);
+  const fs = hasFit() ? fitScore(j) : null;
+  const card = h('article', { class: 'card job' },
+    h('div', { class: 'job-top' },
+      h('div', { style: 'min-width:0' }, titleBlock(j), companyLine(j),
+        h('div', { class: 'job-meta' },
+          h('span', null, pick(j.ind)), h('span', null, pick(j.loc)), h('span', null, pick(OPT.edu[j.edu])), h('span', null, pick(j.sal)),
+          h('span', null, tr('first_seen') + ' ' + j.seen), j.closed ? h('span', null, tr('closed_on') + ' ' + j.closed) : null)),
+      h('div', { class: 'job-side' }, statusChip(j), j.role ? h('span', { class: 'badge' }, j.role) : null,
+        fs != null ? h('span', { class: 'fit ' + fitLevel(fs), title: tr(fitLevel(fs)) }, tr('s_fit') + ' ' + fs + '%') : null)),
+    h('div', { class: 'job-actions' },
+      j.ai === 'done' ? h('button', { class: 'expand', 'aria-expanded': String(isOpen), onclick: () => { isOpen ? S.open.delete(j.id) : S.open.add(j.id); updateJobs(); } }, isOpen ? tr('less') + ' ▴' : tr('more') + ' ▾')
+        : h('span', { class: 'mini' }, tr('pending_note')),
+      h('a', { href: 'https://www.104.com.tw/jobs/main/', target: '_blank', rel: 'noopener noreferrer', style: 'font-size:13px;font-weight:600' }, tr('to104'))),
+    isOpen ? jobDetail(j) : null);
+  return card;
+}
+function jobDetail(j) {
+  const fs = hasFit() ? fitScore(j) : null;
+  const chipList = (ids, cls) => h('div', { class: 'chips' }, ids.map((id) => h('span', { class: 'chip ' + cls }, vz(id))));
+  const req = [...j.k, ...j.s, ...j.a, ...j.tk];
+  const ctxRow = (k, v) => [h('dt', null, tr(k)), h('dd', null, v)];
+  const eduChips = h('div', { class: 'chips', style: 'margin-bottom:6px' },
+    h('span', { class: 'chip k' }, tr('edu_lbl') + '：' + pick(OPT.edu[j.edu])),
+    h('span', { class: 'chip k' }, tr('maj_lbl') + '：' + majorsText(j)));
+  const eduHave = [], eduLack = [];
+  eduItems(j).forEach((it) => {
+    const key = it.kind === 'edu' ? (it.score ? 'edu_have' : 'edu_lack') : (it.score === 1 ? 'maj_have' : 'maj_lack');
+    (it.score === 1 ? eduHave : eduLack).push(tr(key));
+  });
+  return h('div', { class: 'job-detail' },
+    h('div', { class: 'dl' },
+      h('div', null, h('h4', null, tr('d_sum'), h('span', { class: 'ai' }, tr('ai'))), h('p', { class: 'summary' }, pick(j.sum)), h('div', { class: 'mini', style: 'margin-top:4px' }, tr('ai_note'))),
+      h('div', null, h('h4', null, tr('d_k')), eduChips, chipList(j.k, 'k')),
+      h('div', null, h('h4', null, tr('d_s')), chipList(j.s, 's')),
+      h('div', null, h('h4', null, tr('d_a')), chipList(j.a, 'a')),
+      h('div', null, h('h4', null, tr('d_t')), chipList(j.tk, '')),
+      fs != null ? h('div', null, h('h4', null, tr('s_fit') + ' ' + fs + '%'),
+        h('div', { class: 'mini' }, tr('have') + (S.lang === 'zh' ? '：' : ': ') + ([...eduHave, ...req.filter((id) => S.fit[id]).map(vz)].join(sep()) || '—')),
+        h('div', { class: 'mini' }, tr('lack') + (S.lang === 'zh' ? '：' : ': ') + ([...eduLack, ...req.filter((id) => !S.fit[id]).map(vz)].join(sep()) || '—'))) : null,
+      j.fl.length ? h('div', { class: 'flagnote' }, tr('flag_note', { f: j.fl.map((f) => pick(OPT.flag[f])).join(S.lang === 'zh' ? '、' : ', ') }), ' ',
+        h('a', { href: 'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0090001&flno=5', target: '_blank', rel: 'noopener noreferrer' }, tr('law'))) : null),
+    h('div', { class: 'dl' },
+      h('div', null, h('h4', null, tr('d_dom'), h('span', { class: 'ai' }, tr('ai'))), h('div', { class: 'radar-wrap' }, radarSVG([{ v: j.dm, color: 'var(--c1)' }], 240))),
+      h('div', null, h('h4', null, tr('d_stage')), h('div', { class: 'stages' }, Object.keys(STG).map((k) => h('span', { class: 'stg' + (j.sg.includes(k) ? ' on' : '') }, k + ' ' + pick(STG[k]))))),
+      h('div', null, h('h4', null, tr('d_ctx')), h('dl', { class: 'kv' },
+        ctxRow('c_collab', j.cx.col.map((c) => pick(COL[c])).join(S.lang === 'zh' ? '、' : ', ')),
+        ctxRow('c_prod', pick(OPT.product[j.cx.prod])), ctxRow('c_mkt', pick(OPT.market[j.cx.mkt])),
+        ctxRow('c_travel', pick(OPT.travel[j.cx.tr])), ctxRow('c_eng', pick(OPT.english[j.cx.en])), ctxRow('c_lang', pick(OPT.jdlang[j.jl])))),
+      h('div', null,
+        h('div', { class: 'tools', style: 'margin-bottom:8px' }, h('button', { class: 'tool', onclick: (e) => doPrint(e.target.closest('article')) }, tr('x_pdf'))),
+        h('button', { class: 'link-btn', style: 'font-size:13px', onclick: () => { S.reported.add(j.id); updateJobs(); } }, tr('report')),
+        S.reported.has(j.id) ? h('div', { class: 'mini' }, tr('report_note', { id: j.id })) : null)));
+}
+let jobsHost = null, jobsCount = null, tagHost = null;
+let updateJobsHook = () => {};
+function updateJobs() {
+  if (!jobsHost) return;
+  updateJobsHook();
+  const list = filteredJobs();
+  jobsCount.textContent = tr('n_jobs', { n: list.length });
+  tagHost.replaceChildren(S.f.tag ? h('button', { class: 'tagfilter', onclick: () => { S.f.tag = null; updateJobs(); } }, tr('tagf') + '：' + vz(S.f.tag) + ' ✕') : '');
+  jobsHost.replaceChildren(...(list.length ? list.map(jobCard) : [h('div', { class: 'card empty' }, tr('none'))]));
+}
+function pageJobs() {
+  const sel = (id, label, key, opts) => h('div', { class: 'field' }, h('label', { for: id }, label),
+    h('select', { id, onchange: (e) => { S.f[key] = e.target.value; updateJobs(); } },
+      opts.map(([v, l]) => { const o = h('option', { value: v }, l); if (S.f[key] === v) o.selected = true; return o; })));
+  const inds = [...new Map(JOBS.map((j) => [j.ind[0], j.ind])).values()];
+  const q = h('input', { id: 'f-q', type: 'search', placeholder: tr('f_q'), value: S.f.q, oninput: (e) => { S.f.q = e.target.value; updateJobs(); } });
+  jobsHost = h('div', { class: 'jobs' }); jobsCount = h('span', { class: 'mini' }); tagHost = h('span');
+  const exportBtn = h('button', { class: 'btn', style: 'margin-left:auto', onclick: () => { const l = filteredJobs(); download(fname(S.lang === 'zh' ? '職缺總表' : 'jobs', 'csv'), 'text/csv;charset=utf-8', jobsCSV(l)); } });
+  updateJobsHook = () => { exportBtn.textContent = tr('x_csv_jobs', { n: filteredJobs().length }); };
+  const sec = h('section', { class: 'page' },
+    pageHead('jobs'),
+    h('div', { class: 'card controls' },
+      h('div', { class: 'field q' }, h('label', { for: 'f-q' }, tr('f_search')), q),
+      sel('f-role', tr('f_role'), 'role', [['all', tr('all')], ['PM', 'PM'], ['PjM', 'PjM']]),
+      sel('f-lst', tr('f_listing'), 'lst', [['all', tr('all')], ...Object.keys(OPT.listing).map((k) => [k, pick(OPT.listing[k])])]),
+      sel('f-ind', tr('f_ind'), 'ind', [['all', tr('all')], ...inds.map((p) => [p[0], pick(p)])]),
+      sel('f-status', tr('f_status'), 'status', [['all', tr('all')], ['open', tr('open')], ['closed', tr('closed')]]),
+      sel('f-sort', tr('f_sort'), 'sort', [['new', tr('s_new')], ['co', tr('s_co')], ['fit', tr('s_fit')]])),
+    h('div', { style: 'display:flex;gap:10px;align-items:center;flex-wrap:wrap' }, jobsCount, tagHost, exportBtn),
+    jobsHost);
+  updateJobs();
+  return sec;
+}
+
+function pageInsights() {
+  const base = analysed(JOBS.filter((j) => j.status === 'open'))
+    .filter((j) => S.ins.role === 'all' || j.role === S.ins.role)
+    .filter((j) => S.ins.range === 'all' || daysBetween(j.seen, TODAY) <= Number(S.ins.range));
+  const N = base.length || 1;
+  const seg = (key, opts) => h('div', { class: 'seg' }, opts.map(([v, l]) => h('button', { class: S.ins[key] === v ? 'on' : '', onclick: () => { S.ins[key] = v; render(); } }, l)));
+  const toJobs = (r) => { S.f.tag = r.id; S.f.status = 'open'; go('jobs'); };
+  const ksaColor = { K: 'var(--c1)', S: 'var(--c2)', A: 'var(--c3)' };
+  const ksaRows = countBy(base, (j) => j[S.ins.ksa.toLowerCase()]).slice(0, 20).map(([id, n]) => ({ id, label: vz(id), n }));
+  const taskRows = countBy(base, (j) => j.tk).slice(0, 20).map(([id, n]) => ({ id, label: vz(id), n }));
+  const avg = (list) => Object.keys(DOM).map((_, i) => (list.length ? Math.round(list.reduce((a, j) => a + j.dm[i], 0) / list.length) : 0));
+  const pmL = base.filter((j) => j.role === 'PM'), pjL = base.filter((j) => j.role === 'PjM');
+  const radarSeries = [];
+  if (pmL.length) radarSeries.push({ v: avg(pmL), color: 'var(--c1)', label: 'PM' });
+  if (pjL.length) radarSeries.push({ v: avg(pjL), color: 'var(--c3)', label: 'PjM' });
+  const heatRows = [['PM', pmL], ['PjM', pjL]].filter(([, l]) => l.length);
+  const heat = h('div', { class: 'heat' }, h('span'), Object.keys(STG).map((k) => h('span', { class: 'hd', title: pick(STG[k]) }, k)),
+    heatRows.map(([lab, l]) => [h('span', { class: 'rh' }, lab), Object.keys(STG).map((k) => {
+      const p = Math.round((l.filter((j) => j.sg.includes(k)).length / l.length) * 100);
+      return h('div', { class: 'cell', title: `${lab} · ${pick(STG[k])} · ${p}%` }, h('i', { style: `opacity:${(p / 100) * 0.85}` }), h('span', { style: p >= 55 ? 'color:var(--on-primary)' : '' }, p + '%'));
+    })]));
+  const collabRows = countBy(base, (j) => j.cx.col).slice(0, 10).map(([c, n]) => ({ label: pick(COL[c]), n }));
+  const palette = ['var(--c1)', 'var(--c2)', 'var(--c3)', 'var(--c4)', 'var(--c5)'];
+  const distBlock = (titleKey, optKey, getter) => {
+    const keys = Object.keys(OPT[optKey]);
+    const counts = keys.map((k) => base.filter((j) => getter(j) === k).length);
+    return h('div', null, h('h5', null, tr(titleKey)),
+      h('div', { class: 'stack' }, keys.map((k, i) => counts[i] ? h('div', { style: `width:${(counts[i] / N) * 100}%;background:${palette[i]}`, title: `${pick(OPT[optKey][k])} ${counts[i]}` }) : null)),
+      legend(keys.map((k, i) => [`${pick(OPT[optKey][k])} ${Math.round((counts[i] / N) * 100)}%`, palette[i]])));
+  };
+  const eduKeys = ['none', 'as', 'ba', 'ma'];
+  const eduCounts = eduKeys.map((k) => base.filter((j) => j.edu === k).length);
+  const eduBlock = h('div', null, h('h5', null, tr('edu_dist')),
+    h('div', { class: 'stack' }, eduKeys.map((k, i) => eduCounts[i] ? h('div', { style: `width:${(eduCounts[i] / N) * 100}%;background:${palette[i]}`, title: `${pick(OPT.edu[k])} ${eduCounts[i]}` }) : null)),
+    legend(eduKeys.map((k, i) => [`${pick(OPT.edu[k])} ${Math.round((eduCounts[i] / N) * 100)}%`, palette[i]])));
+  const majRows = countBy(base, (j) => j.mj).slice(0, 10).map(([m, n]) => {
+    const r = base.filter((j) => j.mr && j.mj.includes(m)).length;
+    return { label: pick(MAJ[m]), n, suffix: n + (r ? tr('maj_sfx', { r }) : '') };
+  });
+  const anyMaj = Math.round((base.filter((j) => !j.mj.length).length / N) * 100);
+  const flagKeys = Object.keys(OPT.flag);
+  const anyFlag = base.filter((j) => j.fl.length).length;
+  const compRows = [{ label: tr('comp_any'), n: anyFlag, suffix: Math.round((anyFlag / N) * 100) + '%' },
+    ...flagKeys.map((f) => { const n = base.filter((j) => j.fl.includes(f)).length; return { label: pick(OPT.flag[f]), n, suffix: Math.round((n / N) * 100) + '%' }; })];
+  return h('section', { class: 'page' },
+    pageHead('insights', tr('in_lede')),
+    h('div', { class: 'card', style: 'display:flex;gap:16px;flex-wrap:wrap;align-items:center' },
+      h('span', { class: 'mini' }, tr('f_role')), seg('role', [['all', tr('all')], ['PM', 'PM'], ['PjM', 'PjM']]),
+      h('span', { class: 'mini' }, tr('in_range')), seg('range', [['30', tr('r30')], ['90', tr('r90')], ['all', tr('rall')]]),
+      h('span', { class: 'mini' }, base.length + ' ' + tr('jobs_unit')),
+      h('button', { class: 'btn', style: 'margin-left:auto', onclick: () => doPrint() }, tr('x_page_pdf'))),
+    h('div', { class: 'grid g2' },
+      h('div', { class: 'card' }, chartHead('ch_ksa', 'KSA_Top20_' + S.ins.ksa, () => [['ID', 'Tag', 'n'], ...ksaRows.map((r) => [r.id, r.label, r.n])]),
+        h('div', { class: 'tabs' }, seg('ksa', [['K', tr('tab_k')], ['S', tr('tab_s')], ['A', tr('tab_a')]])),
+        bars(ksaRows, ksaColor[S.ins.ksa], toJobs)),
+      h('div', { class: 'card' }, chartHead('ch_task', 'Tasks_Top20', () => [['ID', 'Task', 'n'], ...taskRows.map((r) => [r.id, r.label, r.n])]), bars(taskRows, 'var(--c3)', toJobs)),
+      h('div', { class: 'card' }, chartHead('ch_radar', 'PM_domains', () => [['Domain', ...radarSeries.map((x) => x.label)], ...Object.keys(DOM).map((d, i) => [d + ' ' + pick(DOM_FULL[d]), ...radarSeries.map((x) => x.v[i])])]),
+        h('div', { class: 'radar-wrap' }, radarSVG(radarSeries, 300)), legend(radarSeries.map((x) => [x.label, x.color]))),
+      h('div', { class: 'card' }, chartHead('ch_heat', 'StageGate', () => [['Role', ...Object.keys(STG)], ...heatRows.map(([lab, l]) => [lab, ...Object.keys(STG).map((k) => Math.round((l.filter((j) => j.sg.includes(k)).length / l.length) * 100) + '%')])]),
+        h('div', { class: 'tbl-wrap' }, heat),
+        h('p', { class: 'chart-note' }, tr('heat_note') + ' ' + Object.keys(STG).map((k) => k + ' ' + pick(STG[k])).join(' · '))),
+      h('div', { class: 'card' }, chartHead('ch_collab', 'Collaborators', () => [['Unit', 'n'], ...collabRows.map((r) => [r.label, r.n])]), bars(collabRows, 'var(--c4)')),
+      h('div', { class: 'card' }, chartHead('ch_ctx', 'Context', null),
+        h('div', { class: 'dist' },
+          distBlock('c_prod', 'product', (j) => j.cx.prod), distBlock('c_mkt', 'market', (j) => j.cx.mkt),
+          distBlock('c_travel', 'travel', (j) => j.cx.tr), distBlock('c_eng', 'english', (j) => j.cx.en), distBlock('c_lang', 'jdlang', (j) => j.jl))),
+      h('div', { class: 'card', style: 'grid-column:1 / -1' }, chartHead('ch_edu', 'Degree_Major', () => [[tr('edu_dist'), 'n'], ...eduKeys.map((k, i) => [pick(OPT.edu[k]), eduCounts[i]]), [], [tr('maj_top'), 'n', tr('req')], ...majRows.map((r) => [r.label, r.n, r.suffix])], h('span', { class: 'mini' }, tr('maj_any_share', { p: anyMaj }))),
+        h('div', { class: 'grid g2' }, h('div', { class: 'dist' }, eduBlock), h('div', null, h('h5', { style: 'margin:0 0 6px;font-size:13px;font-weight:600' }, tr('maj_top')), h('div', { class: 'bars maj' }, bars(majRows, 'var(--c1)')))))),
+    h('div', { class: 'card' }, chartHead('ch_comp', 'Compliance', () => [['Condition', 'n', '%'], ...compRows.map((r) => [r.label, r.n, r.suffix])]), h('p', { class: 'lede', style: 'margin-bottom:12px;font-size:13.5px' }, tr('comp_lede')),
+      bars(compRows, 'var(--bad)')));
+}
+
+let fitResultsHost = null;
+function setLevel(id, v) {
+  if (v) S.fit[id] = v; else delete S.fit[id];
+  S.fitDemo = false; S.fitMsg = ''; S.clrArmed = false; store.set('fit', S.fit);
+  renderFitChecklist(); updateFitResults();
+}
+let fitChecklistHost = null;
+function saveMe() { S.fitDemo = false; S.fitMsg = ''; S.clrArmed = false; store.set('me', S.me); store.set('fit', S.fit); updateFitResults(); }
+function eduPicker() {
+  const sel = h('select', { id: 'my-edu', onchange: (e) => { S.me.edu = e.target.value; saveMe(); } },
+    h('option', { value: '' }, tr('choose')),
+    Object.keys(OPT.myedu).map((k) => { const o = h('option', { value: k }, pick(OPT.myedu[k])); if (S.me.edu === k) o.selected = true; return o; }));
+  const majors = Object.keys(MAJ).filter((m) => m !== 'MAJ_SCI_ENG').map((m) => {
+    const cb = h('input', { type: 'checkbox', id: 'my-' + m, onchange: (e) => {
+      S.me.majors = e.target.checked ? [...S.me.majors, m] : S.me.majors.filter((x) => x !== m); saveMe(); } });
+    cb.checked = S.me.majors.includes(m);
+    return h('label', { for: 'my-' + m }, cb, pick(MAJ[m]));
+  });
+  return h('div', { class: 'edu-pick' },
+    h('div', { class: 'field', style: 'max-width:16em' }, h('label', { for: 'my-edu' }, tr('my_edu')), sel),
+    h('div', { class: 'field' }, h('span', { style: 'font-size:12px;color:var(--muted);font-weight:600' }, tr('my_maj')), h('div', { class: 'maj-grid' }, majors)));
+}
+function renderFitChecklist() {
+  if (!fitChecklistHost) return;
+  const done = analysed(JOBS.filter((j) => j.status === 'open'));
+  const freq = (id) => done.filter((j) => [...j.k, ...j.s, ...j.a, ...j.tk].includes(id)).length;
+  const group = (cat, titleKey) => {
+    const ids = Object.keys(V).filter((id) => V[id][0] === cat).sort((a, b) => freq(b) - freq(a));
+    return h('div', { class: 'skill-group' }, h('p', { class: 'eyebrow', style: 'margin-top:8px' }, tr(titleKey)),
+      cat === 'K' ? eduPicker() : null,
+      ids.map((id) => h('div', { class: 'skill-row' },
+        h('div', { style: 'min-width:0' }, h('div', null, vz(id)), h('div', { class: 'cnt' }, tr('appear', { n: freq(id) }))),
+        h('div', { class: 'lv', role: 'group', 'aria-label': vz(id) }, [[0, 'lv0'], [0.5, 'lv1'], [1, 'lv2']].map(([v, k]) =>
+          h('button', { class: (S.fit[id] || 0) === v ? 'on' : '', 'aria-pressed': String((S.fit[id] || 0) === v), onclick: () => setLevel(id, v) }, tr(k)))))));
+  };
+  fitChecklistHost.replaceChildren(group('S', 'fit_s'), group('K', 'fit_k'), group('T', 'fit_t'), group('A', 'fit_a'));
+}
+function updateFitResults() {
+  if (!fitResultsHost) return;
+  const done = analysed(JOBS.filter((j) => j.status === 'open'));
+  const ranked = done.map((j) => ({ j, v: fitScore(j) })).sort((a, b) => b.v - a.v);
+  const gaps = countBy(done, (j) => [...j.k, ...j.s, ...j.a, ...j.tk].filter((id) => !S.fit[id])).slice(0, 10).map(([id, n]) => ({ id, label: vz(id), n }));
+  const mine = Object.keys(DOM).map((d) => Object.entries(S.fit).filter(([id]) => V[id] && V[id][3] === d).reduce((a, [, w]) => a + w, 0));
+  const tot = mine.reduce((a, b) => a + b, 0) || 1;
+  const mineN = mine.map((x) => Math.round((x / tot) * 100));
+  const avgDm = Object.keys(DOM).map((_, i) => Math.round(done.reduce((a, j) => a + j.dm[i], 0) / done.length));
+  fitResultsHost.replaceChildren(
+    h('div', { class: 'card' }, h('div', { class: 'sec-h' }, h('h2', null, tr('fit_res')), h('span', { class: 'mini' }, '≥70% ' + tr('hi') + ' · 40–69% ' + tr('mid') + ' · <40% ' + tr('lo'))),
+      ranked.slice(0, 6).map(({ j, v }) => h('div', { class: 'match' },
+        h('div', { style: 'min-width:0' }, h('div', { style: 'font-weight:600' }, pick(j.t)), h('div', { class: 'mini' }, pick(j.co) + ' · ' + j.role)),
+        h('span', { class: 'fit ' + fitLevel(v) }, v + '%'))),
+      h('p', { class: 'chart-note' }, tr('fit_disc'))),
+    h('div', { class: 'card' }, h('div', { class: 'sec-h' }, h('h2', null, tr('fit_gap'))),
+      bars(gaps, 'var(--c5)', (r) => { S.f.tag = r.id; go('jobs'); })),
+    h('div', { class: 'card' }, h('div', { class: 'sec-h' }, h('h2', null, tr('fit_radar'))),
+      h('div', { class: 'radar-wrap' }, radarSVG([{ v: avgDm, color: 'var(--c3)' }, { v: mineN, color: 'var(--c1)' }], 300)),
+      legend([[tr('me'), 'var(--c1)'], [tr('avg'), 'var(--c3)']])));
+}
+function pageFit() {
+  fitChecklistHost = h('div');
+  fitResultsHost = h('div', { style: 'display:flex;flex-direction:column;gap:16px;min-width:0' });
+  const msg = h('div', { class: 'mini' }, S.fitMsg);
+  const clr = h('button', { class: 'btn danger' + (S.clrArmed ? ' armed' : ''), onclick: () => {
+    if (!S.clrArmed) { S.clrArmed = true; clr.classList.add('armed'); clr.textContent = tr('clr2'); return; }
+    S.fit = {}; S.me = { edu: '', majors: [] }; S.fitDemo = false; S.clrArmed = false; S.fitMsg = tr('cleared'); store.set('fit', S.fit); store.set('me', S.me); render();
+  } }, S.clrArmed ? tr('clr2') : tr('clr'));
+  const io = () => { S.fitMsg = tr('io_note'); msg.textContent = S.fitMsg; };
+  const sec = h('section', { class: 'page' },
+    pageHead('fit', tr('fit_lede')),
+    S.fitDemo ? h('div', { class: 'notice' }, h('b', null, tr('demoTag')), h('span', null, tr('fit_demo'))) : null,
+    h('div', { class: 'fit-layout' },
+      h('div', { class: 'card' }, h('div', { class: 'sec-h' }, h('h2', null, tr('fit_my')),
+        h('div', { class: 'btnrow' },
+          h('button', { class: 'btn', onclick: () => download(fname('my_fit', 'json'), 'application/json', JSON.stringify({ version: 1, exported: TODAY, me: S.me, items: S.fit }, null, 2)) }, tr('exp') + ' JSON'),
+          h('button', { class: 'btn', onclick: io }, tr('imp')),
+          h('button', { class: 'btn solid', onclick: () => doPrint() }, tr('x_report_pdf')), clr)),
+        msg, fitChecklistHost),
+      fitResultsHost));
+  renderFitChecklist(); updateFitResults();
+  return sec;
+}
+
+function pageArchive() {
+  const note = h('div', { class: 'mini' });
+  const cb = h('input', { type: 'checkbox', id: 'ar-stats', onchange: (e) => { S.arStats = e.target.checked; note.textContent = S.arStats ? tr('ar_stats_note') : ''; } });
+  cb.checked = S.arStats; if (S.arStats) note.textContent = tr('ar_stats_note');
+  return h('section', { class: 'page' },
+    pageHead('archive', tr('ar_lede')),
+    h('div', { class: 'card', style: 'display:flex;gap:16px;align-items:end;flex-wrap:wrap' },
+      h('div', { class: 'field', style: 'width:140px' }, h('label', { for: 'ar-year' }, tr('ar_year')), h('select', { id: 'ar-year' }, h('option', { value: '2026' }, '2026'))),
+      h('label', { style: 'display:flex;gap:8px;align-items:center;font-size:14px' }, cb, tr('ar_stats')), note),
+    h('div', { class: 'card tbl-wrap' }, h('table', null,
+      h('thead', null, h('tr', null, [tr('f_role'), S.lang === 'zh' ? '職稱' : 'Title', S.lang === 'zh' ? '公司' : 'Company', tr('first_seen'), tr('closed_on'), 'KSA'].map((x) => h('th', null, x)))),
+      h('tbody', null, ARCHIVE.map((a) => h('tr', null,
+        h('td', null, a.role), h('td', null, pick(a.t)), h('td', null, pick(a.co), ' ', h('span', { class: 'badge listed' }, pick(OPT.listing[a.lst]))),
+        h('td', null, a.seen), h('td', null, a.closed),
+        h('td', null, h('div', { class: 'chips' }, [...a.k, ...a.s, ...a.a].map((id) => h('span', { class: 'chip ' + V[id][0].toLowerCase() }, vz(id)))))))))));
+}
+
+function pageAbout() {
+  const zh = S.lang === 'zh';
+  const p = (z, e) => h('p', null, zh ? z : e);
+  const li = (items) => h('ul', null, items.map(([z, e]) => h('li', null, zh ? z : e)));
+  return h('section', { class: 'page' },
+    pageHead('about'),
+    h('div', { class: 'card prose' }, h('h2', null, tr('ab_src')),
+      li([['職缺：104 人力銀行公開職缺，依職務類別（產品企劃、專案管理）查詢，每日凌晨 03:05 更新。', 'Jobs: public 104 Job Bank postings, queried by job category (product planning, project management), refreshed daily at 03:05.'],
+        ['公司名單：臺灣證券交易所與證券櫃檯買賣中心公開資料（上市、上櫃、興櫃），子公司以人工審核的對照表比對。', 'Companies: open data from TWSE and TPEx (listed, OTC, emerging), with subsidiaries matched through a manually reviewed list.'],
+        ['本站不保存職缺原文，只保存結構化標籤、AI 撰寫的摘要與 104 原始連結。', 'We never store the original posting text, only structured tags, an AI-written summary and the link to 104.']])),
+    h('div', { class: 'card prose' }, h('h2', null, tr('ab_ai')),
+      li([['以 Google Gemini 分析每份職缺，萃取 KSA、工作職責、PM 七大構面、Stage-Gate 階段與職務情境。', 'Google Gemini analyses each posting for KSA tags, tasks, the seven PM domains, Stage-Gate stages and work context.'],
+        ['每個標籤都必須在職缺原文中找得到依據，找不到的會被捨棄。', 'Every tag must be backed by text in the original posting; unsupported tags are dropped.'],
+        ['可能違反《就業服務法》第 5 條的條件（性別、年齡、容貌等）不列入 KSA 與配適度，只做統計觀察。', 'Conditions that may breach Article 5 of the Employment Service Act (gender, age, appearance and so on) are kept out of KSA and fit scores and only counted.'],
+        ['AI 可能出錯，請以 104 原始職缺為準；發現錯誤可在職缺卡片上回報。', 'The AI can be wrong. Treat the 104 posting as authoritative and report errors from any job card.']])),
+    h('div', { class: 'card prose' }, h('h2', null, tr('ab_fw')),
+      p('工作內容依兩個架構分析：「PM 產品經理」的七大構面，以及「NPD Stage-Gate Model」新產品開發階段。', 'Work content is mapped to two structures: the seven domains of product management and the NPD Stage-Gate Model.'),
+      h('div', { class: 'tbl-wrap' }, h('table', null, h('thead', null, h('tr', null, h('th', null, 'ID'), h('th', null, zh ? '七大構面' : 'PM domain'))),
+        h('tbody', null, Object.keys(DOM_FULL).map((k) => h('tr', null, h('td', null, k), h('td', null, pick(DOM_FULL[k])))))))),
+    h('div', { class: 'card prose' }, h('h2', null, tr('ab_disc')),
+      p('本站為教學用途，非 104 人力銀行官方網站。配適度僅供參考，不代表錄取機會。本站不使用 cookie，也不安裝任何流量統計或追蹤工具。', 'This is an educational project, not an official 104 Job Bank site. Fit scores are a guide only. The site uses no cookies and no analytics or tracking.')));
+}
+
+/* ---------- render ---------- */
+function render() {
+  renderChrome();
+  jobsHost = null; fitResultsHost = null; fitChecklistHost = null;
+  const pages = { overview: pageOverview, jobs: pageJobs, insights: pageInsights, fit: pageFit, archive: pageArchive, about: pageAbout };
+  document.getElementById('main').replaceChildren(
+    h('div', { class: 'notice', role: 'note' }, h('b', null, tr('sampleTag')), h('span', null, tr('sample'))),
+    pages[S.page]());
+}
+window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (PAGES.includes(p) && p !== S.page) { S.page = p; render(); } });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderChrome);
+render();
+})();
+</script>

@@ -10,6 +10,7 @@ from .majors import map_majors
 
 log = logging.getLogger(__name__)
 MAX_FAILS = 3   # PRD 2.3 第 6 點: after 3 failed days a job becomes "error"
+MAX_BUSY_IN_ROW = 5   # Gemini unavailable this many jobs in a row -> stop for today to save quota
 
 
 # Free tier for gemini-3.1-flash-lite (checked in AI Studio 2026-10-17): 500 requests/day, 15/minute,
@@ -52,14 +53,16 @@ def mark_failed(job, reason):
 
 def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyze, sleep=time.sleep,
         pause=polite_sleep, on_progress=None, deadline=None, clock=time.monotonic):
-    """Mutates jobs in place. Returns stats. Stops early (without blaming jobs) when the quota is used up
-    or when `deadline` (a clock() value) passes, so the workflow always has time to save its work."""
+    """Mutates jobs in place. Returns stats. Stops early (without blaming jobs) when the quota is used up,
+    when Gemini stays unavailable, or when `deadline` (a clock() value) passes, so the workflow always has
+    time to save its work. Gemini outages (HTTP 5xx) never count toward a job's MAX_FAILS."""
     d_cap, d_interval = settings()
     cap = d_cap if cap is None else cap
     interval = d_interval if interval is None else interval
     todo = queue(jobs)[:cap]
-    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_quota_stop": False, "ai_time_stop": False,
-             "ai_queue": len(queue(jobs)), "candidates": []}
+    stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_busy": 0, "ai_quota_stop": False,
+             "ai_time_stop": False, "ai_busy_stop": False, "ai_queue": len(queue(jobs)), "candidates": []}
+    busy_in_row = 0
     for i, job in enumerate(todo):
         if deadline is not None and clock() >= deadline:
             stats["ai_time_stop"] = True
@@ -76,15 +79,29 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
             apply_result(job, clean, today)
             stats["candidates"].extend(new_terms(job))
             stats["ai_done"] += 1
+            busy_in_row = 0
         except llm.LLMError as e:
             if e.quota:
                 stats["ai_attempted"] -= 1
                 stats["ai_quota_stop"] = True
                 log.warning("Gemini quota exhausted after %d jobs; the rest wait for tomorrow", stats["ai_done"])
                 break
+            if e.busy:
+                # Gemini's problem, not the job's: no fail count, the job simply waits in the queue.
+                job["ai_last_error"] = f"LLMError: {e}"[:200]
+                stats["ai_busy"] += 1
+                busy_in_row += 1
+                if busy_in_row >= MAX_BUSY_IN_ROW:
+                    stats["ai_busy_stop"] = True
+                    log.warning("Gemini unavailable for %d jobs in a row; the rest wait for tomorrow", busy_in_row)
+                    break
+                sleep(interval)
+                continue
+            busy_in_row = 0
             mark_failed(job, f"LLMError: {e}")
             stats["ai_failed"] += 1
         except (ValidationError, JobGone, FetchError) as e:
+            busy_in_row = 0
             mark_failed(job, f"{type(e).__name__}: {e}")
             stats["ai_failed"] += 1
         if on_progress and (i + 1) % 20 == 0:

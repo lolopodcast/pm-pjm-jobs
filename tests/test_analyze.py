@@ -75,6 +75,30 @@ class AnalyzeTest(unittest.TestCase):
         self.assertEqual(merged["items"]["T|定期向客戶報告"]["count"], 2)
         self.assertEqual(analyze.merge_candidates(merged, [], "2026-10-21", "1.1")["items"], {})   # reset on new version
 
+    def test_gemini_busy_is_not_the_jobs_fault(self):
+        js = jobs(8)
+        calls = []
+
+        def flaky(title, jd):
+            calls.append(1)
+            if len(calls) == 1:
+                raise llm.LLMError("503", busy=True)
+            return good()
+        st = self.run_ai(js, analyze_fn=flaky)
+        self.assertEqual((st["ai_busy"], st["ai_done"], st["ai_failed"]), (1, 7, 0))
+        self.assertEqual((js[0]["ai_status"], js[0]["ai_fail_count"]), ("pending", 0))
+
+        js = jobs(8)
+        calls = []
+
+        def down(title, jd):
+            calls.append(1)
+            raise llm.LLMError("503", busy=True)
+        st = self.run_ai(js, analyze_fn=down)
+        self.assertTrue(st["ai_busy_stop"])
+        self.assertEqual(len(calls), analyze.MAX_BUSY_IN_ROW)
+        self.assertTrue(all(j["ai_fail_count"] == 0 for j in js))
+
     def test_time_budget_stops_without_blame(self):
         js = jobs(5)
         ticks = iter(range(100))          # each clock() call advances one "second"

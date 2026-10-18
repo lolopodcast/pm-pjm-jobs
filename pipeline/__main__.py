@@ -90,6 +90,9 @@ def cmd_run(data_dir: Path):
         gh_warning("far fewer open jobs seen than expected; closures skipped — check 104 for changes")
     if stats.get("ai_quota_stop"):
         gh_warning("Gemini daily quota reached; remaining jobs will be analysed tomorrow")
+    if stats.get("ai_busy"):
+        gh_warning(f"Gemini was unavailable (HTTP 5xx) for {stats['ai_busy']} jobs; they will be retried tomorrow"
+                   + (" (stopped early)" if stats.get("ai_busy_stop") else ""))
     if stats.get("ai_time_stop"):
         gh_warning("AI time budget reached; remaining jobs will be analysed tomorrow")
     tried = stats.get("ai_attempted", 0)

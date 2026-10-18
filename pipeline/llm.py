@@ -8,7 +8,9 @@ from . import env, vocab
 
 PROMPT_VERSION = "1.0"   # 1.x = tags carry ids from the approved vocabulary (0.1-open had none)
 API = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-RETRY_DELAYS = (2, 4, 8)
+# Every retry counts against the 500/day free quota. On 2026-10-18, 77 jobs hit HTTP 503 four times each and
+# used up the quota, so retry fewer times but wait longer for an overloaded server to recover.
+RETRY_DELAYS = (15, 45)
 
 DOMAINS = ["D1", "D2", "D3", "D4", "D5", "D6", "D7"]
 STAGES = ["S1", "S2", "S3", "S4", "S5", "S6", "EOL"]
@@ -90,9 +92,10 @@ def schema():
 
 
 class LLMError(Exception):
-    def __init__(self, msg, quota=False):
+    def __init__(self, msg, quota=False, busy=False):
         super().__init__(msg)
         self.quota = quota   # True when the daily/minute quota is used up (HTTP 429 after retries)
+        self.busy = busy     # True when Gemini itself was unavailable (5xx / network), not the job's fault
 
 
 def model_name():
@@ -134,4 +137,4 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
             last = repr(e)
         if attempt < len(RETRY_DELAYS):
             sleep(RETRY_DELAYS[attempt])
-    raise LLMError(f"Gemini failed after retries: {last}", quota=last == "HTTP 429")
+    raise LLMError(f"Gemini failed after retries: {last}", quota=last == "HTTP 429", busy=last != "HTTP 429")

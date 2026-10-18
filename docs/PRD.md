@@ -9,7 +9,7 @@
 ## 1. 專案目標與定位
 本系統每天定時自動抓取 104 人力銀行上，**上市、上櫃、興櫃公司（含其子公司）**的 PM／PjM 新人職缺，用 Google Gemini API 萃取雙語職能需求（KSA）並分析工作內容（JD），再以極簡靜態架構（GitHub Pages + PWA）呈現，提供求職者免安裝、免登入的最新與歷史職缺分析工具。
 
-* **用途：** 教學與非商業用途。上線前應以 104 robots.txt 所列表單（https://forms.cloud.microsoft/r/Zim6WH7i7U）申請爬取許可。
+* **用途：** 教學與非商業用途。應以 104 robots.txt 所列表單（https://forms.cloud.microsoft/r/Zim6WH7i7U）申請爬取許可。**狀態：** 系統於 2026-10-18 開始每日運作，同日已去信 104 申請，等待回覆；若 104 不同意或提出條件，依其回覆調整或停止爬取。
 * **介面語言：** 中英雙語（可切換）。
 
 ---
@@ -48,7 +48,7 @@
 
 4. **年資限制：** 納入 104 經驗條件為「經驗不拘」「1 年以下」「1-3 年」的職缺。
 
-5. **執行時間：** 台灣時間每日凌晨 **03:05**，GitHub Actions cron 寫為 `5 19 * * *`（UTC）。GitHub 排程可能延遲 10～60 分鐘，仍可在 07:00 前更新上線。
+5. **執行時間：** 台灣時間每日凌晨 **03:05**，GitHub Actions cron 寫為 `5 19 * * *`（UTC）。GitHub 排程常有延遲：2026-10-18 首次正式執行延遲約 2 小時 18 分（05:23 才開始，07:26 完成），因此實際更新時間不固定，前端以 `updated_at` 顯示實際資料時間。
 
 6. **頻率控制：**
    * 列表頁每頁之間 `sleep(3~5)` 秒。
@@ -147,7 +147,7 @@
 1. **網頁改版防空跑警報：** 列表第一頁取得的職缺數為 0 時，立刻中斷並 `sys.exit(1)`，讓 GitHub Actions 失敗並寄送 Email 通知。
 2. **欄位結構檢查：** 抽查當次取得的職缺，若 `job_id`、`company`、`title` 任一欄位缺漏比例 **> 20%**，視為 104 改版，同樣 `sys.exit(1)`，且不寫入任何資料。
 3. **封鎖偵測：** 收到 HTTP 403／503 或 Cloudflare 驗證頁時，視為被封鎖：記錄錯誤並 `sys.exit(1)`。
-4. **網路容錯重試：** 網路請求與 API 呼叫遇到暫時性錯誤時，採指數退避重試（最多 3 次，間隔 2s、4s、8s）。
+4. **網路容錯重試：** 網路請求與 API 呼叫遇到暫時性錯誤時，採指數退避重試：104 與 TWSE／TPEx 最多 3 次（間隔 2s、4s、8s）；Gemini 最多 2 次（間隔 15s、45s），因為每次重試都會用掉每日免費額度（見 2.3 第 6 點）。
 5. **金鑰資安：** `GEMINI_API_KEY` 嚴禁寫死在程式碼中，必須由 **GitHub Secrets** 注入環境變數。在 Google Cloud 將此金鑰限定只能呼叫 Generative Language API。AI 相關的其他資安措施見第 8 節。
 6. **手動補爬：** workflow 開啟 `workflow_dispatch`，可從 GitHub 網頁手動執行。
 7. **權限：** workflow 只開必要權限（見 11.3 第 5 點）。
@@ -170,7 +170,7 @@
 
   | 內容 | 雙語來源 |
   |---|---|
-  | 介面文字 | 前端中英對照表 `i18n.json` |
+  | 介面文字 | 前端中英對照表 `web/src/i18n.js` |
   | KSA 標籤 | Gemini 輸出的 `zh` / `en` 欄位；標準化標籤取自 `ksa_vocabulary.json` |
   | 職稱 | 顯示原文，另附 Gemini 翻譯（`title_zh` / `title_en`） |
   | 公司名稱 | TWSE／TPEx 資料中的公司英文簡稱，不使用 AI 翻譯 |
@@ -320,6 +320,7 @@
 ---
 
 ## 7. 資料結構定義 (`data.json` 範例)
+> 以下為虛構範例，公司、職缺與分析內容皆非真實資料。
 ```json
 {
   "updated_at": "2026-10-16T03:41:00+08:00",
@@ -327,9 +328,9 @@
     {
       "job_id": "104_7x9ab",
       "url": "https://www.104.com.tw/job/7x9ab",
-      "company": "台灣積體電路製造股份有限公司",
-      "company_en": "TSMC",
-      "stock_code": "2330",
+      "company": "範例科技股份有限公司",
+      "company_en": "Example Tech",
+      "stock_code": "0000",
       "listing_type": "上市",
       "parent_company": null,
       "industry": "半導體製造業",
@@ -427,8 +428,8 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 
 ### 8.2 前端與供應鏈資安
 1. **防止 XSS：** 前端顯示任何來自資料檔的文字（包含 104 的職稱、公司名稱與 AI 產生的內容）時，一律以純文字方式寫入（如 `textContent`），**禁止以 `innerHTML` 插入**。
-2. **Content Security Policy：** 頁面設定 CSP，只允許載入自身網域與指定 CDN 的資源。
-3. **鎖定版本：** GitHub Actions 引用的第三方 action 鎖定到固定 commit SHA；Python 套件以 `requirements.txt` 鎖定版本；前端 CDN 函式庫鎖定版本並加上 SRI（`integrity` 屬性）。
+2. **Content Security Policy：** 頁面設定 CSP，只允許載入自身網域的資源（不使用 CDN，所有函式庫與字型皆打包進網站）；不允許 inline script 與 `eval`。
+3. **鎖定版本：** GitHub Actions 引用的第三方 action 鎖定到固定 commit SHA；Python 只使用標準函式庫（`requirements.txt` 無第三方套件）；前端套件在 `package.json` 鎖定確切版本，並以 `package-lock.json` 與 `npm ci` 安裝。
 4. **最小權限：** workflow 只開必要權限（見 11.3 第 5 點），其餘關閉。
 5. **套件漏洞處理（2026-10-17）：** 前端建置工具升級至已修補版本（vite 6.4.4、vitest 4.1.12、postcss 8.5.30、tailwindcss 3.4.19），並以 `overrides` 指定 `postcss-selector-parser` 7.1.6。剩餘風險：Tailwind 3 間接使用的 `braces`（GHSA-vfj7-8cjw-p6xm）尚無修補版，僅在建置時使用、比對規則固定寫在設定檔，無法被外部輸入利用，暫時接受。2026-10-18 已升級至 Tailwind 4.3.3（改用 `@tailwindcss/vite`，移除 PostCSS 設定與 `overrides`），`braces` 已不在相依套件中，此風險解除。以上皆為開發工具，不會打包進網站。
 6. **進入頁與進入碼（正式運作也保留）：** 網站首次開啟需輸入進入碼，雙語、深淺色、RWD。這是避免無意進入的軟性門檻，不是真正的存取控制：前端只保存進入碼的 SHA-256 雜湊，資料 JSON 仍可直接下載，網頁也設定 `noindex`。repo 是公開的，因此**進入碼不可寫在任何程式碼、測試或文件中**（測試改用範例碼）；更換進入碼時只更新 `web/src/Gate.jsx` 的雜湊值。
@@ -520,7 +521,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 | 公開 repo 連續 60 天無活動，GitHub 自動停用排程 | 資料停止更新，且不會有失敗通知 | 每日資料 commit 應可維持活動；另以下列「資料新鮮度」機制作為最後防線 |
 | 排程停止或連續失敗 | 使用者看到過期資料而不自知 | 前端檢查 `updated_at`，超過 36 小時顯示「資料暫停更新」橫幅 |
 | 失敗通知寄不到 | 問題無人發現 | GitHub 只通知最後修改排程設定的人；確認該帳號的 Actions 通知已開啟 |
-| Gemini 模型退役、免費額度調整 | 新職缺一直無法分析 | 當日 `failed` 比例超過 50% 時，workflow 判定失敗並寄出通知；模型可由 `GEMINI_MODEL` 更換（見 2.2） |
+| Gemini 模型退役、金鑰失效、免費額度調整 | 新職缺一直無法分析 | 金鑰或模型錯誤時立即停止 AI 分析並讓 workflow 失敗、寄出通知（不計職缺失敗次數）；當日 `failed` 比例超過 50% 時同樣判定失敗；模型可由 `GEMINI_MODEL` 更換（見 2.2、2.3 第 6 點） |
 | PWA 快取舊資料 | 使用者一直看到舊版內容 | 資料 JSON 採「網路優先」策略；程式資源檔名帶雜湊值；有新版時提示使用者重新整理 |
 | 104 改版或封鎖 | 爬取失敗 | 見第 3 節與第 10 節 |
 | repo 逐年變大 | clone 與部署變慢 | `data` 分支每年檢視一次，必要時壓縮舊歷史（備份檔與歷史歸檔不受影響） |
@@ -548,7 +549,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 6. **版本保護：** 開發開始時就建立 git repo 並經常 commit，任何誤改都能還原；PRD 等文件另由 OneDrive 的版本歷程保護。
 
 ### 11.6 維運手冊
-repo 的 `docs/RUNBOOK.md` 以步驟說明下列操作，讓不熟程式的協作者也能處理：
+**（尚未撰寫）** 預計在 repo 的 `docs/RUNBOOK.md` 以步驟說明下列操作，讓不熟程式的協作者也能處理：
 1. 手動補爬（`workflow_dispatch`）。
 2. 更換 Gemini 金鑰、更換模型。
 3. 審核 `unmatched_companies.json` 並更新 `subsidiaries.json`。

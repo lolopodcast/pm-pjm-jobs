@@ -5,6 +5,7 @@ import { companyName, tagText, titles, todayTPE, vname } from "../data.js";
 import { download, fileName, printPdf, toCSV } from "../exporting.js";
 import { eduItems, fitLevel, fitScore, hasProfile, requirements } from "../fit.js";
 import { COL, DOM, OPT, STG } from "../i18n.js";
+import { INDUSTRY_EN } from "../industries.js";
 import { DEFAULT_FILTERS } from "../data.js";
 
 const PAGE_SIZE = 30;
@@ -40,7 +41,7 @@ export function filterJobs(jobs, f, ctx) {
     if (q) {
       const r = requirements(j);
       const vocabNames = [...r.K, ...r.S, ...r.A, ...r.T].flatMap((id) => [ctx.vocab[id]?.zh, ctx.vocab[id]?.en]);
-      const hay = [j.title, j.title_zh, j.title_en, j.company, j.company_en, j.parent_company, ...tagText(j), ...vocabNames]
+      const hay = [j.title, j.title_zh, j.title_en, j.company, j.company_en, j.parent_company, j.industry, INDUSTRY_EN[j.industry], ...tagText(j), ...vocabNames]
         .filter(Boolean).join(" ").toLowerCase();
       if (!hay.includes(q)) return false;
     }
@@ -64,7 +65,7 @@ function jobsCSV(list, ctx, t, today) {
   const rows = list.map((j) => {
     const n = j.ksa_normalized || {};
     const r = [j.job_id, j.company, j.company_en || "", t.pick(OPT.listing[j.listing_type]), j.parent_company || "", j.title, j.title_zh || "", j.title_en || "",
-      j.role_type || "", j.industry || "", t.location(j.location), t.pick(OPT.edu[j.education_req?.level || "none"]), majorsText(j, ctx, t), t.salary(j.salary_desc),
+      j.role_type || "", t.industry(j.industry), t.location(j.location), t.pick(OPT.edu[j.education_req?.level || "none"]), majorsText(j, ctx, t), t.salary(j.salary_desc),
       j.first_seen_date, t(j.status), j.closed_date || "", names(n.knowledge), names(n.skills), names(n.attributes), names(j.tasks_normalized),
       ...Object.keys(DOM).map((d) => j.pm_domains?.[d] ?? ""), (j.stage_gate || []).join("; "), j.jd_summary ? t.pick([j.jd_summary.zh, j.jd_summary.en]) : "", j.url];
     if (withFit) { const f = fitScore(j, ctx.fit, ctx.me); r.push(f == null ? "" : f + "%"); }
@@ -165,7 +166,7 @@ function JobCard({ job, t, ctx, open, toggle }) {
             {job.parent_company && <span className="mini">{t("parent")}{t.colon}{job.parent_company}</span>}
           </div>
           <div className="job-meta">
-            <span>{job.industry}</span><span>{t.location(job.location)}</span>
+            <span>{t.industry(job.industry)}</span><span>{t.location(job.location)}</span>
             <span>{t.pick(OPT.edu[job.education_req?.level || "none"])}</span><span>{t.salary(job.salary_desc)}</span>
             <span>{t("first_seen")} {job.first_seen_date}</span>{job.closed_date && <span>{t("closed_on")} {job.closed_date}</span>}
           </div>
@@ -215,7 +216,7 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
           <input id="f-q" type="search" placeholder={t("f_q")} value={f.q} onChange={setQ} /></div>
         <Sel id="f-role" label={t("f_role")} value={f.role} onChange={set("role")} opts={[["all", t("all")], ["PM", "PM"], ["PjM", "PjM"], ["Other", "Other"]]} />
         <Sel id="f-lst" label={t("f_listing")} value={f.lst} onChange={set("lst")} opts={[["all", t("all")], ...Object.keys(OPT.listing).map((k) => [k, t.pick(OPT.listing[k])])]} />
-        <Sel id="f-ind" label={t("f_ind")} value={f.ind} onChange={set("ind")} opts={[["all", t("all")], ...industries.map(([i, n]) => [i, t.lang === "zh" ? `${i}（${n}）` : `${i} (${n})`])]} />
+        <Sel id="f-ind" label={t("f_ind")} value={f.ind} onChange={set("ind")} opts={[["all", t("all")], ...industries.map(([i, n]) => [i, t.lang === "zh" ? `${i}（${n}）` : `${t.industry(i)} (${n})`])]} />
         <Sel id="f-status" label={t("f_status")} value={f.status} onChange={set("status")} opts={[["all", t("all")], ["open", t("open")], ["closed", t("closed")]]} />
         <Sel id="f-sort" label={t("f_sort")} value={f.sort} onChange={set("sort")} opts={[["new", t("s_new")], ["co", t("s_co")], ["fit", t("s_fit")]]} />
       </div>

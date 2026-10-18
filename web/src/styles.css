@@ -1,6 +1,18 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Design tokens follow PRD 5.6 (interactive-learning-spa system): deep green #004030 + warm gold #D8C3A5. */
+@theme {
+  --color-brand: #004030;
+  --color-brand-gold: #D8C3A5;
+  --font-sans: Inter, "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-serif: Merriweather, "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", serif;
+}
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Tailwind 4 changed the default border color to currentColor; keep the v3 look. */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button { border-color: var(--color-gray-200, currentcolor); }
+}
 
 /* Design tokens (PRD 5.6). Light is the base; dark applies via system preference or data-theme. */
 :root {

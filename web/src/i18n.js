@@ -1,5 +1,7 @@
 // Interface text. Every entry holds [中文, English] so both languages always stay in step (PRD 5.6).
 // Taiwan Traditional Chinese only.
+import { INDUSTRY_EN } from "./industries.js";
+
 export const T = {
   title: ["上市櫃 PM／PjM 新人職缺觀測站", "PM/PjM Entry-Level Job Observatory"],
   p_overview: ["總覽", "Overview"], p_jobs: ["職缺列表", "Jobs"], p_insights: ["統計儀表板", "Insights"],
@@ -137,6 +139,7 @@ export function makeT(lang) {
     const k = Object.keys(COUNTY).find((c) => s.startsWith(c));
     return k ? COUNTY[k] : s;
   };
+  t.industry = (s) => (lang === "zh" ? s || "" : INDUSTRY_EN[s] || s || "");
   t.salary = (s) => {
     if (!s || lang === "zh") return s || "";
     if (s.includes("面議")) return "Negotiable";

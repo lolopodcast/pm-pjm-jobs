@@ -174,7 +174,7 @@
   | KSA 標籤 | Gemini 輸出的 `zh` / `en` 欄位；標準化標籤取自 `ksa_vocabulary.json` |
   | 職稱 | 顯示原文，另附 Gemini 翻譯（`title_zh` / `title_en`） |
   | 公司名稱 | TWSE／TPEx 資料中的公司英文簡稱，不使用 AI 翻譯 |
-  | 產業、地區、學歷 | 104 固定選項，以對照表 `mappings.json` 轉換 |
+  | 產業、地區、學歷 | 104 固定選項，以前端對照表轉換（產業：`web/src/industries.js`；地區、學歷：`web/src/i18n.js`）；對照表沒有的產業顯示原中文 |
   | 薪資 | 規則轉換（例：「月薪 40,000 元以上」→「Monthly NT$40,000+」；「待遇面議」→「Negotiable」） |
 
   原則：**固定選項用對照表，自由文字才交給 Gemini**。
@@ -430,7 +430,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 2. **Content Security Policy：** 頁面設定 CSP，只允許載入自身網域與指定 CDN 的資源。
 3. **鎖定版本：** GitHub Actions 引用的第三方 action 鎖定到固定 commit SHA；Python 套件以 `requirements.txt` 鎖定版本；前端 CDN 函式庫鎖定版本並加上 SRI（`integrity` 屬性）。
 4. **最小權限：** workflow 只開必要權限（見 11.3 第 5 點），其餘關閉。
-5. **套件漏洞處理（2026-10-17）：** 前端建置工具升級至已修補版本（vite 6.4.4、vitest 4.1.12、postcss 8.5.30、tailwindcss 3.4.19），並以 `overrides` 指定 `postcss-selector-parser` 7.1.6。剩餘風險：Tailwind 3 間接使用的 `braces`（GHSA-vfj7-8cjw-p6xm）尚無修補版，僅在建置時使用、比對規則固定寫在設定檔，無法被外部輸入利用，暫時接受；後續以升級 Tailwind 4 消除。以上皆為開發工具，不會打包進網站。
+5. **套件漏洞處理（2026-10-17）：** 前端建置工具升級至已修補版本（vite 6.4.4、vitest 4.1.12、postcss 8.5.30、tailwindcss 3.4.19），並以 `overrides` 指定 `postcss-selector-parser` 7.1.6。剩餘風險：Tailwind 3 間接使用的 `braces`（GHSA-vfj7-8cjw-p6xm）尚無修補版，僅在建置時使用、比對規則固定寫在設定檔，無法被外部輸入利用，暫時接受。2026-10-18 已升級至 Tailwind 4.3.3（改用 `@tailwindcss/vite`，移除 PostCSS 設定與 `overrides`），`braces` 已不在相依套件中，此風險解除。以上皆為開發工具，不會打包進網站。
 
 ### 8.3 個人資料
 1. JD 中可能含人資姓名、Email、電話。system instruction 要求 AI 輸出不得包含任何個人資料；程式另以規則（Email、電話號碼格式）再過濾一次，命中者視為驗證失敗。

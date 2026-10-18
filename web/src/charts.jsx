@@ -11,14 +11,15 @@ const textWidth = (s) => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 255 ? 
 
 export function Radar({ series, t, size = 280 }) {
   const c = size / 2, r = size / 2 - 42, keys = Object.keys(DOM);
+  const pad = 34;   // side room so English labels ("Teams", "Process") are not cut off
   const max = Math.max(40, Math.ceil(Math.max(0, ...series.flatMap((s) => s.v)) / 10) * 10);
   const pt = (i, val) => {
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / keys.length;
     return [c + Math.cos(a) * r * (val / max), c + Math.sin(a) * r * (val / max)];
   };
   return (
-    <svg className="svgchart" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={t("d_dom")} style={{ maxWidth: size, margin: "0 auto" }}>
-      <rect width={size} height={size} fill="var(--card)" />
+    <svg className="svgchart" viewBox={`${-pad} 0 ${size + 2 * pad} ${size}`} role="img" aria-label={t("d_dom")} style={{ maxWidth: size + 2 * pad, margin: "0 auto" }}>
+      <rect x={-pad} width={size + 2 * pad} height={size} fill="var(--card)" />
       {[0.25, 0.5, 0.75, 1].map((f) => (
         <polygon key={f} points={keys.map((_, i) => pt(i, max * f).join(",")).join(" ")} fill="none" stroke="var(--line)" />
       ))}

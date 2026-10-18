@@ -61,7 +61,7 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
     interval = d_interval if interval is None else interval
     todo = queue(jobs)[:cap]
     stats = {"ai_attempted": 0, "ai_done": 0, "ai_failed": 0, "ai_busy": 0, "ai_quota_stop": False,
-             "ai_time_stop": False, "ai_busy_stop": False, "ai_queue": len(queue(jobs)), "candidates": []}
+             "ai_time_stop": False, "ai_busy_stop": False, "ai_config_stop": False, "ai_queue": len(queue(jobs)), "candidates": []}
     busy_in_row = 0
     for i, job in enumerate(todo):
         if deadline is not None and clock() >= deadline:
@@ -81,6 +81,12 @@ def run(jobs, today, cap=None, interval=None, fetch=fetch_jd, analyze=llm.analyz
             stats["ai_done"] += 1
             busy_in_row = 0
         except llm.LLMError as e:
+            if e.config:
+                # Wrong key or model: stop at once without blaming any job; the run fails so the maintainer is emailed.
+                stats["ai_attempted"] -= 1
+                stats["ai_config_stop"] = True
+                log.error("Gemini key or model problem, AI stopped: %s", e)
+                break
             if e.quota:
                 stats["ai_attempted"] -= 1
                 stats["ai_quota_stop"] = True

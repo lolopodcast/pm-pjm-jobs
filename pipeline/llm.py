@@ -92,10 +92,11 @@ def schema():
 
 
 class LLMError(Exception):
-    def __init__(self, msg, quota=False, busy=False):
+    def __init__(self, msg, quota=False, busy=False, config=False):
         super().__init__(msg)
-        self.quota = quota   # True when the daily/minute quota is used up (HTTP 429 after retries)
-        self.busy = busy     # True when Gemini itself was unavailable (5xx / network), not the job's fault
+        self.quota = quota    # True when the daily/minute quota is used up (HTTP 429 after retries)
+        self.busy = busy      # True when Gemini itself was unavailable (5xx / network), not the job's fault
+        self.config = config  # True when the key or model is wrong (401/403/404, invalid key): every job would fail
 
 
 def model_name():
@@ -113,7 +114,7 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
     global last_usage
     key = env.get("GEMINI_API_KEY")
     if not key:
-        raise LLMError("GEMINI_API_KEY is not set")
+        raise LLMError("GEMINI_API_KEY is not set", config=True)
     body = {
         "systemInstruction": {"parts": [{"text": system_text()}]},
         "contents": [{"role": "user", "parts": [{"text": f"職稱：{title}\n<<<JD>>>\n{jd_text}\n<<<END>>>"}]}],
@@ -121,7 +122,7 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
     }
     req = urllib.request.Request(API.format(model=model or model_name()), data=json.dumps(body).encode("utf-8"), method="POST",
                                  headers={"Content-Type": "application/json", "x-goog-api-key": key})
-    last = None
+    last, busy = None, False
     for attempt in range(len(RETRY_DELAYS) + 1):
         try:
             with urllib.request.urlopen(req, timeout=120) as r:
@@ -131,10 +132,15 @@ def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
             return json.loads(text)
         except urllib.error.HTTPError as e:
             if e.code not in (429, 500, 502, 503, 504):
-                raise LLMError(f"Gemini HTTP {e.code}: {e.read()[:300]!r}") from e
-            last = f"HTTP {e.code}"
-        except (urllib.error.URLError, TimeoutError, KeyError, IndexError, ValueError) as e:
-            last = repr(e)
+                detail = e.read()[:300]
+                config = e.code in (401, 403, 404) or b"API_KEY_INVALID" in detail
+                raise LLMError(f"Gemini HTTP {e.code}: {detail!r}", config=config) from e
+            last, busy = f"HTTP {e.code}", e.code != 429
+        except (urllib.error.URLError, TimeoutError) as e:
+            last, busy = repr(e), True
+        except (KeyError, IndexError, ValueError) as e:
+            # Gemini answered but without usable JSON (e.g. a safety block): may be this JD, so it counts.
+            last, busy = repr(e), False
         if attempt < len(RETRY_DELAYS):
             sleep(RETRY_DELAYS[attempt])
-    raise LLMError(f"Gemini failed after retries: {last}", quota=last == "HTTP 429", busy=last != "HTTP 429")
+    raise LLMError(f"Gemini failed after retries: {last}", quota=last == "HTTP 429", busy=busy)

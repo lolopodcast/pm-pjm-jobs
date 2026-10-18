@@ -95,6 +95,8 @@ def cmd_run(data_dir: Path):
                    + (" (stopped early)" if stats.get("ai_busy_stop") else ""))
     if stats.get("ai_time_stop"):
         gh_warning("AI time budget reached; remaining jobs will be analysed tomorrow")
+    if stats.get("ai_config_stop"):
+        return 1   # PRD 11.4: wrong key or model -> fail the run so the maintainer is emailed
     tried = stats.get("ai_attempted", 0)
     if tried >= 5 and stats.get("ai_failed", 0) / tried > 0.5:
         # PRD 11.4: more than half of today's analyses failed -> fail the run so the maintainer is emailed.

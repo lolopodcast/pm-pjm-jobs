@@ -68,7 +68,7 @@ jobs:
           print("| 項目 | 數值 |\n|---|---|")
           for k in ("date", "crawl_complete", "jobs_seen", "targets", "new", "seen_existing", "reopened",
                     "newly_closed", "archived", "open", "closed", "ai_attempted", "ai_done", "ai_failed",
-                    "ai_busy", "ai_busy_stop", "ai_quota_stop", "ai_time_stop", "pending_ai", "unmatched_companies"):
+                    "ai_busy", "ai_busy_stop", "ai_config_stop", "ai_quota_stop", "ai_time_stop", "pending_ai", "unmatched_companies"):
               print(f"| {k} | {s.get(k)} |")
           EOF
           fi

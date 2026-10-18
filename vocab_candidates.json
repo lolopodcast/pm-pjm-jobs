@@ -1,7 +1,29 @@
 {
  "version": "1.0",
- "updated": "2026-10-18",
+ "updated": "2026-10-19",
  "items": {
+  "A|耐心": {
+   "category": "A",
+   "zh": "耐心",
+   "en": "Patience",
+   "count": 2,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6kb6q",
+    "104_7ol0j"
+   ]
+  },
+  "S|業務銷售能力": {
+   "category": "S",
+   "zh": "業務銷售能力",
+   "en": "Sales and business development",
+   "count": 2,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6wdh4",
+    "104_8m8ro"
+   ]
+  },
   "S|工程能力": {
    "category": "S",
    "zh": "工程能力",
@@ -22,26 +44,6 @@
     "104_6fhpf"
    ]
   },
-  "A|耐心": {
-   "category": "A",
-   "zh": "耐心",
-   "en": "Patience",
-   "count": 1,
-   "first_seen": "2026-10-18",
-   "examples": [
-    "104_6kb6q"
-   ]
-  },
-  "S|業務銷售能力": {
-   "category": "S",
-   "zh": "業務銷售能力",
-   "en": "Sales and business development",
-   "count": 1,
-   "first_seen": "2026-10-18",
-   "examples": [
-    "104_6wdh4"
-   ]
-  },
   "A|獨立駕駛能力": {
    "category": "A",
    "zh": "獨立駕駛能力",
@@ -50,6 +52,166 @@
    "first_seen": "2026-10-18",
    "examples": [
     "104_6wdh4"
+   ]
+  },
+  "A|開朗": {
+   "category": "A",
+   "zh": "開朗",
+   "en": "Cheerful",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_7ol0j"
+   ]
+  },
+  "S|勞安衛證照": {
+   "category": "S",
+   "zh": "勞安衛證照",
+   "en": "Safety and Health Certification",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_7p0mi"
+   ]
+  },
+  "S|保險業務相關證照": {
+   "category": "S",
+   "zh": "保險業務相關證照",
+   "en": "Insurance Professional Licenses",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_7pdia"
+   ]
+  },
+  "A|樂觀開朗": {
+   "category": "A",
+   "zh": "樂觀開朗",
+   "en": "Optimistic",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_7ptge"
+   ]
+  },
+  "S|Python程式語言": {
+   "category": "S",
+   "zh": "Python程式語言",
+   "en": "Python",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_7u6ny"
+   ]
+  },
+  "T|新業務開發": {
+   "category": "T",
+   "zh": "新業務開發",
+   "en": "New business development",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_84ly7"
+   ]
+  },
+  "S|程式語法能力": {
+   "category": "S",
+   "zh": "程式語法能力",
+   "en": "Programming Skills",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_86vw3"
+   ]
+  },
+  "S|金融專業證照": {
+   "category": "S",
+   "zh": "金融專業證照",
+   "en": "Financial Professional Licenses",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_87jmb"
+   ]
+  },
+  "S|流程改善": {
+   "category": "S",
+   "zh": "流程改善",
+   "en": "Process improvement",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8d87j"
+   ]
+  },
+  "A|創意": {
+   "category": "A",
+   "zh": "創意",
+   "en": "Creativity",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8eldj"
+   ]
+  },
+  "S|業務經驗": {
+   "category": "S",
+   "zh": "業務經驗",
+   "en": "Sales experience",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8h6ir"
+   ]
+  },
+  "S|業務或通路開發": {
+   "category": "S",
+   "zh": "業務或通路開發",
+   "en": "Business or channel development",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8hul3"
+   ]
+  },
+  "T|團隊管理": {
+   "category": "T",
+   "zh": "團隊管理",
+   "en": "Team Management",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8m8ro"
+   ]
+  },
+  "S|中文能力": {
+   "category": "S",
+   "zh": "中文能力",
+   "en": "Chinese Proficiency",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8o75e"
+   ]
+  },
+  "S|工業配線": {
+   "category": "S",
+   "zh": "工業配線",
+   "en": "Industrial Wiring",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8p0z3"
+   ]
+  },
+  "S|國外業務開發": {
+   "category": "S",
+   "zh": "國外業務開發",
+   "en": "International business development",
+   "count": 1,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8plex"
    ]
   }
  }

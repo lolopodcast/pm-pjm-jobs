@@ -497,7 +497,8 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 1. GitHub 與 Google 帳號都開啟兩步驟驗證。
 2. git commit 使用 GitHub 提供的 noreply Email，不公開個人信箱。
 3. repo 開啟 secret scanning 與 push protection（防止金鑰誤推上去），以及 Dependabot 安全性警示。
-4. `GEMINI_API_KEY` 的設定見 3.5；若懷疑外洩，立即在 Google AI Studio 撤銷並更換，再更新 GitHub Secrets。
+4. repo 設定分支規則 `protect-main-and-data`（2026-10-18）：`main` 與 `data` 禁止強制推送與刪除，避免誤操作清掉程式或資料歷史；一般推送（含每日排程寫入 `data`）不受影響。
+5. `GEMINI_API_KEY` 的設定見 3.5；若懷疑外洩，立即在 Google AI Studio 撤銷並更換，再更新 GitHub Secrets。
 
 ### 11.3 分支與部署流程
 1. **分支分工：**

@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { checkCode } from "./Gate.jsx";
+import { checkCode, hashCode } from "./Gate.jsx";
 
-describe("access gate", () => {
+// The real code is not written here: this repo is public. A sample code checks the same logic.
+describe("access gate", async () => {
+  const hash = await hashCode("sample-2026");
   it("accepts the code regardless of case and surrounding spaces", async () => {
-    expect(await checkCode("pmj2026")).toBe(true);
-    expect(await checkCode("  PMJ2026 ")).toBe(true);
+    expect(await checkCode("sample-2026", hash)).toBe(true);
+    expect(await checkCode("  SAMPLE-2026 ", hash)).toBe(true);
   });
   it("rejects anything else", async () => {
-    expect(await checkCode("pmj2025")).toBe(false);
-    expect(await checkCode("")).toBe(false);
+    expect(await checkCode("sample-2025", hash)).toBe(false);
+    expect(await checkCode("", hash)).toBe(false);
+    expect(await checkCode("sample-2026")).toBe(false);   // not the site's real code
   });
 });

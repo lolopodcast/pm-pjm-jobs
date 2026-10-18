@@ -11,8 +11,10 @@ async function sha256(text) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-export async function checkCode(input) {
-  return (await sha256("pmj-gate:" + input.trim().toLowerCase())) === CODE_HASH;
+export const hashCode = (code) => sha256("pmj-gate:" + code.trim().toLowerCase());
+
+export async function checkCode(input, hash = CODE_HASH) {
+  return (await hashCode(input)) === hash;
 }
 
 export default function Gate({ t, onUnlock, toggleLang, toggleTheme, isDark }) {

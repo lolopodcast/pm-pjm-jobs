@@ -53,6 +53,9 @@ export function filterJobs(jobs, f, ctx) {
   return list;
 }
 
+// "OTHER" is too vague to show against a named company; it only counts in the Insights statistics (PRD 8.4).
+const cardFlags = (job) => (job.compliance_flags || []).filter((f) => f !== "OTHER");
+
 function jobsCSV(list, ctx, t, today) {
   const names = (ids) => (ids || []).map((id) => vname(ctx.vocab, id, t)).join("; ");
   const zh = t.lang === "zh";
@@ -112,9 +115,9 @@ function JobDetail({ job, t, ctx }) {
             <div className="mini">{t("lack")}{t.colon}{[...eduLack, ...reqIds.filter((id) => !ctx.fit[id]).map((id) => vname(ctx.vocab, id, t))].join(t.sep) || "—"}</div>
           </div>
         )}
-        {job.compliance_flags?.length > 0 && (
+        {cardFlags(job).length > 0 && (
           <div className="flagnote">
-            {t("flag_note", { f: job.compliance_flags.map((f) => t.pick(OPT.flag[f])).join(t.sep) })}{" "}
+            {t("flag_note", { f: cardFlags(job).map((f) => t.pick(OPT.flag[f])).join(t.sep) })}{" "}
             <a href="https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=N0090001&flno=5" target="_blank" rel="noopener noreferrer">{t("law")}</a>
           </div>
         )}

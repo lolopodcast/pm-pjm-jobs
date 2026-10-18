@@ -52,7 +52,8 @@ export function Bars({ rows, color, onPick, valueChars = 4 }) {
   const W = 400, rowH = 24, labelW = 140, valW = Math.max(34, valueChars * 8), barW = W - labelW - valW - 10;
   const max = Math.max(1, ...rows.map((r) => r.n));
   return (
-    <svg className="svgchart" viewBox={`0 0 ${W} ${rows.length * rowH + 4}`} role="img">
+    // maxWidth: never stretch past ~1.4x the design width, or the text grows far beyond the page's text size.
+    <svg className="svgchart" viewBox={`0 0 ${W} ${rows.length * rowH + 4}`} role="img" style={{ maxWidth: 560 }}>
       <rect width={W} height={rows.length * rowH + 4} fill="var(--card)" />
       {rows.map((r, i) => {
         const y = i * rowH + 4;

@@ -92,11 +92,14 @@ export default function Insights({ t, data, go, setFilters }) {
                 <div><h5 className="text-[13px] font-semibold mb-1">{t("maj_top")}</h5><Bars rows={majRows} color="var(--c1)" valueChars={9} /></div>
               </div>
             </ChartCard>
+            {/* Same wide two-column layout as the degree card, so the bar text keeps the size used everywhere else. */}
+            <ChartCard {...card} wide title={t("ch_comp")} name="Compliance" csv={() => [["Condition", "n", "%"], ...compRows.map((r) => [r.label, r.n, r.suffix])]}>
+              <div className="grid2">
+                <div><Bars rows={compRows} color="var(--bad)" /></div>
+                <div><p className="chart-note mt-0">{t("comp_lede")}</p></div>
+              </div>
+            </ChartCard>
           </div>
-          <ChartCard {...card} title={t("ch_comp")} name="Compliance" csv={() => [["Condition", "n", "%"], ...compRows.map((r) => [r.label, r.n, r.suffix])]}>
-            <p className="lede mb-3 text-[13.5px]">{t("comp_lede")}</p>
-            <Bars rows={compRows} color="var(--bad)" />
-          </ChartCard>
         </>
       )}
     </section>

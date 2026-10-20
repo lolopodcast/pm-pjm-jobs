@@ -1,27 +1,52 @@
 {
  "version": "1.0",
- "updated": "2026-10-19",
+ "updated": "2026-10-20",
  "items": {
   "A|耐心": {
    "category": "A",
    "zh": "耐心",
    "en": "Patience",
-   "count": 2,
+   "count": 3,
    "first_seen": "2026-10-18",
    "examples": [
     "104_6kb6q",
-    "104_7ol0j"
+    "104_7ol0j",
+    "104_8vj06"
    ]
   },
   "S|業務銷售能力": {
    "category": "S",
    "zh": "業務銷售能力",
    "en": "Sales and business development",
-   "count": 2,
+   "count": 3,
    "first_seen": "2026-10-18",
    "examples": [
     "104_6wdh4",
-    "104_8m8ro"
+    "104_8m8ro",
+    "104_92njn"
+   ]
+  },
+  "A|獨立駕駛能力": {
+   "category": "A",
+   "zh": "獨立駕駛能力",
+   "en": "Independent driving ability",
+   "count": 3,
+   "first_seen": "2026-10-18",
+   "examples": [
+    "104_6wdh4",
+    "104_8w4iw",
+    "104_92njn"
+   ]
+  },
+  "S|業務經驗": {
+   "category": "S",
+   "zh": "業務經驗",
+   "en": "Sales experience",
+   "count": 2,
+   "first_seen": "2026-10-19",
+   "examples": [
+    "104_8h6ir",
+    "104_8y0bg"
    ]
   },
   "S|工程能力": {
@@ -42,16 +67,6 @@
    "first_seen": "2026-10-18",
    "examples": [
     "104_6fhpf"
-   ]
-  },
-  "A|獨立駕駛能力": {
-   "category": "A",
-   "zh": "獨立駕駛能力",
-   "en": "Independent driving ability",
-   "count": 1,
-   "first_seen": "2026-10-18",
-   "examples": [
-    "104_6wdh4"
    ]
   },
   "A|開朗": {
@@ -154,16 +169,6 @@
     "104_8eldj"
    ]
   },
-  "S|業務經驗": {
-   "category": "S",
-   "zh": "業務經驗",
-   "en": "Sales experience",
-   "count": 1,
-   "first_seen": "2026-10-19",
-   "examples": [
-    "104_8h6ir"
-   ]
-  },
   "S|業務或通路開發": {
    "category": "S",
    "zh": "業務或通路開發",
@@ -212,6 +217,156 @@
    "first_seen": "2026-10-19",
    "examples": [
     "104_8plex"
+   ]
+  },
+  "S|雲端平台技術": {
+   "category": "S",
+   "zh": "雲端平台技術",
+   "en": "Cloud Platforms",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8t25x"
+   ]
+  },
+  "S|代理商經驗": {
+   "category": "S",
+   "zh": "代理商經驗",
+   "en": "Distributor experience",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8t5zu"
+   ]
+  },
+  "S|展會經驗": {
+   "category": "S",
+   "zh": "展會經驗",
+   "en": "Exhibition experience",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8t5zu"
+   ]
+  },
+  "S|電力工程裝修與控制": {
+   "category": "S",
+   "zh": "電力工程裝修與控制",
+   "en": "Power Engineering and Control",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8tpiy"
+   ]
+  },
+  "S|韌體程式設計": {
+   "category": "S",
+   "zh": "韌體程式設計",
+   "en": "Firmware Programming",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8u0hw"
+   ]
+  },
+  "K|供應商管理知識": {
+   "category": "K",
+   "zh": "供應商管理知識",
+   "en": "Supplier management knowledge",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8w6f1"
+   ]
+  },
+  "S|銷售技巧": {
+   "category": "S",
+   "zh": "銷售技巧",
+   "en": "Sales skills",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8ylhh"
+   ]
+  },
+  "S|Linux": {
+   "category": "S",
+   "zh": "Linux",
+   "en": "Linux",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8ynzf"
+   ]
+  },
+  "S|MS SQL": {
+   "category": "S",
+   "zh": "MS SQL",
+   "en": "MS SQL",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8ynzf"
+   ]
+  },
+  "S|Vmware": {
+   "category": "S",
+   "zh": "Vmware",
+   "en": "Vmware",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8ynzf"
+   ]
+  },
+  "A|需自備汽車": {
+   "category": "A",
+   "zh": "需自備汽車",
+   "en": "Own a car",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_915zg"
+   ]
+  },
+  "A|誠信正直": {
+   "category": "A",
+   "zh": "誠信正直",
+   "en": "Integrity",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_91k4l"
+   ]
+  },
+  "S|政府專案執行": {
+   "category": "S",
+   "zh": "政府專案執行",
+   "en": "Government Project Execution",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_92wqb"
+   ]
+  },
+  "A|活潑外向": {
+   "category": "A",
+   "zh": "活潑外向",
+   "en": "Outgoing",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_93c2i"
+   ]
+  },
+  "A|誠實正直": {
+   "category": "A",
+   "zh": "誠實正直",
+   "en": "Integrity",
+   "count": 1,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_93d0j"
    ]
   }
  }

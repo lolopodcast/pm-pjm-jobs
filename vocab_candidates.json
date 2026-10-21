@@ -1,6 +1,6 @@
 {
  "version": "1.0",
- "updated": "2026-10-20",
+ "updated": "2026-10-21",
  "items": {
   "A|耐心": {
    "category": "A",
@@ -367,6 +367,56 @@
    "first_seen": "2026-10-20",
    "examples": [
     "104_93d0j"
+   ]
+  },
+  "S|製程相關技術開發": {
+   "category": "S",
+   "zh": "製程相關技術開發",
+   "en": "Process technology development",
+   "count": 1,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_9503f"
+   ]
+  },
+  "S|工程施工監督管理": {
+   "category": "S",
+   "zh": "工程施工監督管理",
+   "en": "Construction Supervision",
+   "count": 1,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_96n2r"
+   ]
+  },
+  "S|工程協調與問題處理": {
+   "category": "S",
+   "zh": "工程協調與問題處理",
+   "en": "Engineering Coordination and Problem Solving",
+   "count": 1,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_96n2r"
+   ]
+  },
+  "S|信託業務人員資格": {
+   "category": "S",
+   "zh": "信託業務人員資格",
+   "en": "Trust Business Personnel License",
+   "count": 1,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_7smrw"
+   ]
+  },
+  "S|業務開發": {
+   "category": "S",
+   "zh": "業務開發",
+   "en": "Business Development",
+   "count": 1,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_92h1j"
    ]
   }
  }

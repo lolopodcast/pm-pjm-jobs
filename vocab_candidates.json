@@ -1,6 +1,6 @@
 {
  "version": "1.0",
- "updated": "2026-10-22",
+ "updated": "2026-10-23",
  "items": {
   "A|耐心": {
    "category": "A",
@@ -47,6 +47,17 @@
    "examples": [
     "104_8h6ir",
     "104_8y0bg"
+   ]
+  },
+  "S|業務開發": {
+   "category": "S",
+   "zh": "業務開發",
+   "en": "Business Development",
+   "count": 2,
+   "first_seen": "2026-10-21",
+   "examples": [
+    "104_92h1j",
+    "104_8u0m8"
    ]
   },
   "S|工程能力": {
@@ -407,16 +418,6 @@
    "first_seen": "2026-10-21",
    "examples": [
     "104_7smrw"
-   ]
-  },
-  "S|業務開發": {
-   "category": "S",
-   "zh": "業務開發",
-   "en": "Business Development",
-   "count": 1,
-   "first_seen": "2026-10-21",
-   "examples": [
-    "104_92h1j"
    ]
   }
  }

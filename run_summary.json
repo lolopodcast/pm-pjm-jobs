@@ -1,120 +1,120 @@
 {
- "date": "2026-10-23",
- "finished_at": "2026-10-23T07:00:19+08:00",
+ "date": "2026-10-24",
+ "finished_at": "2026-10-24T06:41:59+08:00",
  "crawl_complete": true,
  "whitelist": {
   "L": 1097,
   "O": 894,
-  "E": 365
+  "E": 366
  },
- "jobs_seen": 6608,
- "targets": 962,
- "unmatched_companies": 1285,
+ "jobs_seen": 6644,
+ "targets": 973,
+ "unmatched_companies": 1282,
  "slices": {
   "2004003009": {
    "name": "產品經理",
-   "pages": 17,
-   "rows": 278,
-   "new_unique": 278,
+   "pages": 18,
+   "rows": 273,
+   "new_unique": 273,
    "complete": true
   },
   "2004003005": {
    "name": "產品管理師",
-   "pages": 69,
-   "rows": 1221,
-   "new_unique": 1091,
+   "pages": 75,
+   "rows": 1227,
+   "new_unique": 1097,
    "complete": true
   },
   "2004002002": {
    "name": "產品企劃",
    "pages": 105,
-   "rows": 1939,
-   "new_unique": 1415,
+   "rows": 1921,
+   "new_unique": 1401,
    "complete": true
   },
   "2004003006": {
    "name": "專案經理",
-   "pages": 70,
-   "rows": 1057,
-   "new_unique": 812,
+   "pages": 59,
+   "rows": 1045,
+   "new_unique": 816,
    "complete": true
   },
   "2004003003": {
    "name": "軟體專案管理師",
-   "pages": 51,
-   "rows": 889,
-   "new_unique": 568,
+   "pages": 52,
+   "rows": 887,
+   "new_unique": 553,
    "complete": true
   },
   "2004003004/台北": {
    "name": "其他專案管理師／台北",
    "pages": 77,
-   "rows": 1536,
-   "new_unique": 991,
+   "rows": 1532,
+   "new_unique": 1013,
    "complete": true
   },
   "2004003004/新北基宜": {
    "name": "其他專案管理師／新北基宜",
    "pages": 31,
-   "rows": 610,
-   "new_unique": 361,
+   "rows": 609,
+   "new_unique": 386,
    "complete": true
   },
   "2004003004/桃竹苗": {
    "name": "其他專案管理師／桃竹苗",
    "pages": 39,
-   "rows": 777,
-   "new_unique": 492,
+   "rows": 775,
+   "new_unique": 515,
    "complete": true
   },
   "2004003004/中彰投": {
    "name": "其他專案管理師／中彰投",
    "pages": 18,
-   "rows": 343,
-   "new_unique": 246,
+   "rows": 342,
+   "new_unique": 234,
    "complete": true
   },
   "2004003004/雲嘉南": {
    "name": "其他專案管理師／雲嘉南",
    "pages": 10,
-   "rows": 181,
-   "new_unique": 131,
+   "rows": 182,
+   "new_unique": 142,
    "complete": true
   },
   "2004003004/高屏東花離島": {
    "name": "其他專案管理師／高屏東花離島",
    "pages": 12,
    "rows": 221,
-   "new_unique": 169,
+   "new_unique": 163,
    "complete": true
   },
   "2004003004/海外": {
    "name": "其他專案管理師／海外",
    "pages": 4,
    "rows": 75,
-   "new_unique": 54,
+   "new_unique": 51,
    "complete": true
   }
  },
- "new": 7,
- "seen_existing": 955,
- "reopened": 10,
- "missed": 90,
- "newly_closed": 18,
+ "new": 2,
+ "seen_existing": 971,
+ "reopened": 8,
+ "missed": 71,
+ "newly_closed": 11,
  "closures_applied": true,
  "archived": 0,
- "open": 1034,
- "closed": 31,
- "pending_ai": 15,
- "ai_attempted": 9,
- "ai_done": 6,
- "ai_failed": 1,
- "ai_busy": 2,
+ "open": 1033,
+ "closed": 34,
+ "pending_ai": 13,
+ "ai_attempted": 4,
+ "ai_done": 4,
+ "ai_failed": 0,
+ "ai_busy": 0,
  "ai_quota_stop": false,
  "ai_time_stop": false,
  "ai_busy_stop": false,
  "ai_config_stop": false,
- "ai_queue": 9,
- "ai_queue_left": 2,
- "vocab_new_terms": 1
+ "ai_queue": 4,
+ "ai_queue_left": 0,
+ "vocab_new_terms": 0
 }

@@ -1,6 +1,6 @@
 {
  "version": "1.0",
- "updated": "2026-11-17",
+ "updated": "2026-11-18",
  "items": {
   "A|耐心": {
    "category": "A",
@@ -419,6 +419,16 @@
    "first_seen": "2026-10-21",
    "examples": [
     "104_7smrw"
+   ]
+  },
+  "S|業務銷售": {
+   "category": "S",
+   "zh": "業務銷售",
+   "en": "Sales Experience",
+   "count": 1,
+   "first_seen": "2026-11-18",
+   "examples": [
+    "104_6pjvb"
    ]
   }
  }

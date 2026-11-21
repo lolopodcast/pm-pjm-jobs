@@ -1,6 +1,6 @@
 {
  "version": "1.0",
- "updated": "2026-11-20",
+ "updated": "2026-11-21",
  "items": {
   "A|耐心": {
    "category": "A",
@@ -59,6 +59,17 @@
    "examples": [
     "104_8h6ir",
     "104_8y0bg"
+   ]
+  },
+  "K|供應商管理知識": {
+   "category": "K",
+   "zh": "供應商管理知識",
+   "en": "Supplier management knowledge",
+   "count": 2,
+   "first_seen": "2026-10-20",
+   "examples": [
+    "104_8w6f1",
+    "104_8722m"
    ]
   },
   "S|工程能力": {
@@ -279,16 +290,6 @@
    "first_seen": "2026-10-20",
    "examples": [
     "104_8u0hw"
-   ]
-  },
-  "K|供應商管理知識": {
-   "category": "K",
-   "zh": "供應商管理知識",
-   "en": "Supplier management knowledge",
-   "count": 1,
-   "first_seen": "2026-10-20",
-   "examples": [
-    "104_8w6f1"
    ]
   },
   "S|銷售技巧": {

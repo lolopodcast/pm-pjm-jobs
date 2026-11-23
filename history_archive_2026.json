@@ -1136,5 +1136,956 @@
    }
   ],
   "ai_analyzed_at": "2026-10-19"
+ },
+ {
+  "job_id": "104_93z28",
+  "url": "https://www.104.com.tw/job/93z28",
+  "title": "【PM】美國子公司 — 專案經理 Project Manager",
+  "company": "仁大資訊股份有限公司",
+  "company_en": "HPI",
+  "stock_code": "7767",
+  "listing_type": "上櫃",
+  "parent_company": null,
+  "industry": "電腦系統整合服務業",
+  "location": "美國亞利桑那州",
+  "salary_desc": "待遇面議",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "as",
+   "majors": [],
+   "majors_104": [],
+   "major_required": false,
+   "source": "104"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "【PM】美國子公司 — 專案經理 Project Manager",
+  "title_en": "Project Manager",
+  "jd_lang": "mixed",
+  "role_type": "PjM",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "電腦硬體、伺服器或資安產品系統整合",
+     "en": "System integration of hardware, servers, or security products",
+     "id": "K_IT_SYSTEMS"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "專案溝通與整合管理",
+     "en": "Project communication and integration management",
+     "id": "S_PROJECT_MGMT"
+    },
+    {
+     "zh": "專案時間與進度控管",
+     "en": "Project schedule and progress control",
+     "id": "S_SCHEDULE"
+    },
+    {
+     "zh": "專案成本、品質與風險管理",
+     "en": "Project cost, quality, and risk management",
+     "id": "S_COST"
+    },
+    {
+     "zh": "提案與簡報技巧",
+     "en": "Proposal and presentation skills",
+     "id": "S_PRESENTATION"
+    },
+    {
+     "zh": "英文溝通能力",
+     "en": "English proficiency",
+     "id": "S_ENGLISH"
+    }
+   ],
+   "attributes": [
+    {
+     "zh": "抗壓性",
+     "en": "Stress tolerance",
+     "id": "A_STRESS_TOLERANCE"
+    },
+    {
+     "zh": "分析能力",
+     "en": "Analytical ability",
+     "id": "A_PROBLEM_SOLVING"
+    },
+    {
+     "zh": "邏輯清晰",
+     "en": "Logical thinking",
+     "id": "A_LOGICAL"
+    },
+    {
+     "zh": "反應迅速",
+     "en": "Quick response",
+     "id": "A_ADAPTABILITY"
+    }
+   ]
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_IT_SYSTEMS"
+   ],
+   "skills": [
+    "S_PROJECT_MGMT",
+    "S_SCHEDULE",
+    "S_COST",
+    "S_PRESENTATION",
+    "S_ENGLISH"
+   ],
+   "attributes": [
+    "A_STRESS_TOLERANCE",
+    "A_PROBLEM_SOLVING",
+    "A_LOGICAL",
+    "A_ADAPTABILITY"
+   ]
+  },
+  "jd_summary": {
+   "zh": "此職位負責派駐美國主導新建廠區專案，負責跨國團隊協調、時程與品質管控。需具備系統整合知識，並能有效處理跨部門溝通與客戶問題，確保專案如期交付。",
+   "en": "This role involves managing US-based construction projects, overseeing cross-border team coordination, and ensuring project delivery. Candidates must possess system integration knowledge and strong communication skills to handle client and vendor relations."
+  },
+  "tasks_normalized": [
+   "T_SCHEDULE",
+   "T_CROSS_FUNC",
+   "T_CUSTOMER"
+  ],
+  "pm_domains": {
+   "D1": 10,
+   "D2": 0,
+   "D3": 10,
+   "D4": 20,
+   "D5": 0,
+   "D6": 30,
+   "D7": 30
+  },
+  "stage_gate": [
+   "S5",
+   "S6"
+  ],
+  "context": {
+   "collaborators": [
+    "RD",
+    "CS"
+   ],
+   "product_type": "hardware",
+   "market": "B2B",
+   "travel": "none",
+   "english_level": "daily"
+  },
+  "compliance_flags": [
+   "OTHER"
+  ],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "管控專案進度、品質",
+    "en": "Managing project timelines and quality",
+    "id": "T_SCHEDULE"
+   },
+   {
+    "zh": "進行跨部門與下包商的溝通協調",
+    "en": "Coordinating between cross-functional teams and subcontractors",
+    "id": "T_CROSS_FUNC"
+   },
+   {
+    "zh": "負責產品PO、驗收，與客戶、原廠溝通協調解決問題",
+    "en": "Handling POs and acceptance, while liaising with clients and vendors",
+    "id": "T_CUSTOMER"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-20"
+ },
+ {
+  "job_id": "104_93xvc",
+  "url": "https://www.104.com.tw/job/93xvc",
+  "title": "【核心戰略幕僚】品牌營運－資深經營企劃專員/專案PM",
+  "company": "裕隆集團移動服務事業_慶通汽車股份有限公司",
+  "company_en": null,
+  "stock_code": "2201",
+  "listing_type": "上市",
+  "parent_company": "裕隆汽車製造股份有限公司",
+  "industry": "汽機車及其零配件／用品零售業",
+  "location": "新北市新店區",
+  "salary_desc": "月薪 35,000～60,000 元",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "as",
+   "majors": [],
+   "majors_104": [],
+   "major_required": false,
+   "source": "104"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "【核心戰略幕僚】品牌營運－資深經營企劃專員/專案PM",
+  "title_en": "Senior Business Planning Specialist / Project PM",
+  "jd_lang": "zh",
+  "role_type": "PjM",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "經營分析與績效追蹤",
+     "en": "Business Analysis and Performance Tracking",
+     "id": "K_BUSINESS_FINANCE"
+    },
+    {
+     "zh": "市場與競品分析",
+     "en": "Market and Competitor Analysis",
+     "id": "K_MARKET_ANALYSIS"
+    },
+    {
+     "zh": "行銷管理",
+     "en": "Marketing Management",
+     "id": "K_MARKETING"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "辦公室軟體",
+     "en": "Office Software",
+     "id": "S_OFFICE"
+    },
+    {
+     "zh": "專案管理",
+     "en": "Project Management",
+     "id": "S_PROJECT_MGMT"
+    },
+    {
+     "zh": "溝通協調",
+     "en": "Communication and Coordination",
+     "id": "S_COMMUNICATION"
+    },
+    {
+     "zh": "行銷企劃與推廣",
+     "en": "Marketing Planning and Execution",
+     "id": "S_MARKETING"
+    }
+   ],
+   "attributes": [
+    {
+     "zh": "商業與產業敏銳度",
+     "en": "Business Sense",
+     "id": "A_BUSINESS_SENSE"
+    },
+    {
+     "zh": "抗壓性",
+     "en": "Stress Tolerance",
+     "id": "A_STRESS_TOLERANCE"
+    },
+    {
+     "zh": "邏輯思考",
+     "en": "Logical Thinking",
+     "id": "A_LOGICAL"
+    }
+   ]
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_BUSINESS_FINANCE",
+    "K_MARKET_ANALYSIS",
+    "K_MARKETING"
+   ],
+   "skills": [
+    "S_OFFICE",
+    "S_PROJECT_MGMT",
+    "S_COMMUNICATION",
+    "S_MARKETING"
+   ],
+   "attributes": [
+    "A_BUSINESS_SENSE",
+    "A_STRESS_TOLERANCE",
+    "A_LOGICAL"
+   ]
+  },
+  "jd_summary": {
+   "zh": "本職位為品牌營運的核心幕僚，負責透過數據分析與市場洞察，協助高階管理層制定經營策略。工作內容涵蓋預算編列、通路績效監控、行銷創意執行及跨部門專案管理，是驅動品牌成長的關鍵角色。",
+   "en": "This role serves as a key strategic partner for brand operations, responsible for driving growth through data analysis and market insights. The position involves budget planning, channel performance monitoring, marketing execution, and cross-functional project management to support executive decision-making."
+  },
+  "tasks_normalized": [
+   "T_OPERATIONS",
+   "T_MARKET_RESEARCH",
+   "T_MARKETING",
+   "T_CROSS_FUNC",
+   "T_COST"
+  ],
+  "pm_domains": {
+   "D1": 20,
+   "D2": 10,
+   "D3": 10,
+   "D4": 0,
+   "D5": 20,
+   "D6": 20,
+   "D7": 20
+  },
+  "stage_gate": [
+   "S1",
+   "S6"
+  ],
+  "context": {
+   "collaborators": [
+    "SA",
+    "RD",
+    "PUR",
+    "MC"
+   ],
+   "product_type": "mixed",
+   "market": "both",
+   "travel": "none",
+   "english_level": null
+  },
+  "compliance_flags": [],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "經營分析與績效追蹤",
+    "en": "Business Analysis and Performance Tracking",
+    "id": "T_OPERATIONS"
+   },
+   {
+    "zh": "市場與競品分析",
+    "en": "Market and Competitor Analysis",
+    "id": "T_MARKET_RESEARCH"
+   },
+   {
+    "zh": "行銷推廣",
+    "en": "Marketing and Promotion",
+    "id": "T_MARKETING"
+   },
+   {
+    "zh": "跨部門溝通協調",
+    "en": "Cross-functional Coordination",
+    "id": "T_CROSS_FUNC"
+   },
+   {
+    "zh": "成本與預算控管",
+    "en": "Cost and Budget Management",
+    "id": "T_COST"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-20"
+ },
+ {
+  "job_id": "104_92rgr",
+  "url": "https://www.104.com.tw/job/92rgr",
+  "title": "專案管理專員【營運管理部】",
+  "company": "雲豹能源科技股份有限公司",
+  "company_en": "J&V Energy",
+  "stock_code": "6869",
+  "listing_type": "上市",
+  "parent_company": null,
+  "industry": "熱能供應業",
+  "location": "台北市內湖區",
+  "salary_desc": "月薪 35,000～45,000 元",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "ba",
+   "majors": [
+    "MAJ_BUS"
+   ],
+   "majors_104": [],
+   "major_required": false,
+   "source": "jd"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "專案管理專員【營運管理部】",
+  "title_en": "Project Management Specialist",
+  "jd_lang": "zh",
+  "role_type": "PjM",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "再生能源產業知識",
+     "en": "Renewable Energy Knowledge",
+     "id": "K_DOMAIN_OTHER"
+    },
+    {
+     "zh": "財務與會計知識",
+     "en": "Finance and Accounting",
+     "id": "K_BUSINESS_FINANCE"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "專案進度追蹤",
+     "en": "Project Progress Tracking",
+     "id": "S_SCHEDULE"
+    },
+    {
+     "zh": "預算管理",
+     "en": "Budget Management",
+     "id": "S_COST"
+    },
+    {
+     "zh": "文件撰寫與申辦",
+     "en": "Documentation and Application",
+     "id": "S_DOCUMENTATION"
+    },
+    {
+     "zh": "跨部門溝通協調",
+     "en": "Communication and Coordination",
+     "id": "S_COMMUNICATION"
+    }
+   ],
+   "attributes": []
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_DOMAIN_OTHER",
+    "K_BUSINESS_FINANCE"
+   ],
+   "skills": [
+    "S_SCHEDULE",
+    "S_COST",
+    "S_DOCUMENTATION",
+    "S_COMMUNICATION"
+   ],
+   "attributes": []
+  },
+  "jd_summary": {
+   "zh": "本職位負責再生能源案場的專案執行、進度追蹤與預算管理，並需處理太陽光電相關申設文件及公部門溝通。同時負責營運期案場績效分析與流程優化，具備財務會計背景者優先。",
+   "en": "This role manages renewable energy projects, including progress tracking, budget control, and permit applications. It also involves site performance analysis and process optimization, with a preference for candidates with a finance or accounting background."
+  },
+  "tasks_normalized": [
+   "T_SCHEDULE",
+   "T_COST",
+   "T_GOVERNANCE",
+   "T_OPERATIONS"
+  ],
+  "pm_domains": {
+   "D1": 10,
+   "D2": 0,
+   "D3": 0,
+   "D4": 0,
+   "D5": 20,
+   "D6": 30,
+   "D7": 40
+  },
+  "stage_gate": [
+   "S6"
+  ],
+  "context": {
+   "collaborators": [],
+   "product_type": "hardware",
+   "market": "B2B",
+   "travel": "none",
+   "english_level": null
+  },
+  "compliance_flags": [],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "專案執行與進度追蹤",
+    "en": "Project Execution and Tracking",
+    "id": "T_SCHEDULE"
+   },
+   {
+    "zh": "專案預算管理",
+    "en": "Budget Management",
+    "id": "T_COST"
+   },
+   {
+    "zh": "申設文件辦理與溝通",
+    "en": "Permit Application and Coordination",
+    "id": "T_GOVERNANCE"
+   },
+   {
+    "zh": "案場營運績效分析",
+    "en": "Site Performance Analysis",
+    "id": "T_OPERATIONS"
+   },
+   {
+    "zh": "流程優化",
+    "en": "Process Optimization",
+    "id": "T_OPERATIONS"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-20"
+ },
+ {
+  "job_id": "104_8yl7m",
+  "url": "https://www.104.com.tw/job/8yl7m",
+  "title": "(英/韓文)專案管理專員PM(高雄)_汽車電子事業處",
+  "company": "光寶科技股份有限公司",
+  "company_en": "LTC",
+  "stock_code": "2301",
+  "listing_type": "上市",
+  "parent_company": null,
+  "industry": "消費性電子產品製造業",
+  "location": "高雄市楠梓區",
+  "salary_desc": "待遇面議",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "ba",
+   "majors": [],
+   "majors_104": [],
+   "major_required": false,
+   "source": "104"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "(英/韓文)專案管理專員PM(高雄)_汽車電子事業處",
+  "title_en": "Project Management Specialist (English/Korean Speaking)",
+  "jd_lang": "zh",
+  "role_type": "PjM",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "電子產業知識",
+     "en": "Electronics Industry Knowledge",
+     "id": "K_ELECTRONICS"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "英文能力",
+     "en": "English Proficiency",
+     "id": "S_ENGLISH"
+    },
+    {
+     "zh": "韓文能力",
+     "en": "Korean Proficiency",
+     "id": "S_OTHER_LANGUAGE"
+    },
+    {
+     "zh": "專案管理工具",
+     "en": "Project Management Tools",
+     "id": "S_PM_TOOLS"
+    },
+    {
+     "zh": "專案管理",
+     "en": "Project Management",
+     "id": "S_PROJECT_MGMT"
+    }
+   ],
+   "attributes": []
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_ELECTRONICS"
+   ],
+   "skills": [
+    "S_ENGLISH",
+    "S_OTHER_LANGUAGE",
+    "S_PM_TOOLS",
+    "S_PROJECT_MGMT"
+   ],
+   "attributes": []
+  },
+  "jd_summary": {
+   "zh": "此職位負責北美與韓國市場車用電子產品的新產品導入專案，需具備流暢的英韓語能力以進行跨國溝通。工作內容涵蓋專案時程控管、跨部門資源協調及風險管理，確保產品順利量產。",
+   "en": "This role manages NPI projects for automotive electronics in North American and Korean markets. It requires fluent English and Korean for cross-border communication, project scheduling, cross-functional coordination, and risk management to ensure successful mass production."
+  },
+  "tasks_normalized": [
+   "T_PROJECT_PLAN",
+   "T_CROSS_FUNC",
+   "T_RISK",
+   "T_NPI",
+   "T_REPORTING"
+  ],
+  "pm_domains": {
+   "D1": 10,
+   "D2": 0,
+   "D3": 10,
+   "D4": 10,
+   "D5": 0,
+   "D6": 30,
+   "D7": 40
+  },
+  "stage_gate": [
+   "S2",
+   "S3",
+   "S4",
+   "S5",
+   "S6"
+  ],
+  "context": {
+   "collaborators": [
+    "RD",
+    "QA",
+    "PUR",
+    "MFG"
+   ],
+   "product_type": "hardware",
+   "market": "B2B",
+   "travel": "occasional",
+   "english_level": "primary"
+  },
+  "compliance_flags": [],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "專案規劃與執行",
+    "en": "Project Planning and Execution",
+    "id": "T_PROJECT_PLAN"
+   },
+   {
+    "zh": "跨部門協調",
+    "en": "Cross-functional Coordination",
+    "id": "T_CROSS_FUNC"
+   },
+   {
+    "zh": "專案風險與預算管理",
+    "en": "Risk and Budget Management",
+    "id": "T_RISK"
+   },
+   {
+    "zh": "新產品導入與試產",
+    "en": "NPI and Mass Production",
+    "id": "T_NPI"
+   },
+   {
+    "zh": "進度報告與簡報",
+    "en": "Reporting and Presentation",
+    "id": "T_REPORTING"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-20"
+ },
+ {
+  "job_id": "104_8whmi",
+  "url": "https://www.104.com.tw/job/8whmi",
+  "title": "風機專案管理員 (PM)",
+  "company": "君帆工業股份有限公司",
+  "company_en": "JUFAN",
+  "stock_code": "4584",
+  "listing_type": "上櫃",
+  "parent_company": null,
+  "industry": "自動控制相關業",
+  "location": "台南市永康區",
+  "salary_desc": "月薪 40,000 元以上",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "ba",
+   "majors": [
+    "MAJ_EE",
+    "MAJ_ME"
+   ],
+   "majors_104": [
+    "電機電子維護相關",
+    "金屬加工相關",
+    "機械維護相關"
+   ],
+   "major_required": true,
+   "source": "104"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "風機專案管理員 (PM)",
+  "title_en": "Wind Turbine Project Manager",
+  "jd_lang": "zh",
+  "role_type": "PjM",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "專案管理架構",
+     "en": "Project Management Framework",
+     "id": "K_PM_METHOD"
+    },
+    {
+     "zh": "品質管理",
+     "en": "Quality Management",
+     "id": "K_QUALITY"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "專案溝通整合",
+     "en": "Project Communication and Integration",
+     "id": "S_COMMUNICATION"
+    },
+    {
+     "zh": "專案成本品質風險管理",
+     "en": "Project Cost, Quality, and Risk Management",
+     "id": "S_PROJECT_MGMT"
+    },
+    {
+     "zh": "協商談判能力",
+     "en": "Negotiation Skills",
+     "id": "S_NEGOTIATION"
+    },
+    {
+     "zh": "英文能力",
+     "en": "English Proficiency",
+     "id": "S_ENGLISH"
+    }
+   ],
+   "attributes": [
+    {
+     "zh": "溝通協調能力",
+     "en": "Communication Skills",
+     "id": "A_COMMUNICATION"
+    }
+   ]
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_PM_METHOD",
+    "K_QUALITY"
+   ],
+   "skills": [
+    "S_COMMUNICATION",
+    "S_PROJECT_MGMT",
+    "S_NEGOTIATION",
+    "S_ENGLISH"
+   ],
+   "attributes": [
+    "A_COMMUNICATION"
+   ]
+  },
+  "jd_summary": {
+   "zh": "本職位負責風電專案的樣品驗證、量產認證及相關品質流程管理。需具備專案管理與跨部門溝通能力，並處理專案文件與時程追蹤。",
+   "en": "This role manages wind power projects, including sample verification, mass production certification, and quality process management. It requires project management, cross-functional coordination, and documentation skills."
+  },
+  "tasks_normalized": [
+   "T_SCHEDULE",
+   "T_CROSS_FUNC",
+   "T_DOCUMENTATION",
+   "T_NPI",
+   "T_OPERATIONS"
+  ],
+  "pm_domains": {
+   "D1": 10,
+   "D2": 0,
+   "D3": 10,
+   "D4": 10,
+   "D5": 0,
+   "D6": 30,
+   "D7": 40
+  },
+  "stage_gate": [
+   "S3",
+   "S4",
+   "S5",
+   "S6"
+  ],
+  "context": {
+   "collaborators": [
+    "RD",
+    "QA",
+    "MFG"
+   ],
+   "product_type": "hardware",
+   "market": "B2B",
+   "travel": "none",
+   "english_level": "reading"
+  },
+  "compliance_flags": [],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "專案進度追蹤與管理",
+    "en": "Project Progress Tracking and Management",
+    "id": "T_SCHEDULE"
+   },
+   {
+    "zh": "跨部門溝通整合",
+    "en": "Cross-functional Communication and Integration",
+    "id": "T_CROSS_FUNC"
+   },
+   {
+    "zh": "專案文件處理與歸檔",
+    "en": "Project Documentation and Archiving",
+    "id": "T_DOCUMENTATION"
+   },
+   {
+    "zh": "樣品驗證與量產認證",
+    "en": "Sample Verification and Mass Production Certification",
+    "id": "T_NPI"
+   },
+   {
+    "zh": "品質與製造流程管理",
+    "en": "Quality and Manufacturing Process Management",
+    "id": "T_OPERATIONS"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-20"
+ },
+ {
+  "job_id": "104_8m8ro",
+  "url": "https://www.104.com.tw/job/8m8ro",
+  "title": "Key Account Sales Manager (ATS PM)",
+  "company": "固緯電子實業股份有限公司",
+  "company_en": "GW",
+  "stock_code": "2423",
+  "listing_type": "上市",
+  "parent_company": null,
+  "industry": "其他電子零組件相關業",
+  "location": "新北市土城區",
+  "salary_desc": "待遇面議",
+  "experience_desc": "經驗不拘",
+  "education_req": {
+   "level": "ba",
+   "majors": [
+    "MAJ_EE"
+   ],
+   "majors_104": [
+    "電機電子工程相關"
+   ],
+   "major_required": true,
+   "source": "104"
+  },
+  "status": "closed",
+  "first_seen_date": "2026-10-17",
+  "last_seen_date": "2026-10-20",
+  "closed_date": "2026-10-23",
+  "miss_count": 3,
+  "ai_status": "done",
+  "ai_fail_count": 0,
+  "title_zh": "Key Account Sales Manager (ATS PM)",
+  "title_en": "Key Account Sales Manager (ATS PM)",
+  "jd_lang": "mixed",
+  "role_type": "Other",
+  "ksa": {
+   "knowledge": [
+    {
+     "zh": "電子電機相關知識",
+     "en": "Electronics and Electrical Engineering",
+     "id": "K_ELECTRONICS"
+    },
+    {
+     "zh": "AI Server Power測試領域與系統架構",
+     "en": "AI Server Power Testing and System Architecture",
+     "id": "K_DOMAIN_OTHER"
+    }
+   ],
+   "skills": [
+    {
+     "zh": "英文聽說讀寫精通",
+     "en": "English Proficiency",
+     "id": "S_ENGLISH"
+    },
+    {
+     "zh": "業務銷售能力",
+     "en": "Sales and Business Development",
+     "id": "NEW"
+    }
+   ],
+   "attributes": [
+    {
+     "zh": "工作企圖心",
+     "en": "Ambition",
+     "id": "A_AMBITION"
+    }
+   ]
+  },
+  "ksa_normalized": {
+   "knowledge": [
+    "K_ELECTRONICS",
+    "K_DOMAIN_OTHER"
+   ],
+   "skills": [
+    "S_ENGLISH"
+   ],
+   "attributes": [
+    "A_AMBITION"
+   ]
+  },
+  "jd_summary": {
+   "zh": "此職位負責電源自動化系統的大客戶經營與銷售策略規劃。需具備電子電機背景，協調跨部門資源以解決專案問題，並帶領團隊達成銷售目標。",
+   "en": "This role manages key accounts for power automation systems and develops sales strategies. Candidates should have an electrical engineering background, coordinate cross-functional teams, and lead sales efforts to achieve targets."
+  },
+  "tasks_normalized": [
+   "T_CUSTOMER",
+   "T_PRODUCT_STRATEGY",
+   "T_OPERATIONS",
+   "T_CROSS_FUNC",
+   "T_RISK"
+  ],
+  "pm_domains": {
+   "D1": 20,
+   "D2": 10,
+   "D3": 0,
+   "D4": 0,
+   "D5": 20,
+   "D6": 30,
+   "D7": 20
+  },
+  "stage_gate": [
+   "S6"
+  ],
+  "context": {
+   "collaborators": [
+    "RD",
+    "QA",
+    "PUR",
+    "MFG"
+   ],
+   "product_type": "hardware",
+   "market": "B2B",
+   "travel": "occasional",
+   "english_level": "primary"
+  },
+  "compliance_flags": [],
+  "ai_model": "gemini-3.1-flash-lite",
+  "prompt_version": "1.0",
+  "vocab_version": "1.0",
+  "tasks": [
+   {
+    "zh": "客戶經營與關係管理",
+    "en": "Key Account Management",
+    "id": "T_CUSTOMER"
+   },
+   {
+    "zh": "制定並執行年度銷售計畫與客戶策略",
+    "en": "Sales Strategy and Planning",
+    "id": "T_PRODUCT_STRATEGY"
+   },
+   {
+    "zh": "分析銷售數據，提出改善與成長方案",
+    "en": "Sales Analysis and Growth Planning",
+    "id": "T_OPERATIONS"
+   },
+   {
+    "zh": "跨部門協調",
+    "en": "Cross-functional Coordination",
+    "id": "T_CROSS_FUNC"
+   },
+   {
+    "zh": "處理客訴、交期、品質等重大議題",
+    "en": "Issue Resolution",
+    "id": "T_RISK"
+   },
+   {
+    "zh": "團隊管理",
+    "en": "Team Management",
+    "id": "NEW"
+   }
+  ],
+  "ai_analyzed_at": "2026-10-19"
  }
 ]

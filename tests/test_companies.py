@@ -38,6 +38,14 @@ class WhitelistTest(unittest.TestCase):
     def test_brand_prefix(self):
         self.assertEqual(self.wl.match("TSMC 晶圓廠_台灣積體電路製造股份有限公司")["stock_code"], "2330")
 
+    def test_pipe_separated_names(self):
+        self.assertEqual(self.wl.match("台灣積體電路製造股份有限公司|台積電|晶圓廠")["stock_code"], "2330")
+        self.assertEqual(self.wl.match("台積電子公司｜臺灣水泥股份有限公司")["stock_code"], "1101")
+
+    def test_direct_match_beats_subsidiary_part(self):
+        m = self.wl.match("台灣積體電路製造股份有限公司|台積電子投資股份有限公司")
+        self.assertEqual((m["stock_code"], m["parent_company"]), ("2330", None))
+
     def test_subsidiary(self):
         m = self.wl.match("台積電子投資股份有限公司")
         self.assertEqual((m["stock_code"], m["parent_company"]), ("2330", "台灣積體電路製造股份有限公司"))

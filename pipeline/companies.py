@@ -29,8 +29,8 @@ def normalize(name: str) -> str:
 
 
 def name_variants(cust_name: str):
-    """104 names are sometimes "Brand_正式名稱"; try each part and the whole."""
-    parts = [p for p in re.split(r"[_＿]", cust_name or "") if p.strip()]
+    """104 names are sometimes "Brand_正式名稱" or "正式名稱|子公司|子公司"; try each part and the whole."""
+    parts = [p for p in re.split(r"[_＿|｜]", cust_name or "") if p.strip()]
     seen = []
     for v in [cust_name, *reversed(parts)]:
         n = normalize(v)
@@ -84,10 +84,14 @@ class Whitelist:
 
     def match(self, cust_name):
         """Return {stock_code, listing, company_en, parent_company} or None."""
-        for n in name_variants(cust_name):
+        variants = name_variants(cust_name)
+        # A direct listing match on any part wins over a subsidiary entry on another part, so
+        # "凱基金融控股股份有限公司|凱基證券" is the listed holding company, not its own subsidiary.
+        for n in variants:
             rec = self.by_name.get(n)
             if rec:
                 return {"stock_code": rec["stock_code"], "listing": rec["listing"], "company_en": rec["en"], "parent_company": None}
+        for n in variants:
             code = self.subsidiaries.get(n)
             if code and code in self.by_code:
                 p = self.by_code[code]

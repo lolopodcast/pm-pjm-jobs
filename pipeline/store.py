@@ -23,7 +23,7 @@ AI_FIELDS = ("title_zh", "title_en", "jd_lang", "role_type", "ksa", "ksa_normali
              "ai_model", "prompt_version", "vocab_version", "ai_analyzed_at")
 # Basic fields refreshed from 104 every time a job is seen.
 BASIC_FIELDS = ("url", "title", "company", "company_en", "stock_code", "listing_type", "parent_company",
-                "industry", "location", "salary_desc", "experience_desc", "education_req")
+                "industry", "location", "salary_desc", "experience_desc", "education_req", "appear_date")
 
 LISTING_LABEL = {"L": "上市", "O": "上櫃", "E": "興櫃"}
 
@@ -60,6 +60,8 @@ def basic_from_target(t):
             "major_required": bool(t.get("majors_raw")),
             "source": "104",
         },
+        # 104's posting / last-update date; reset by 104 when the employer edits the job (PRD 2.2 第 8 點).
+        "appear_date": t.get("appear_date"),
     }
 
 
@@ -86,7 +88,10 @@ def update_jobs(jobs, targets, crawl_complete: bool, today: str):
             by_id[jid] = new_record(t, today)
             stats["new"] += 1
             continue
-        cur.update(basic_from_target(t))
+        basic = basic_from_target(t)
+        if not basic["appear_date"]:
+            basic.pop("appear_date")  # keep the last known date rather than erase it
+        cur.update(basic)
         cur["last_seen_date"] = today
         cur["miss_count"] = 0
         stats["seen_existing"] += 1

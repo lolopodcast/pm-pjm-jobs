@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { AGE_LEVELS, jobAge, shortDate } from "../age.js";
 import { Radar } from "../charts.jsx";
 import { ListingBadge, PageHead, StatusChip, TagChips } from "../components.jsx";
 import { companyName, tagText, titles, todayTPE, vname } from "../data.js";
@@ -155,6 +156,31 @@ function JobDetail({ job, t, ctx }) {
   );
 }
 
+// Posting-age label and days in the database (PRD 5.2). Closed jobs show nothing.
+function AgeLine({ job, t, base }) {
+  const a = jobAge(job, base);
+  if (!a) return null;
+  const when = a.level === "pre" ? null : t(a.basis === "appear" ? "age_appear" : "age_first", { d: shortDate(a.date) });
+  return (
+    <div className="job-age">
+      <span className={"age " + a.level}>{t("age_" + a.level)}</span>
+      <span className="mini">{[when, a.inDb != null && (a.inDb === 1 ? t("age_indb1") : t("age_indb", { n: a.inDb }))].filter(Boolean).join(" · ")}</span>
+    </div>
+  );
+}
+
+function AgeLegend({ t, base }) {
+  return (
+    <div className="card age-legend" role="note">
+      <div className="chips">
+        <span className="mini font-semibold">{t("age_legend")}{t.colon}</span>
+        {AGE_LEVELS.map((l) => <span key={l} className={"age " + l}>{t("age_" + l)}</span>)}
+      </div>
+      <div className="mini">{t("age_note", { d: base })}</div>
+    </div>
+  );
+}
+
 function JobCard({ job, t, ctx, open, toggle }) {
   const { shown, original } = titles(job, t);
   const fs = hasProfile(ctx.fit, ctx.me) ? fitScore(job, ctx.fit, ctx.me) : null;
@@ -173,6 +199,7 @@ function JobCard({ job, t, ctx, open, toggle }) {
             <span>{t.pick(OPT.edu[job.education_req?.level || "none"])}</span><span>{t.salary(job.salary_desc)}</span>
             <span>{t("first_seen")} {job.first_seen_date}</span>{job.closed_date && <span>{t("closed_on")} {job.closed_date}</span>}
           </div>
+          <AgeLine job={job} t={t} base={ctx.base} />
         </div>
         <div className="job-side">
           <StatusChip job={job} t={t} />
@@ -194,7 +221,8 @@ function JobCard({ job, t, ctx, open, toggle }) {
 export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }) {
   const [openIds, setOpenIds] = useState(() => new Set());
   const [shown, setShown] = useState(PAGE_SIZE);
-  const ctx = { vocab: data.vocab, majors: data.majors, fit, me };
+  // Ages count to the data date, so they don't grow while the daily job is paused (PRD 5.2).
+  const ctx = { vocab: data.vocab, majors: data.majors, fit, me, base: (data.db.updated_at || "").slice(0, 10) || null };
   const list = useMemo(() => filterJobs(data.db.jobs, f, ctx), [data, f, fit, me]); // eslint-disable-line react-hooks/exhaustive-deps
   // Industry options follow the other filters and show how many jobs each would give.
   const industries = useMemo(() => {
@@ -226,6 +254,7 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
       {(f.role !== "all" || f.sort === "fit") && pendingCount > 0 && (
         <div className="notice" role="note"><span>{t("role_pending", { n: pendingCount })}</span></div>
       )}
+      {ctx.base && f.status !== "closed" && <AgeLegend t={t} base={ctx.base} />}
       <div className="flex gap-2.5 items-center flex-wrap">
         <span className="mini">{t("n_jobs", { n: list.length })}</span>
         {f.tag && <button className="tagfilter" onClick={() => setFilters({ ...f, tag: null })}>{t("tagf")}{t.colon}{vname(data.vocab, f.tag, t)} ✕</button>}

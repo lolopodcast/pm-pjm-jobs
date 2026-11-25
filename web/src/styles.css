@@ -22,6 +22,13 @@
   --c1: #004030; --c2: #b08a55; --c3: #3d8c78; --c4: #8a6fa8; --c5: #c76b4a;
   --good: #1f7a4d; --warn: #b7791f; --bad: #b4443a;
   --good-bg: #e3f3ea; --warn-bg: #fbf0dc; --bad-bg: #f8e4e1;
+  /* Posting-age labels (PRD 5.6): status colours, kept apart from chart colours; text stays >= 4.5:1 on its tint. */
+  --age-w1: #2563eb; --age-w1-bg: #dbeafe; --age-w1-fg: #1e3a8a;
+  --age-w2: #16a34a; --age-w2-bg: #dcfce7; --age-w2-fg: #14532d;
+  --age-w3: #ca8a04; --age-w3-bg: #fef3c7; --age-w3-fg: #713f12;
+  --age-w4: #ea580c; --age-w4-bg: #ffedd5; --age-w4-fg: #7c2d12;
+  --age-w5: #dc2626; --age-w5-bg: #fee2e2; --age-w5-fg: #7f1d1d;
+  --age-pre: #6b7280; --age-pre-bg: #e5e7eb; --age-pre-fg: #374151;
   --header-h: 64px;
 }
 @media (prefers-color-scheme: dark) {
@@ -31,6 +38,12 @@
     --c1: #D8C3A5; --c2: #6fb8a0; --c3: #e39a6b; --c4: #a99ad6; --c5: #e2c46a;
     --good: #6fcf97; --warn: #f0b85a; --bad: #f08a7e;
     --good-bg: rgba(111,207,151,.14); --warn-bg: rgba(240,184,90,.14); --bad-bg: rgba(240,138,126,.14);
+    --age-w1: #60a5fa; --age-w1-bg: rgba(96,165,250,.16); --age-w1-fg: #bfdbfe;
+    --age-w2: #4ade80; --age-w2-bg: rgba(74,222,128,.14); --age-w2-fg: #bbf7d0;
+    --age-w3: #facc15; --age-w3-bg: rgba(250,204,21,.14); --age-w3-fg: #fde68a;
+    --age-w4: #fb923c; --age-w4-bg: rgba(251,146,60,.16); --age-w4-fg: #fed7aa;
+    --age-w5: #f87171; --age-w5-bg: rgba(248,113,113,.16); --age-w5-fg: #fecaca;
+    --age-pre: #9ca3af; --age-pre-bg: rgba(156,163,175,.16); --age-pre-fg: #d1d5db;
     color-scheme: dark;
   }
 }
@@ -40,6 +53,12 @@
   --c1: #D8C3A5; --c2: #6fb8a0; --c3: #e39a6b; --c4: #a99ad6; --c5: #e2c46a;
   --good: #6fcf97; --warn: #f0b85a; --bad: #f08a7e;
   --good-bg: rgba(111,207,151,.14); --warn-bg: rgba(240,184,90,.14); --bad-bg: rgba(240,138,126,.14);
+  --age-w1: #60a5fa; --age-w1-bg: rgba(96,165,250,.16); --age-w1-fg: #bfdbfe;
+  --age-w2: #4ade80; --age-w2-bg: rgba(74,222,128,.14); --age-w2-fg: #bbf7d0;
+  --age-w3: #facc15; --age-w3-bg: rgba(250,204,21,.14); --age-w3-fg: #fde68a;
+  --age-w4: #fb923c; --age-w4-bg: rgba(251,146,60,.16); --age-w4-fg: #fed7aa;
+  --age-w5: #f87171; --age-w5-bg: rgba(248,113,113,.16); --age-w5-fg: #fecaca;
+  --age-pre: #9ca3af; --age-pre-bg: rgba(156,163,175,.16); --age-pre-fg: #d1d5db;
   color-scheme: dark;
 }
 
@@ -111,6 +130,17 @@
   .st.open { background: var(--good-bg); color: var(--good); } .st.closed { background: var(--soft); color: var(--muted); } .st.pending { background: var(--warn-bg); color: var(--warn); }
   .fit { font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .fit.hi { background: var(--good-bg); color: var(--good); } .fit.mid { background: var(--warn-bg); color: var(--warn); } .fit.lo { background: var(--bad-bg); color: var(--bad); }
+  .age { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 2px 10px 2px 8px; border-radius: 999px; white-space: nowrap;
+    background: var(--age-pre-bg); color: var(--age-pre-fg); }
+  .age::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--age-pre); flex: none; }
+  .age.w1 { background: var(--age-w1-bg); color: var(--age-w1-fg); } .age.w1::before { background: var(--age-w1); }
+  .age.w2 { background: var(--age-w2-bg); color: var(--age-w2-fg); } .age.w2::before { background: var(--age-w2); }
+  .age.w3 { background: var(--age-w3-bg); color: var(--age-w3-fg); } .age.w3::before { background: var(--age-w3); }
+  .age.w4 { background: var(--age-w4-bg); color: var(--age-w4-fg); } .age.w4::before { background: var(--age-w4); }
+  .age.w5 { background: var(--age-w5-bg); color: var(--age-w5-fg); } .age.w5::before { background: var(--age-w5); }
+  .job-age { display: flex; gap: 6px 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+  .age-legend { display: flex; flex-direction: column; gap: 6px; }
+  .age-legend .chips { gap: 6px 8px; }
   .ai { font-size: 11px; font-weight: 700; color: var(--gold-ink); border: 1px dashed var(--gold); border-radius: 6px; padding: 0 6px; }
 
   .controls { display: grid; grid-template-columns: minmax(0, 2fr) repeat(5, minmax(0, 1fr)); gap: 10px; }

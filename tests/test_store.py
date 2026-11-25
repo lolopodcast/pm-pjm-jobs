@@ -40,6 +40,18 @@ class UpdateTest(unittest.TestCase):
         self.assertEqual(j["F"]["education_req"]["majors"], ["MAJ_BUS"])
         self.assertEqual((st["new"], st["reopened"], st["newly_closed"]), (1, 1, 1))
 
+    def test_appear_date(self):
+        """PRD 2.2 第 8 點: appear_date is stored, refreshed when seen, kept when 104 omits it; no AI rerun."""
+        self.jobs[0].update(ai_status="done", appear_date="2026-09-01")
+        jobs, _ = update_jobs(self.jobs, [{**target("A"), "appear_date": "2026-10-18"}, target("E"),
+                                          {**target("G"), "appear_date": "2026-10-19"}], True, TODAY)
+        j = self.by_id(jobs)
+        self.assertEqual((j["A"]["appear_date"], j["A"]["ai_status"], j["A"]["first_seen_date"]), ("2026-10-18", "done", "2026-09-01"))
+        self.assertIsNone(j["E"]["appear_date"])               # old record, 104 gave no date
+        self.assertEqual(j["G"]["appear_date"], "2026-10-19")  # new record
+        jobs, _ = update_jobs(jobs, [target("A")], True, "2026-10-21")
+        self.assertEqual(self.by_id(jobs)["A"]["appear_date"], "2026-10-18")
+
     def test_incomplete_crawl_changes_no_status(self):
         jobs, st = update_jobs(self.jobs, [target("A")], False, TODAY)
         j = self.by_id(jobs)

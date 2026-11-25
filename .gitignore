@@ -26,3 +26,6 @@ desktop.ini
 # Screenshots the maintainer drops into the repo root
 /*.png
 /*.jpg
+
+# Manual-input inbox: pasted 104 page text, deleted after processing (PRD 2.5, 11.5)
+inbox/

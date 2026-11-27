@@ -147,6 +147,17 @@ class PageDateTest(unittest.TestCase):
         self.assertEqual(manual.page_date("首頁\nD666 營運系統產品暨專案管理PM11/27更新\n台灣大哥大", TODAY), "2026-11-27")
         self.assertEqual(manual.page_date("專案經理 3/5 更新", TODAY), "2026-03-05")
 
+    def test_title_ending_in_digits(self):
+        """2026-11-27 real case: the job code at the end of the title ran into the date."""
+        line = "【年後轉職】AI Server新產品管理_竹北/台北_0820311/27更新"
+        title = "【年後轉職】AI Server新產品管理_竹北/台北_08203"
+        self.assertEqual(manual.page_date(line, TODAY, title), "2026-11-27")
+
+    def test_ai_date_must_be_plausible(self):
+        self.assertIsNone(manual._plausible("2024-11-27", TODAY))   # the AI guessed the wrong year
+        self.assertIsNone(manual._plausible("2026-12-25", TODAY))   # in the future
+        self.assertEqual(manual._plausible("2026-11-20", TODAY), "2026-11-20")
+
     def test_year_rollover(self):
         self.assertEqual(manual.page_date("專案經理12/30更新", "2027-01-02"), "2026-12-30")
 

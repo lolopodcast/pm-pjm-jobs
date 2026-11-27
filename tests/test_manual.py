@@ -140,5 +140,35 @@ class ManualTest(unittest.TestCase):
         self.assertIn("新增 1 筆（上市 1）", manual.report(s))
 
 
+class PageDateTest(unittest.TestCase):
+    """104 job pages glue the date to the title without a year: "…PM11/27更新" (seen 2026-11-27)."""
+
+    def test_real_104_format(self):
+        self.assertEqual(manual.page_date("首頁\nD666 營運系統產品暨專案管理PM11/27更新\n台灣大哥大", TODAY), "2026-11-27")
+        self.assertEqual(manual.page_date("專案經理 3/5 更新", TODAY), "2026-03-05")
+
+    def test_year_rollover(self):
+        self.assertEqual(manual.page_date("專案經理12/30更新", "2027-01-02"), "2026-12-30")
+
+    def test_full_date_and_none(self):
+        self.assertEqual(manual.page_date("更新日期 2026/11/25", TODAY), "2026-11-25")
+        self.assertIsNone(manual.page_date("月薪 40,000 元\n11/27 截止", TODAY))
+
+    def test_duplicate_uses_real_format(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = Path(tmp.name)
+        (root / "inbox").mkdir()
+        (root / "data").mkdir()
+        rec = new_record({"job_id": "104_97dy2", "url": "https://www.104.com.tw/job/97dy2", "title": "D666", "company": "X",
+                          "stock_code": "3045", "listing": "L"}, "2026-11-10")
+        (root / "data" / "data.json").write_text(json.dumps({"updated_at": "2026-11-23T08:00:00+08:00", "jobs": [rec]}), encoding="utf-8")
+        (root / "inbox" / "a.txt").write_text("https://www.104.com.tw/job/97dy2?jobsource=x\n" + "D666 營運系統產品暨專案管理PM11/27更新\n" + JD * 3,
+                                              encoding="utf-8")
+        manual.run(root / "inbox", root / "data", WL, TODAY, "2026-11-27T09:00:00+08:00", analyze_page=None, sleep=lambda _: None)
+        db = json.loads((root / "data" / "data.json").read_text(encoding="utf-8"))
+        self.assertEqual(db["jobs"][0]["appear_date"], "2026-11-27")
+
+
 if __name__ == "__main__":
     unittest.main()

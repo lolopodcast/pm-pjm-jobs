@@ -46,13 +46,27 @@ def _iso_date(s):
     return f"{y:04d}-{mo:02d}-{d:02d}" if 1 <= mo <= 12 and 1 <= d <= 31 else None
 
 
-def page_date(page: str):
-    """Best-effort 104 posting/update date from the page text (no AI), for duplicates."""
+# 104 job pages show the date glued to the title with no year, e.g. "…專案管理PM11/27更新" (checked 2026-11-27).
+_MD_UPDATED = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})\s*(?:更新|刊登)")
+
+
+def page_date(page: str, today: str):
+    """104 posting/update date read from the pasted page (no AI). The year is inferred from today."""
     for line in page.splitlines():
-        if "更新" in line or "刊登" in line:
-            d = _iso_date(line)
-            if d:
-                return d
+        if "更新" not in line and "刊登" not in line:
+            continue
+        d = _iso_date(line)
+        if d:
+            return d
+        m = _MD_UPDATED.search(line)
+        if m:
+            mo, dd = int(m[1]), int(m[2])
+            if not (1 <= mo <= 12 and 1 <= dd <= 31):
+                continue
+            y = int(today[:4])
+            if (mo, dd) > (int(today[5:7]), int(today[8:10])):
+                y -= 1   # a date "after" today was posted last year (e.g. 12/30 seen on 1/2)
+            return f"{y:04d}-{mo:02d}-{dd:02d}"
     return None
 
 
@@ -60,7 +74,7 @@ def _found(value, page_norm):
     return bool(value) and norm(value) in page_norm
 
 
-def basic_fields(raw, page):
+def basic_fields(raw, page, today):
     """Check and clean the AI-read basic fields. Company and title must appear in the pasted page."""
     b = raw.get("basic") if isinstance(raw, dict) else None
     if not isinstance(b, dict):
@@ -79,7 +93,8 @@ def basic_fields(raw, page):
     return {"company": company[:120], "title": title[:120], "industry": keep(b.get("industry"), 60),
             "location": keep(b.get("location"), 60), "salary_desc": keep(b.get("salary_text"), 60) or "待遇面議",
             "experience_years": years, "experience_desc": "經驗不拘" if not years else f"{years} 年以上",
-            "edu_level": level, "majors_raw": majors, "appear_date": _iso_date(b.get("appear_date") or "")}
+            "edu_level": level, "majors_raw": majors, # The page's own date beats the AI's reading, which has to guess the missing year.
+            "appear_date": page_date(page, today) or _iso_date(b.get("appear_date") or "")}
 
 
 def skip_reason(basic, whitelist):
@@ -133,7 +148,7 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
         jid = f"104_{code}"
         cur = by_id.get(jid)
         if cur:   # already in the database: no AI call (PRD 2.5 第 6 點 2)
-            d = page_date(page)
+            d = page_date(page, today)
             if d:
                 cur["appear_date"] = d
             cur["last_seen_date"] = today
@@ -147,7 +162,7 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
         called = True
         try:
             raw = analyze_page(page)
-            basic = basic_fields(raw, page)
+            basic = basic_fields(raw, page, today)
             why, match = skip_reason(basic, whitelist)
             if why:
                 s["skipped"].append({"file": p.name, "reason": why, "company": basic["company"], "title": basic["title"]})

@@ -32,6 +32,8 @@ export const T = {
     "Role type and fit come from the AI analysis. {n} jobs are still being analysed and are left out of this filter or sort until they are done."],
   fit_no_ai: ["配適度要和「已完成 AI 分析」的職缺比對，目前還沒有分析完成的職缺。你可以先勾選能力，分析完成後結果會自動出現。",
     "Fit is calculated against jobs with finished AI analysis, and none are ready yet. You can tick your abilities now; results appear once analysis is done."], show_more: ["再顯示 {n} 筆", "Show {n} more"],
+  role_gone: ["未分析（已下架）", "Not analysed (closed)"],
+  role_gone_tip: ["職缺在 AI 分析前就已從 104 下架，無法判定職務類型。", "The job closed on 104 before the AI analysis, so its role type is unknown."],
   open: ["開放中", "Open"], closed: ["已關閉", "Closed"], analysing: ["分析中", "Analysing"],
   age_w1: ["第 1 週", "Week 1"], age_w2: ["第 2 週", "Week 2"], age_w3: ["第 3 週", "Week 3"], age_w4: ["第 4 週", "Week 4"],
   age_w5: ["超過 4 週", "4+ weeks"], age_pre: ["上線前已存在", "Before launch"],

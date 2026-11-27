@@ -140,6 +140,60 @@ class ManualTest(unittest.TestCase):
         self.assertIn("新增 1 筆（上市 1）", manual.report(s))
 
 
+class IndustryTest(unittest.TestCase):
+    """104 job pages do not show the industry (checked 2026-11-27)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        root = Path(self.tmp.name)
+        self.inbox, self.data = root / "inbox", root / "data"
+        self.inbox.mkdir()
+        self.data.mkdir()
+        old = new_record({"job_id": "104_o1", "url": "u", "title": "產品經理", "company": "台灣積體電路製造股份有限公司",
+                          "stock_code": "2330", "listing": "L", "industry": "半導體製造業"}, "2026-10-17")
+        (self.data / "data.json").write_text(json.dumps({"updated_at": "2026-11-23T08:00:00+08:00", "jobs": [old]}), encoding="utf-8")
+
+    def go(self, text, responses):
+        (self.inbox / "a.txt").write_text(text, encoding="utf-8")
+        manual.run(self.inbox, self.data, WL, TODAY, "2026-11-27T09:00:00+08:00",
+                   analyze_page=lambda _: responses.pop(0), sleep=lambda _: None)
+        return {j["job_id"]: j for j in json.loads((self.data / "data.json").read_text(encoding="utf-8"))["jobs"]}
+
+    def test_from_company_history(self):
+        j = self.go("https://www.104.com.tw/job/n1\n" + page(), [raw()])["104_n1"]
+        self.assertEqual((j["industry"], j["industry_source"]), ("半導體製造業", "company"))
+
+    def test_typed_line_wins_and_is_removed_from_page(self):
+        seen = []
+        def fake(text):
+            seen.append(text)
+            return raw()
+        (self.inbox / "a.txt").write_text("https://www.104.com.tw/job/n2\n產業：積體電路製造業\n" + page(), encoding="utf-8")
+        manual.run(self.inbox, self.data, WL, TODAY, "x", analyze_page=fake, sleep=lambda _: None)
+        j = {j["job_id"]: j for j in json.loads((self.data / "data.json").read_text(encoding="utf-8"))["jobs"]}["104_n2"]
+        self.assertEqual((j["industry"], j["industry_source"]), ("積體電路製造業", "manual"))
+        self.assertNotIn("產業：", seen[0])
+
+    def test_backfill_without_files(self):
+        db = json.loads((self.data / "data.json").read_text(encoding="utf-8"))
+        late = new_record({"job_id": "104_m1", "url": "u", "title": "專案經理", "company": "台灣積體電路製造股份有限公司",
+                           "stock_code": "2330", "listing": "L"}, "2026-11-27")
+        late["source"] = "manual"
+        db["jobs"].append(late)
+        (self.data / "data.json").write_text(json.dumps(db), encoding="utf-8")
+        s = manual.run(self.inbox, self.data, None, TODAY, "2026-11-28T09:00:00+08:00", analyze_page=None)
+        jobs = {j["job_id"]: j for j in json.loads((self.data / "data.json").read_text(encoding="utf-8"))["jobs"]}
+        self.assertEqual((s["industry_filled"], jobs["104_m1"]["industry"]), (1, "半導體製造業"))
+        self.assertFalse((self.data / "run_summary.json").exists())
+
+    def test_unknown_company_stays_empty(self):
+        tsmc_only = raw()
+        j = self.go("https://www.104.com.tw/job/n3\n" + page(), [tsmc_only])
+        self.assertEqual(j["104_n3"]["industry"], "半導體製造業")   # same company -> history
+        self.assertIsNone(manual.industry_from_history({"company": "新公司", "industry": None}, list(j.values())))
+
+
 class PageDateTest(unittest.TestCase):
     """104 job pages glue the date to the title without a year: "…PM11/27更新" (seen 2026-11-27)."""
 

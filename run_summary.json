@@ -4,15 +4,14 @@
  "files": 1,
  "added": 0,
  "added_by_listing": {},
- "skipped": [
+ "skipped": [],
+ "duplicates": [
   {
    "file": "職缺01.txt",
-   "reason": "職稱不符",
-   "company": "台達電子工業股份有限公司 _DELTA ELECTRONICS INC.",
-   "title": "Product Marketing產品行銷_ 氫能源應用新事業發展部(南科)"
+   "job_id": "104_97dy2",
+   "title": "D666 營運系統產品暨專案管理PM"
   }
  ],
- "duplicates": [],
  "failed": [],
  "waiting": 0,
  "stop": null,

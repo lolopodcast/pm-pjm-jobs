@@ -1,6 +1,8 @@
 {
- "updated_at": "2026-11-23T08:10:27+08:00",
+ "updated_at": "2026-11-27T21:09:26+08:00",
  "crawl_complete": true,
+ "collection_mode": "manual",
+ "last_full_crawl": "2026-11-23",
  "jobs": [
   {
    "job_id": "104_97smh",
@@ -9308,7 +9310,7 @@
    },
    "status": "open",
    "first_seen_date": "2026-11-10",
-   "last_seen_date": "2026-11-23",
+   "last_seen_date": "2026-11-27",
    "closed_date": null,
    "miss_count": 0,
    "ai_status": "done",

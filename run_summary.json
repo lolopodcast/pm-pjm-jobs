@@ -1,27 +1,15 @@
 {
  "mode": "manual",
  "date": "2026-11-27",
- "files": 3,
+ "files": 1,
  "added": 0,
  "added_by_listing": {},
  "skipped": [
   {
    "file": "職缺01.txt",
-   "reason": "非上市櫃",
-   "company": "鉅亨網_鉅亨金融科技股份有限公司",
-   "title": "【熱門】產品經理 (Product Manager)"
-  },
-  {
-   "file": "職缺02.txt",
-   "reason": "非上市櫃",
-   "company": "美商默沙東藥廠股份有限公司台灣分公司",
-   "title": "Associate Product Manager - Vaccine"
-  },
-  {
-   "file": "職缺03.txt",
    "reason": "職稱不符",
-   "company": "緯創資通股份有限公司",
-   "title": "【年後轉職】AI Server新產品管理_竹北/台北_08203"
+   "company": "台達電子工業股份有限公司 _DELTA ELECTRONICS INC.",
+   "title": "Product Marketing產品行銷_ 氫能源應用新事業發展部(南科)"
   }
  ],
  "duplicates": [],

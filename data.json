@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-27T21:09:26+08:00",
+ "updated_at": "2026-11-27T21:21:59+08:00",
  "crawl_complete": true,
  "collection_mode": "manual",
  "last_full_crawl": "2026-11-23",
@@ -82328,7 +82328,7 @@
    },
    "status": "open",
    "first_seen_date": "2026-10-17",
-   "last_seen_date": "2026-11-23",
+   "last_seen_date": "2026-11-27",
    "closed_date": null,
    "miss_count": 0,
    "ai_status": "done",
@@ -82446,7 +82446,8 @@
      "id": "T_OPERATIONS"
     }
    ],
-   "ai_analyzed_at": "2026-10-20"
+   "ai_analyzed_at": "2026-10-20",
+   "appear_date": "2026-11-27"
   },
   {
    "job_id": "104_8vzsr",

@@ -26,7 +26,7 @@ export default function Archive({ t, data }) {
                 <tbody>
                   {rows.map((j) => (
                     <tr key={j.job_id}>
-                      <td>{j.role_type || "—"}</td><td>{titles(j, t).shown}</td>
+                      <td>{j.role_type || <span className="mini" title={t("role_gone_tip")}>{t("role_gone")}</span>}</td><td>{titles(j, t).shown}</td>
                       <td>{companyName(j, t)} <ListingBadge job={j} t={t} /></td>
                       <td>{j.first_seen_date}</td><td>{j.closed_date}</td>
                       <td>{(j.ksa_normalized?.skills || []).map((id) => vname(data.vocab, id, t)).join(t.sep)}</td>

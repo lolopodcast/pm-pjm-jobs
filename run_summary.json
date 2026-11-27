@@ -4,14 +4,16 @@
  "files": 1,
  "added": 0,
  "added_by_listing": {},
- "skipped": [],
- "duplicates": [],
- "failed": [
+ "skipped": [
   {
    "file": "職缺01.txt",
-   "reason": "第一行不是 104 職缺網址（https://www.104.com.tw/job/…）"
+   "reason": "職稱不符",
+   "company": "旭隼科技股份有限公司",
+   "title": "研發專案助理 & 管理師"
   }
  ],
+ "duplicates": [],
+ "failed": [],
  "waiting": 0,
  "stop": null,
  "vocab_new_terms": 0,

@@ -24,6 +24,25 @@ class TitleFilterTest(unittest.TestCase):
             with self.subTest(t=t):
                 self.assertFalse(is_target_title(t))
 
+    def test_slash_alternative_with_assistant(self):
+        """2026-11-27: one side of a slash qualifying is enough; 助理 alone still excludes."""
+        for t in ["（1125）專案管理師/助理", "產品經理／助理", "Project Manager / Assistant"]:
+            with self.subTest(t=t):
+                self.assertTrue(is_target_title(t))
+        for t in ["PM助理/專員", "專案助理/行政", "專案經理/實習生", "PM / Intern", "產品經理/工讀生"]:
+            with self.subTest(t=t):
+                self.assertFalse(is_target_title(t))
+
+    def test_role_phrase_without_title_word(self):
+        """2026-11-27: 產品管理／專案管理 count without 師／經理."""
+        for t in ["【年後轉職】AI Server新產品管理_竹北/台北_08203", "專案管理", "新產品管理", "Project Management",
+                  "專案管理工程師", "產品管理工程師"]:
+            with self.subTest(t=t):
+                self.assertTrue(is_target_title(t))
+        for t in ["生產管理", "產品品質管理", "Product Marketing產品行銷_ 氫能源應用新事業發展部(南科)", "專案助理(專案管理)"]:
+            with self.subTest(t=t):
+                self.assertFalse(is_target_title(t))
+
     def test_needs_both_groups(self):
         for t in ["產品設計", "專案業務", "行銷經理", "Project", "APM 系統工程師", ""]:
             with self.subTest(t=t):

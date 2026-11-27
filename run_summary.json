@@ -5,14 +5,13 @@
  "added": 0,
  "added_by_listing": {},
  "skipped": [],
- "duplicates": [
+ "duplicates": [],
+ "failed": [
   {
    "file": "職缺01.txt",
-   "job_id": "104_8w06o",
-   "title": "【醫療】國外業務/專案專員"
+   "reason": "第一行不是 104 職缺網址（https://www.104.com.tw/job/…）"
   }
  ],
- "failed": [],
  "waiting": 0,
  "stop": null,
  "vocab_new_terms": 0,

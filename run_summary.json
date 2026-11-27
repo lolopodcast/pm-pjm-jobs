@@ -1,120 +1,33 @@
 {
- "date": "2026-11-23",
- "finished_at": "2026-11-23T08:48:17+08:00",
- "crawl_complete": true,
- "whitelist": {
-  "L": 1098,
-  "O": 898,
-  "E": 375
- },
- "jobs_seen": 6441,
- "targets": 940,
- "unmatched_companies": 1250,
- "slices": {
-  "2004003009": {
-   "name": "產品經理",
-   "pages": 17,
-   "rows": 259,
-   "new_unique": 259,
-   "complete": true
+ "mode": "manual",
+ "date": "2026-11-27",
+ "files": 3,
+ "added": 0,
+ "added_by_listing": {},
+ "skipped": [
+  {
+   "file": "職缺01.txt",
+   "reason": "非上市櫃",
+   "company": "鉅亨網_鉅亨金融科技股份有限公司",
+   "title": "【熱門】產品經理 (Product Manager)"
   },
-  "2004003005": {
-   "name": "產品管理師",
-   "pages": 72,
-   "rows": 1152,
-   "new_unique": 1026,
-   "complete": true
+  {
+   "file": "職缺02.txt",
+   "reason": "非上市櫃",
+   "company": "美商默沙東藥廠股份有限公司台灣分公司",
+   "title": "Associate Product Manager - Vaccine"
   },
-  "2004002002": {
-   "name": "產品企劃",
-   "pages": 102,
-   "rows": 1875,
-   "new_unique": 1355,
-   "complete": true
-  },
-  "2004003006": {
-   "name": "專案經理",
-   "pages": 58,
-   "rows": 996,
-   "new_unique": 762,
-   "complete": true
-  },
-  "2004003003": {
-   "name": "軟體專案管理師",
-   "pages": 50,
-   "rows": 837,
-   "new_unique": 540,
-   "complete": true
-  },
-  "2004003004/台北": {
-   "name": "其他專案管理師／台北",
-   "pages": 78,
-   "rows": 1551,
-   "new_unique": 1027,
-   "complete": true
-  },
-  "2004003004/新北基宜": {
-   "name": "其他專案管理師／新北基宜",
-   "pages": 31,
-   "rows": 614,
-   "new_unique": 380,
-   "complete": true
-  },
-  "2004003004/桃竹苗": {
-   "name": "其他專案管理師／桃竹苗",
-   "pages": 40,
-   "rows": 782,
-   "new_unique": 508,
-   "complete": true
-  },
-  "2004003004/中彰投": {
-   "name": "其他專案管理師／中彰投",
-   "pages": 18,
-   "rows": 348,
-   "new_unique": 237,
-   "complete": true
-  },
-  "2004003004/雲嘉南": {
-   "name": "其他專案管理師／雲嘉南",
-   "pages": 10,
-   "rows": 181,
-   "new_unique": 132,
-   "complete": true
-  },
-  "2004003004/高屏東花離島": {
-   "name": "其他專案管理師／高屏東花離島",
-   "pages": 12,
-   "rows": 226,
-   "new_unique": 165,
-   "complete": true
-  },
-  "2004003004/海外": {
-   "name": "其他專案管理師／海外",
-   "pages": 4,
-   "rows": 75,
-   "new_unique": 50,
-   "complete": true
+  {
+   "file": "職缺03.txt",
+   "reason": "職稱不符",
+   "company": "緯創資通股份有限公司",
+   "title": "【年後轉職】AI Server新產品管理_竹北/台北_08203"
   }
- },
- "new": 0,
- "seen_existing": 940,
- "reopened": 6,
- "missed": 104,
- "newly_closed": 7,
- "closures_applied": true,
- "archived": 6,
- "open": 1037,
- "closed": 125,
- "pending_ai": 8,
- "ai_attempted": 0,
- "ai_done": 0,
- "ai_failed": 0,
- "ai_busy": 0,
- "ai_quota_stop": false,
- "ai_time_stop": false,
- "ai_busy_stop": false,
- "ai_config_stop": false,
- "ai_queue": 0,
- "ai_queue_left": 0,
- "vocab_new_terms": 0
+ ],
+ "duplicates": [],
+ "failed": [],
+ "waiting": 0,
+ "stop": null,
+ "vocab_new_terms": 0,
+ "open": 1037
 }

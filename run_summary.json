@@ -1,14 +1,17 @@
 {
  "mode": "manual",
  "date": "2026-11-27",
- "files": 2,
- "added": 2,
- "added_by_listing": {
-  "上櫃": 1,
-  "上市": 1
- },
+ "files": 1,
+ "added": 0,
+ "added_by_listing": {},
  "skipped": [],
- "duplicates": [],
+ "duplicates": [
+  {
+   "file": "職缺01.txt",
+   "job_id": "104_91fng",
+   "title": "【年後轉職】AI Server新產品管理_竹北/台北_08203"
+  }
+ ],
  "failed": [],
  "waiting": 0,
  "stop": null,

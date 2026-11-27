@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-27T22:13:26+08:00",
+ "updated_at": "2026-11-27T22:38:14+08:00",
  "crawl_complete": true,
  "collection_mode": "manual",
  "last_full_crawl": "2026-11-23",
@@ -24,7 +24,7 @@
     "major_required": false,
     "source": "104"
    },
-   "appear_date": "2024-11-27",
+   "appear_date": "2026-11-27",
    "status": "open",
    "first_seen_date": "2026-11-27",
    "last_seen_date": "2026-11-27",

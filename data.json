@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-27T22:38:14+08:00",
+ "updated_at": "2026-11-27T23:23:55+08:00",
  "crawl_complete": true,
  "collection_mode": "manual",
  "last_full_crawl": "2026-11-23",
@@ -13,7 +13,7 @@
    "stock_code": "3231",
    "listing_type": "上市",
    "parent_company": null,
-   "industry": null,
+   "industry": "電腦及其週邊設備製造業",
    "location": "新竹縣竹北市",
    "salary_desc": "待遇面議（經常性薪資達 4 萬元或以上）",
    "experience_desc": "經驗不拘",
@@ -132,7 +132,8 @@
    "prompt_version": "1.0",
    "vocab_version": "1.0",
    "ai_analyzed_at": "2026-11-27",
-   "source": "manual"
+   "source": "manual",
+   "industry_source": "company"
   },
   {
    "job_id": "104_6um11",

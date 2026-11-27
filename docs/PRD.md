@@ -537,6 +537,7 @@ JD 由徵才公司撰寫，屬於不可信任的輸入，可能夾帶要求 AI �
 3. **鎖定版本：** GitHub Actions 引用的第三方 action 鎖定到固定 commit SHA；Python 只使用標準函式庫（`requirements.txt` 無第三方套件）；前端套件在 `package.json` 鎖定確切版本，並以 `package-lock.json` 與 `npm ci` 安裝。
 4. **最小權限：** workflow 只開必要權限（見 11.3 第 5 點），其餘關閉。
 5. **套件漏洞處理（2026-10-17）：** 前端建置工具升級至已修補版本（vite 6.4.4、vitest 4.1.12、postcss 8.5.30、tailwindcss 3.4.19），並以 `overrides` 指定 `postcss-selector-parser` 7.1.6。剩餘風險：Tailwind 3 間接使用的 `braces`（GHSA-vfj7-8cjw-p6xm）尚無修補版，僅在建置時使用、比對規則固定寫在設定檔，無法被外部輸入利用，暫時接受。2026-10-18 已升級至 Tailwind 4.3.3（改用 `@tailwindcss/vite`，移除 PostCSS 設定與 `overrides`），`braces` 已不在相依套件中，此風險解除。以上皆為開發工具，不會打包進網站。
+   * **2026-11-27：** 依 Dependabot 警示（6 項，皆為開發工具）升級 vite 6.4.4 → 6.4.5（`server.fs.deny` 繞過）與間接相依 fast-uri 3.1.8 → 3.1.9。`npm audit` 另列 4 項（glob、minimatch、serialize-javascript、workbox-build），皆來自 PWA 外掛 `vite-plugin-pwa` 內部的 `workbox-build`，修補需跨主要版本升級；只在建置時處理本專案自己的檔案，不接受外部輸入，也不打包進網站，暫時接受，待 vite-plugin-pwa 更新後一併升級。另新增 `ci.yml`：每個 PR 在 GitHub 上執行 Python 測試、前端測試與建置（維護者電腦的 Windows 應用程式控制目前會擋下 Rollup 的原生檔，無法在本機建置）。
 6. **進入頁與進入碼（正式運作也保留）：** 網站首次開啟需輸入進入碼，雙語、深淺色、RWD。這是避免無意進入的軟性門檻，不是真正的存取控制：前端只保存進入碼的 SHA-256 雜湊，資料 JSON 仍可直接下載，網頁也設定 `noindex`。repo 是公開的，因此**進入碼不可寫在任何程式碼、測試或文件中**（測試改用範例碼）；更換進入碼時只更新 `web/src/Gate.jsx` 的雜湊值。
 
 ### 8.3 個人資料

@@ -1,21 +1,17 @@
 {
  "mode": "manual",
  "date": "2026-11-27",
- "files": 1,
- "added": 0,
- "added_by_listing": {},
- "skipped": [
-  {
-   "file": "職缺01.txt",
-   "reason": "職稱不符",
-   "company": "中國探針股份有限公司",
-   "title": "（1125）專案管理師/助理"
-  }
- ],
+ "files": 2,
+ "added": 2,
+ "added_by_listing": {
+  "上櫃": 1,
+  "上市": 1
+ },
+ "skipped": [],
  "duplicates": [],
  "failed": [],
  "waiting": 0,
  "stop": null,
  "vocab_new_terms": 0,
- "open": 1037
+ "open": 1039
 }

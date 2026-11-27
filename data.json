@@ -1,9 +1,326 @@
 {
- "updated_at": "2026-11-27T21:21:59+08:00",
+ "updated_at": "2026-11-27T22:13:26+08:00",
  "crawl_complete": true,
  "collection_mode": "manual",
  "last_full_crawl": "2026-11-23",
  "jobs": [
+  {
+   "job_id": "104_91fng",
+   "url": "https://www.104.com.tw/job/91fng",
+   "title": "【年後轉職】AI Server新產品管理_竹北/台北_08203",
+   "company": "緯創資通股份有限公司",
+   "company_en": "Wistron",
+   "stock_code": "3231",
+   "listing_type": "上市",
+   "parent_company": null,
+   "industry": null,
+   "location": "新竹縣竹北市",
+   "salary_desc": "待遇面議（經常性薪資達 4 萬元或以上）",
+   "experience_desc": "經驗不拘",
+   "education_req": {
+    "level": "ba",
+    "majors": [],
+    "majors_104": [],
+    "major_required": false,
+    "source": "104"
+   },
+   "appear_date": "2024-11-27",
+   "status": "open",
+   "first_seen_date": "2026-11-27",
+   "last_seen_date": "2026-11-27",
+   "closed_date": null,
+   "miss_count": 0,
+   "ai_status": "done",
+   "ai_fail_count": 0,
+   "title_zh": "【年後轉職】AI Server新產品管理_竹北/台北_08203",
+   "title_en": "AI Server New Product Management",
+   "jd_lang": "zh",
+   "role_type": "PM",
+   "ksa": {
+    "knowledge": [
+     {
+      "zh": "產品生命週期管理",
+      "en": "Product Lifecycle Management",
+      "id": "K_PRODUCT_MGMT"
+     },
+     {
+      "zh": "市場分析",
+      "en": "Market Analysis",
+      "id": "K_MARKET_ANALYSIS"
+     }
+    ],
+    "skills": [
+     {
+      "zh": "英文精通",
+      "en": "English Proficiency",
+      "id": "S_ENGLISH"
+     }
+    ],
+    "attributes": [
+     {
+      "zh": "執行力",
+      "en": "Execution",
+      "id": "A_PROACTIVE"
+     }
+    ]
+   },
+   "ksa_normalized": {
+    "knowledge": [
+     "K_PRODUCT_MGMT",
+     "K_MARKET_ANALYSIS"
+    ],
+    "skills": [
+     "S_ENGLISH"
+    ],
+    "attributes": [
+     "A_PROACTIVE"
+    ]
+   },
+   "jd_summary": {
+    "zh": "此職位負責 AI 伺服器新產品的策略規劃與開發管理，需與客戶及內部研發團隊密切協作以確保專案按時交付。應徵者需具備良好的產品生命週期管理經驗、市場分析能力及卓越的跨部門溝通協調技巧。",
+    "en": "This role is responsible for the strategy, planning, and development management of AI server products, ensuring timely delivery through close collaboration with clients and internal R&D teams. Candidates should possess strong product lifecycle management experience, market analysis skills, and excellent cross-functional communication abilities."
+   },
+   "tasks": [
+    {
+     "zh": "負責新產品策略與規劃",
+     "en": "New Product Strategy and Planning",
+     "id": "T_PRODUCT_STRATEGY"
+    },
+    {
+     "zh": "產品開發與管理",
+     "en": "Product Development and Management",
+     "id": "T_LIFECYCLE"
+    },
+    {
+     "zh": "產品績效追蹤與執行",
+     "en": "Product Performance Tracking and Execution",
+     "id": "T_OPERATIONS"
+    }
+   ],
+   "tasks_normalized": [
+    "T_PRODUCT_STRATEGY",
+    "T_LIFECYCLE",
+    "T_OPERATIONS"
+   ],
+   "pm_domains": {
+    "D1": 20,
+    "D2": 10,
+    "D3": 15,
+    "D4": 5,
+    "D5": 15,
+    "D6": 20,
+    "D7": 15
+   },
+   "stage_gate": [
+    "S2",
+    "S3",
+    "S5",
+    "S6"
+   ],
+   "context": {
+    "collaborators": [
+     "SA",
+     "RD"
+    ],
+    "product_type": "hardware",
+    "market": "B2B",
+    "travel": "occasional",
+    "english_level": "primary"
+   },
+   "compliance_flags": [],
+   "ai_model": "gemini-3.1-flash-lite",
+   "prompt_version": "1.0",
+   "vocab_version": "1.0",
+   "ai_analyzed_at": "2026-11-27",
+   "source": "manual"
+  },
+  {
+   "job_id": "104_6um11",
+   "url": "https://www.104.com.tw/job/6um11",
+   "title": "（1125）專案管理師/助理",
+   "company": "中國探針股份有限公司",
+   "company_en": "C.C.P.",
+   "stock_code": "6217",
+   "listing_type": "上櫃",
+   "parent_company": null,
+   "industry": null,
+   "location": "新北市板橋區",
+   "salary_desc": "待遇面議（經常性薪資達 4 萬元或以上）",
+   "experience_desc": "經驗不拘",
+   "education_req": {
+    "level": "ba",
+    "majors": [],
+    "majors_104": [],
+    "major_required": false,
+    "source": "104"
+   },
+   "appear_date": "2026-11-27",
+   "status": "open",
+   "first_seen_date": "2026-11-27",
+   "last_seen_date": "2026-11-27",
+   "closed_date": null,
+   "miss_count": 0,
+   "ai_status": "done",
+   "ai_fail_count": 0,
+   "title_zh": "（1125）專案管理師/助理",
+   "title_en": "Project Manager/Assistant",
+   "jd_lang": "zh",
+   "role_type": "PjM",
+   "ksa": {
+    "knowledge": [
+     {
+      "zh": "電子業相關知識",
+      "en": "Electronics Industry Knowledge",
+      "id": "K_ELECTRONICS"
+     },
+     {
+      "zh": "半導體製程知識",
+      "en": "Semiconductor Manufacturing Knowledge",
+      "id": "K_SEMICONDUCTOR"
+     }
+    ],
+    "skills": [
+     {
+      "zh": "專案時間與進度控管",
+      "en": "Project Schedule Management",
+      "id": "S_SCHEDULE"
+     },
+     {
+      "zh": "專案規劃與範圍管理",
+      "en": "Project Planning and Scope Management",
+      "id": "S_PROJECT_PLANNING"
+     },
+     {
+      "zh": "專案溝通與整合管理",
+      "en": "Project Communication and Integration Management",
+      "id": "S_COMMUNICATION"
+     },
+     {
+      "zh": "客戶情報蒐集",
+      "en": "Customer Intelligence Gathering",
+      "id": "S_MARKET_RESEARCH"
+     },
+     {
+      "zh": "英文聽說讀寫能力",
+      "en": "English Proficiency",
+      "id": "S_ENGLISH"
+     }
+    ],
+    "attributes": [
+     {
+      "zh": "學習力",
+      "en": "Learning Ability",
+      "id": "A_LEARNING"
+     },
+     {
+      "zh": "溝通協調能力",
+      "en": "Communication and Coordination",
+      "id": "A_COMMUNICATION"
+     },
+     {
+      "zh": "情緒管理能力",
+      "en": "Emotional Intelligence",
+      "id": "A_STRESS_TOLERANCE"
+     },
+     {
+      "zh": "積極度",
+      "en": "Proactiveness",
+      "id": "A_PROACTIVE"
+     },
+     {
+      "zh": "獨立作業能力",
+      "en": "Independent Working Ability",
+      "id": "A_SELF_MGMT"
+     }
+    ]
+   },
+   "ksa_normalized": {
+    "knowledge": [
+     "K_ELECTRONICS",
+     "K_SEMICONDUCTOR"
+    ],
+    "skills": [
+     "S_SCHEDULE",
+     "S_PROJECT_PLANNING",
+     "S_COMMUNICATION",
+     "S_MARKET_RESEARCH",
+     "S_ENGLISH"
+    ],
+    "attributes": [
+     "A_LEARNING",
+     "A_COMMUNICATION",
+     "A_STRESS_TOLERANCE",
+     "A_PROACTIVE",
+     "A_SELF_MGMT"
+    ]
+   },
+   "jd_summary": {
+    "zh": "此職位負責協助專案從啟動到結案的全程管理，包含進度追蹤、跨部門協調及成本分析。適合具備專案管理技能與溝通協調能力，並能配合短期出差的人才。",
+    "en": "This role manages the full project lifecycle, including progress tracking, cross-functional coordination, and cost analysis. It requires strong project management and communication skills, with occasional business travel."
+   },
+   "tasks": [
+    {
+     "zh": "協助專案開發導入",
+     "en": "Assist in Project Development and Introduction",
+     "id": "T_NPI"
+    },
+    {
+     "zh": "專案全生命週期管理",
+     "en": "Project Lifecycle Management",
+     "id": "T_LIFECYCLE"
+    },
+    {
+     "zh": "專案會議與進度追蹤",
+     "en": "Project Meetings and Progress Tracking",
+     "id": "T_REPORTING"
+    },
+    {
+     "zh": "專案預算與成本分析",
+     "en": "Project Budget and Cost Analysis",
+     "id": "T_COST"
+    }
+   ],
+   "tasks_normalized": [
+    "T_NPI",
+    "T_LIFECYCLE",
+    "T_REPORTING",
+    "T_COST"
+   ],
+   "pm_domains": {
+    "D1": 10,
+    "D2": 0,
+    "D3": 10,
+    "D4": 0,
+    "D5": 10,
+    "D6": 30,
+    "D7": 40
+   },
+   "stage_gate": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "context": {
+    "collaborators": [
+     "SA",
+     "RD",
+     "MFG"
+    ],
+    "product_type": "hardware",
+    "market": "B2B",
+    "travel": "occasional",
+    "english_level": "reading"
+   },
+   "compliance_flags": [],
+   "ai_model": "gemini-3.1-flash-lite",
+   "prompt_version": "1.0",
+   "vocab_version": "1.0",
+   "ai_analyzed_at": "2026-11-27",
+   "source": "manual"
+  },
   {
    "job_id": "104_97smh",
    "url": "https://www.104.com.tw/job/97smh",

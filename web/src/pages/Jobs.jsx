@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { AGE_LEVELS, jobAge, shortDate } from "../age.js";
 import { Radar } from "../charts.jsx";
-import { ListingBadge, PageHead, StatusChip, TagChips } from "../components.jsx";
+import { ListingBadge, ManualNotice, PageHead, StatusChip, TagChips } from "../components.jsx";
 import { companyName, tagText, titles, todayTPE, vname } from "../data.js";
 import { download, fileName, printPdf, toCSV } from "../exporting.js";
 import { eduItems, fitLevel, fitScore, hasProfile, requirements } from "../fit.js";
@@ -242,6 +242,7 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
   return (
     <section className="page">
       <PageHead page="jobs" t={t} />
+      <ManualNotice db={data.db} t={t} />
       <div className="card controls">
         <div className="field q"><label htmlFor="f-q">{t("f_search")}</label>
           <input id="f-q" type="search" placeholder={t("f_q")} value={f.q} onChange={setQ} /></div>

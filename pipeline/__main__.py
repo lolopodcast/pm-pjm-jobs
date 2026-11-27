@@ -5,6 +5,8 @@
     python -m pipeline --test-crawl           PRD 6 測項 1 (unit tests + 5 live jobs; writes nothing)
     python -m pipeline --test-llm             PRD 6 測項 2 (live Gemini on fake JDs; needs GEMINI_API_KEY)
     python -m pipeline --test-archive         PRD 6 測項 3 (state changes on fake data in a temp folder)
+    python -m pipeline manual --data-dir DIR  PRD 2.5: analyse job pages pasted into inbox/ (never contacts 104)
+    python -m pipeline --test-manual          PRD 6 測項 8 (manual input on fake files in a temp folder)
 """
 import argparse
 import json
@@ -123,6 +125,29 @@ def run_ai(data_dir: Path, today: str, deadline=None):
     return stats
 
 
+def cmd_manual(data_dir: Path, inbox: Path):
+    """PRD 2.5: analyse job pages pasted into inbox/ by the maintainer. Never connects to 104."""
+    from . import manual
+    inbox.mkdir(parents=True, exist_ok=True)
+    if not any(inbox.glob("*.txt")):
+        print(f"收件匣是空的（{inbox}），沒有要處理的職缺。")
+        return 0
+    if not env.get("GEMINI_API_KEY"):
+        print("找不到 GEMINI_API_KEY，請在 .env 設定金鑰（PRD 2.5 第 10 點）。")
+        return 1
+    now = datetime.now(TPE)
+    wl = build_whitelist()   # TWSE / TPEx open data only
+    s = manual.run(inbox, data_dir, wl, now.date().isoformat(), now.isoformat(timespec="seconds"))
+    print(manual.report(s))
+    return 1 if s["stop"] == "config" else 0
+
+
+def cmd_test_manual():
+    """PRD 6 測項 8: manual input on fake inbox files in a temp folder (no git, no 104, no Gemini)."""
+    suite = unittest.defaultTestLoader.loadTestsFromName("tests.test_manual")
+    return 0 if unittest.TextTestRunner(verbosity=2).run(suite).wasSuccessful() else 1
+
+
 def cmd_test_archive():
     """PRD 6 測項 3: state transitions on fake data (tests/test_store.py), temp folders only."""
     suite = unittest.defaultTestLoader.loadTestsFromName("tests.test_store")
@@ -153,14 +178,20 @@ def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8")
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser(prog="pipeline")
-    ap.add_argument("command", nargs="?", choices=["run", "crawl"])
+    ap.add_argument("command", nargs="?", choices=["run", "crawl", "manual"])
     ap.add_argument("--data-dir", type=Path, default=ROOT / "data")
+    ap.add_argument("--inbox", type=Path, default=ROOT / "inbox")
     ap.add_argument("--out", type=Path, default=ROOT / ".tmp" / "crawl_result.json")
     ap.add_argument("--test-crawl", action="store_true")
     ap.add_argument("--test-archive", action="store_true")
     ap.add_argument("--test-llm", action="store_true")
+    ap.add_argument("--test-manual", action="store_true")
     args = ap.parse_args(argv)
     try:
+        if args.test_manual:
+            return cmd_test_manual()
+        if args.command == "manual":
+            return cmd_manual(args.data_dir, args.inbox)
         if args.test_crawl:
             return cmd_test_crawl()
         if args.test_llm:

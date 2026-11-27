@@ -18,5 +18,8 @@ https://lolopodcast.github.io/pm-pjm-jobs/ （每日 03:05 爬取與 AI 分析�
 1. `cd web; npm ci`，再執行 `node scripts/prepare-data.mjs <data 資料夾>` 複製資料（預設 `../data`，也就是 data 分支的取出位置）
 2. `npm run dev` 開發、`npm test` 單元測試、`npm run build` 建置
 
+## 人工輸入流程（104 阻擋期間）
+見 [docs/manual_input.md](docs/manual_input.md)：在 104 整頁複製職缺 → 貼到 `inbox/` → 點兩下桌面「更新職缺」（`tools/update-jobs.cmd`）。不連線 104。
+
 ## 連線測試
 `python tools/probe_104.py`：檢查能否連上 104、TWSE、TPEx。GitHub 上可在 Actions 頁面手動執行 `probe-104`。

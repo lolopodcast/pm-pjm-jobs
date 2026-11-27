@@ -1,5 +1,5 @@
 import { Bars } from "../charts.jsx";
-import { PageHead, StatusChip } from "../components.jsx";
+import { ManualNotice, PageHead, StatusChip } from "../components.jsx";
 import { analysed, companyName, countBy, daysBetween, openJobs, titles, todayTPE, vname } from "../data.js";
 
 export default function Overview({ t, data, go, setFilters }) {
@@ -20,11 +20,12 @@ export default function Overview({ t, data, go, setFilters }) {
   return (
     <section className="page">
       <PageHead page="overview" t={t} lede={t("ov_lede")} />
+      <ManualNotice db={data.db} t={t} />
       <div className="grid4">
         <Stat k={t("st_open")} v={open.length} s={pending ? t("st_pending", { n: pending }) : null} />
         <Stat k={t("st_new")} v={fresh.length} />
         <Stat k={t("st_split")} v={pm + pj ? `${pm} : ${pj}` : "—"} s={pm + pj ? `PM ${pct(pm)}% · PjM ${pct(pj)}%` : t("analysing")} />
-        <Stat k={t("st_upd")} v={upd} s={t("st_fresh")} small />
+        <Stat k={t("st_upd")} v={upd} s={t(data.db.collection_mode === "manual" ? "st_manual" : "st_fresh")} small />
       </div>
       <div className="grid2">
         <div className="card">

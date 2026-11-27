@@ -171,7 +171,9 @@ def apply_crawl(data_dir: Path, targets, crawl_complete: bool, today: str, updat
         _write(apath, _read(apath, []) + items)
     jobs.sort(key=lambda j: (j["first_seen_date"], j["job_id"]), reverse=True)  # newest first
     jobs.sort(key=lambda j: j["status"] != "open")                            # open before closed (stable)
-    _write(data_path, {"updated_at": updated_at, "crawl_complete": crawl_complete, "jobs": jobs})
+    last_full = today if crawl_complete else db.get("last_full_crawl")
+    _write(data_path, {"updated_at": updated_at, "crawl_complete": crawl_complete, "collection_mode": "auto",
+                       "last_full_crawl": last_full, "jobs": jobs})
     stats.update({"archived": sum(len(v) for v in moved.values()),
                   "open": sum(1 for j in jobs if j["status"] == "open"),
                   "closed": sum(1 for j in jobs if j["status"] == "closed"),

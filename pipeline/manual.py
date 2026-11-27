@@ -9,6 +9,7 @@ import logging
 import re
 import shutil
 import time
+from datetime import date
 from pathlib import Path
 
 from . import analyze, llm, vocab
@@ -50,11 +51,16 @@ def _iso_date(s):
 _MD_UPDATED = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})\s*(?:更新|刊登)")
 
 
-def page_date(page: str, today: str):
-    """104 posting/update date read from the pasted page (no AI). The year is inferred from today."""
+def page_date(page: str, today: str, title: str = None):
+    """104 posting/update date read from the pasted page (no AI). The year is inferred from today.
+
+    A title ending in digits runs into the date ("…台北_0820311/27更新"), so when the title is known
+    only the text after it is read."""
     for line in page.splitlines():
         if "更新" not in line and "刊登" not in line:
             continue
+        if title and title in line:
+            line = line.split(title, 1)[1]
         d = _iso_date(line)
         if d:
             return d
@@ -68,6 +74,17 @@ def page_date(page: str, today: str):
                 y -= 1   # a date "after" today was posted last year (e.g. 12/30 seen on 1/2)
             return f"{y:04d}-{mo:02d}-{dd:02d}"
     return None
+
+
+def _plausible(d, today, max_days=400):
+    """The AI has to guess a missing year; keep its date only if it is within about a year before today."""
+    if not d:
+        return None
+    try:
+        age = (date.fromisoformat(today) - date.fromisoformat(d)).days
+    except ValueError:
+        return None
+    return d if 0 <= age <= max_days else None
 
 
 def _found(value, page_norm):
@@ -94,7 +111,7 @@ def basic_fields(raw, page, today):
             "location": keep(b.get("location"), 60), "salary_desc": keep(b.get("salary_text"), 60) or "待遇面議",
             "experience_years": years, "experience_desc": "經驗不拘" if not years else f"{years} 年以上",
             "edu_level": level, "majors_raw": majors, # The page's own date beats the AI's reading, which has to guess the missing year.
-            "appear_date": page_date(page, today) or _iso_date(b.get("appear_date") or "")}
+            "appear_date": page_date(page, today, title) or _plausible(_iso_date(b.get("appear_date") or ""), today)}
 
 
 def skip_reason(basic, whitelist):
@@ -148,7 +165,7 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
         jid = f"104_{code}"
         cur = by_id.get(jid)
         if cur:   # already in the database: no AI call (PRD 2.5 第 6 點 2)
-            d = page_date(page, today)
+            d = page_date(page, today, cur.get("title"))
             if d:
                 cur["appear_date"] = d
             cur["last_seen_date"] = today

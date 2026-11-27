@@ -10,6 +10,8 @@ import { INDUSTRY_EN } from "../industries.js";
 import { DEFAULT_FILTERS } from "../data.js";
 
 const PAGE_SIZE = 30;
+// Filter value for jobs with no industry (e.g. added by hand; 104 job pages do not show it, PRD 2.5).
+export const IND_NONE = "__none__";
 const REPO = "https://github.com/lolopodcast/pm-pjm-jobs";
 
 function majorsText(job, data, t) {
@@ -34,7 +36,7 @@ export function filterJobs(jobs, f, ctx) {
     if (f.status !== "all" && j.status !== f.status) return false;
     if (f.role !== "all" && j.role_type !== f.role) return false;
     if (f.lst !== "all" && j.listing_type !== f.lst) return false;
-    if (f.ind !== "all" && j.industry !== f.ind) return false;
+    if (f.ind === IND_NONE ? !!j.industry : f.ind !== "all" && j.industry !== f.ind) return false;
     if (f.tag) {
       const r = requirements(j);
       if (![...r.K, ...r.S, ...r.A, ...r.T].includes(f.tag)) return false;
@@ -195,7 +197,7 @@ function JobCard({ job, t, ctx, open, toggle }) {
             {job.parent_company && <span className="mini">{t("parent")}{t.colon}{job.parent_company}</span>}
           </div>
           <div className="job-meta">
-            <span>{t.industry(job.industry)}</span><span>{t.location(job.location)}</span>
+            <span>{job.industry ? t.industry(job.industry) : t("ind_none")}</span><span>{t.location(job.location)}</span>
             <span>{t.pick(OPT.edu[job.education_req?.level || "none"])}</span><span>{t.salary(job.salary_desc)}</span>
             <span>{t("first_seen")} {job.first_seen_date}</span>{job.closed_date && <span>{t("closed_on")} {job.closed_date}</span>}
           </div>
@@ -227,9 +229,15 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
   // Industry options follow the other filters and show how many jobs each would give.
   const industries = useMemo(() => {
     const counts = new Map();
-    for (const j of filterJobs(data.db.jobs, { ...f, ind: "all", sort: "none" }, ctx)) if (j.industry) counts.set(j.industry, (counts.get(j.industry) || 0) + 1);
-    if (f.ind !== "all" && !counts.has(f.ind)) counts.set(f.ind, 0);
-    return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-Hant-TW"));
+    let none = 0;
+    for (const j of filterJobs(data.db.jobs, { ...f, ind: "all", sort: "none" }, ctx)) {
+      if (j.industry) counts.set(j.industry, (counts.get(j.industry) || 0) + 1);
+      else none += 1;
+    }
+    if (f.ind !== "all" && f.ind !== IND_NONE && !counts.has(f.ind)) counts.set(f.ind, 0);
+    const list = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-Hant-TW"));
+    // "Uncategorised" always comes last, shown when some jobs have no industry (or it is the current choice).
+    return none || f.ind === IND_NONE ? [...list, [IND_NONE, none]] : list;
   }, [data, f, fit, me]); // eslint-disable-line react-hooks/exhaustive-deps
   const set = (k) => (v) => { setFilters({ ...f, [k]: v }); setShown(PAGE_SIZE); };
   const setQ = (e) => { setFilters({ ...f, q: e.target.value }); setShown(PAGE_SIZE); };
@@ -248,7 +256,7 @@ export default function Jobs({ t, data, fit, me, filters: f, setFilters, flash }
           <input id="f-q" type="search" placeholder={t("f_q")} value={f.q} onChange={setQ} /></div>
         <Sel id="f-role" label={t("f_role")} value={f.role} onChange={set("role")} opts={[["all", t("all")], ["PM", "PM"], ["PjM", "PjM"], ["Other", "Other"]]} />
         <Sel id="f-lst" label={t("f_listing")} value={f.lst} onChange={set("lst")} opts={[["all", t("all")], ...Object.keys(OPT.listing).map((k) => [k, t.pick(OPT.listing[k])])]} />
-        <Sel id="f-ind" label={t("f_ind")} value={f.ind} onChange={set("ind")} opts={[["all", t("all")], ...industries.map(([i, n]) => [i, t.lang === "zh" ? `${i}（${n}）` : `${t.industry(i)} (${n})`])]} />
+        <Sel id="f-ind" label={t("f_ind")} value={f.ind} onChange={set("ind")} opts={[["all", t("all")], ...industries.map(([i, n]) => { const name = i === IND_NONE ? t("ind_none") : t.industry(i); return [i, t.lang === "zh" ? `${name}（${n}）` : `${name} (${n})`]; })]} />
         <Sel id="f-status" label={t("f_status")} value={f.status} onChange={set("status")} opts={[["all", t("all")], ["open", t("open")], ["closed", t("closed")]]} />
         <Sel id="f-sort" label={t("f_sort")} value={f.sort} onChange={set("sort")} opts={[["new", t("s_new")], ["co", t("s_co")], ["fit", t("s_fit")]]} />
       </div>

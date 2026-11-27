@@ -20,7 +20,7 @@ export const T = {
   ov_new: ["最新職缺", "Newest jobs"], ov_all: ["看全部職缺 →", "See all jobs →"],
   ov_top: ["最常被要求的技能", "Most-requested skills"], ov_more: ["看統計儀表板 →", "Open insights →"],
   f_q: ["搜尋公司、職稱、技能（中英皆可）", "Search company, title or skill"], f_search: ["搜尋", "Search"],
-  f_role: ["職務類型", "Role"], f_listing: ["上市別", "Market"], f_ind: ["產業", "Industry"], f_status: ["狀態", "Status"], f_sort: ["排序", "Sort"],
+  f_role: ["職務類型", "Role"], f_listing: ["上市別", "Market"], f_ind: ["產業", "Industry"], ind_none: ["其他（產業未分類）", "Other (no industry)"], f_status: ["狀態", "Status"], f_sort: ["排序", "Sort"],
   all: ["全部", "All"], s_new: ["最新出現", "Newest"], s_co: ["公司名稱", "Company"], s_fit: ["配適度", "Fit"],
   n_jobs: ["共 {n} 筆職缺", "{n} jobs"], none: ["沒有符合條件的職缺，試著放寬篩選條件。", "No jobs match. Try loosening the filters."],
   tagf: ["標籤", "Tag"], clear_filters: ["清除篩選", "Clear filters"],

@@ -176,6 +176,7 @@
 4. **收件匣：**
    * repo 根目錄的 `inbox/` 資料夾（列入 `.gitignore`，**絕不提交**）。
    * 每筆職缺一個 `.txt` 檔：第一行為 104 職缺網址，其後為該職缺頁面整頁複製的文字（`Ctrl+A`、`Ctrl+C`）。格式不需整理。
+   * **產業（2026-11-27 新增）：** 104 職缺頁不顯示公司產業（產業只出現在搜尋結果卡片）。可選填第二行「產業：○○○」（照抄搜尋卡片）；未填時沿用資料庫中同一家公司（名稱相同）以往職缺最常見的產業；仍查不到則留空。不以證交所／櫃買中心的產業代碼推測（以實際資料模擬，約四分之一推錯）。每次執行也會替先前缺產業的人工職缺補上。來源記於 `industry_source`（`manual` 手填、`company` 沿用公司紀錄）。
 5. **執行：** 桌面捷徑「更新職缺」，依序執行：
    1. 取得 `data` 分支最新版本（`git pull`），避免與 workflow 的寫入衝突。
    2. 執行 `python -m pipeline manual --data-dir data`（處理步驟見第 6 點）。
@@ -506,7 +507,8 @@
 * `company_en`：取自 TWSE／TPEx 資料的公司英文簡稱；子公司或查無資料時為 `null`，前端改顯示中文名稱。
 * `jd_lang`：原始 JD 語言（`zh` / `en` / `mixed`）。
 * `first_seen_date`：首次進入資料庫的日期；`appear_date`：104 刊登或更新日，可能為 `null`（定義見 2.2 第 8 點）。
-* `source`：收錄方式，`crawl`（自動爬取）或 `manual`（人工輸入，見 2.5）。2026-11-26 以前的職缺沒有此欄位，視為 `crawl`。
+* `source`：收錄方式，`crawl`（自動爬取）或 `manual`（人工輸入，見 2.5）。
+* `industry_source`：人工職缺的產業來源，`manual`（維護者手填）或 `company`（沿用同公司以往職缺）；自動爬取的職缺沒有此欄位（產業直接來自 104）。2026-11-26 以前的職缺沒有此欄位，視為 `crawl`。
 * `collection_mode`（最上層）：`auto`（自動爬取）或 `manual`（人工輸入期間）；未設定視為 `auto`。前端依此顯示 5.1 的說明橫幅。
 * `last_full_crawl`（最上層）：最後一次完整爬取的日期，下架狀態以此日為準（見 2.5 第 7 點）。
 * `ai_status`：`done` / `pending` / `failed` / `error`（見 2.3）。非 `done` 時，所有 Gemini 產生的欄位（`ksa`、`ksa_normalized`、`jd_summary`、`tasks_normalized`、`pm_domains`、`stage_gate`、`context`、`compliance_flags`、`title_zh`、`title_en`、`jd_lang`）皆為 `null`。

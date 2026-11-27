@@ -9,6 +9,7 @@ import logging
 import re
 import shutil
 import time
+from collections import Counter
 from datetime import date
 from pathlib import Path
 
@@ -26,17 +27,30 @@ _DATE = re.compile(r"(20\d{2})[/-](\d{1,2})[/-](\d{1,2})")
 EDU_LEVELS = ("none", "hs", "as", "ba", "ma", "phd")
 
 
+_INDUSTRY_LINE = re.compile(r"^\s*產業\s*[:：]\s*(\S.{0,40}?)\s*$")
+
+
 def parse_file(text: str):
-    """-> (job_code, page_text). Raises ValueError when the first line is not a 104 job URL."""
+    """-> (job_code, page_text, industry). Raises ValueError when the first line is not a 104 job URL.
+
+    An optional line 「產業：…」 right after the URL gives the 104 industry, copied by hand from the
+    search result card, because job pages do not show it."""
     lines = text.lstrip("﻿").strip().splitlines()
     first = lines[0].strip() if lines else ""
     m = JOB_URL.search(first)
     if not m:
         raise ValueError("第一行不是 104 職缺網址（https://www.104.com.tw/job/…）")
-    page = "\n".join(lines[1:]).strip()
+    rest, industry = lines[1:], None
+    for i, line in enumerate(rest[:3]):
+        im = _INDUSTRY_LINE.match(line)
+        if im:
+            industry = im.group(1)
+            rest = rest[:i] + rest[i + 1:]
+            break
+    page = "\n".join(rest).strip()
     if len(page) < 200:
         raise ValueError("貼上的頁面內容太短，請整頁複製（Ctrl+A、Ctrl+C）後再貼一次")
-    return m.group(1), page
+    return m.group(1), page, industry
 
 
 def _iso_date(s):
@@ -126,6 +140,26 @@ def skip_reason(basic, whitelist):
     return None, m
 
 
+def industry_from_history(job, jobs):
+    """The 104 industry most earlier jobs of the same company carry. 104 job pages do not show the
+    industry (checked 2026-11-27); guessing from the official TWSE/TPEx industry code was wrong for
+    about a quarter of companies in a test on real data, so it is not used."""
+    same = Counter(j["industry"] for j in jobs if j.get("industry") and j is not job and j["company"] == job["company"])
+    return same.most_common(1)[0][0] if same else None
+
+
+def fill_industries(jobs):
+    """Fill industry on manual jobs that lack it (also backfills earlier ones). Returns how many were filled."""
+    filled = 0
+    for j in jobs:
+        if j.get("source") == "manual" and not j.get("industry"):
+            ind = industry_from_history(j, jobs)
+            if ind:
+                j["industry"], j["industry_source"] = ind, "company"
+                filled += 1
+    return filled
+
+
 def _sort(jobs):
     jobs.sort(key=lambda j: (j["first_seen_date"], j["job_id"]), reverse=True)
     jobs.sort(key=lambda j: j["status"] != "open")
@@ -158,7 +192,7 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
             s["waiting"] += 1
             continue
         try:
-            code, page = parse_file(p.read_text(encoding="utf-8-sig", errors="replace"))
+            code, page, typed_industry = parse_file(p.read_text(encoding="utf-8-sig", errors="replace"))
         except ValueError as e:
             fail(p, str(e))
             continue
@@ -169,6 +203,8 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
             if d:
                 cur["appear_date"] = d
             cur["last_seen_date"] = today
+            if typed_industry and cur.get("industry") != typed_industry:
+                cur["industry"], cur["industry_source"] = typed_industry, "manual"
             if cur["status"] == "closed":
                 cur["status"], cur["closed_date"], cur["miss_count"] = "open", None, 0
             s["duplicates"].append({"file": p.name, "job_id": jid, "title": cur["title"]})
@@ -201,6 +237,8 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
         target = {**basic, "job_id": jid, "url": f"https://www.104.com.tw/job/{code}", **match}
         rec = new_record(target, today)
         rec["source"] = "manual"
+        if typed_industry:
+            rec["industry"], rec["industry_source"] = typed_industry, "manual"
         analyze.apply_result(rec, clean, today)
         s["candidates"].extend(analyze.new_terms(rec))
         by_id[jid] = rec
@@ -209,7 +247,8 @@ def run(inbox: Path, data_dir: Path, whitelist, today: str, updated_at: str,
         s["added_by_listing"][lab] = s["added_by_listing"].get(lab, 0) + 1
         p.unlink()   # pasted text is never kept (PRD 2.2 第 5 點)
 
-    changed = s["added"] or s["duplicates"]
+    s["industry_filled"] = fill_industries(list(by_id.values()))
+    changed = s["added"] or s["duplicates"] or s["industry_filled"]
     if changed:
         jobs = list(by_id.values())
         _sort(jobs)

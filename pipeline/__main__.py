@@ -130,7 +130,11 @@ def cmd_manual(data_dir: Path, inbox: Path):
     from . import manual
     inbox.mkdir(parents=True, exist_ok=True)
     if not any(inbox.glob("*.txt")):
-        print(f"收件匣是空的（{inbox}），沒有要處理的職缺。")
+        # Nothing to analyse, but earlier manual jobs may still get their industry from company history.
+        now = datetime.now(TPE)
+        s = manual.run(inbox, data_dir, None, now.date().isoformat(), now.isoformat(timespec="seconds"))
+        print(f"收件匣是空的（{inbox}），沒有要處理的職缺。"
+              + (f"已補上 {s['industry_filled']} 筆職缺的產業。" if s["industry_filled"] else ""))
         return 0
     if not env.get("GEMINI_API_KEY"):
         print("找不到 GEMINI_API_KEY，請在 .env 設定金鑰（PRD 2.5 第 10 點）。")

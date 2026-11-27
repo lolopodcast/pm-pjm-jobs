@@ -34,12 +34,16 @@ class TitleFilterTest(unittest.TestCase):
                 self.assertFalse(is_target_title(t))
 
     def test_role_phrase_without_title_word(self):
-        """2026-11-27: 產品管理／專案管理 count without 師／經理."""
+        """2026-11-27: 產品管理／專案管理／產品企劃／專案企劃 count without 師／經理／專員."""
         for t in ["【年後轉職】AI Server新產品管理_竹北/台北_08203", "專案管理", "新產品管理", "Project Management",
                   "專案管理工程師", "產品管理工程師"]:
             with self.subTest(t=t):
                 self.assertTrue(is_target_title(t))
-        for t in ["生產管理", "產品品質管理", "Product Marketing產品行銷_ 氫能源應用新事業發展部(南科)", "專案助理(專案管理)"]:
+        for t in ["產品企劃", "專案企劃", "產品/專案企劃", "產品企劃專員", "產品企劃工程師", "專案企劃經理", "Product Planner"]:
+            with self.subTest(t=t):
+                self.assertTrue(is_target_title(t))
+        for t in ["生產管理", "產品品質管理", "Product Marketing產品行銷_ 氫能源應用新事業發展部(南科)", "專案助理(專案管理)",
+                  "行銷企劃專員", "企劃專員", "活動企劃", "產品行銷企劃"]:
             with self.subTest(t=t):
                 self.assertFalse(is_target_title(t))
 

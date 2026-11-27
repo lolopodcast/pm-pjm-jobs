@@ -20,8 +20,10 @@ EXCLUDE = _rx(["產品工程師", "Product Engineer", "PE", "PMC", "生管", "�
 # 助理／Assistant titles are excluded (decided 2026-10-17), even with "PM" in the title, except as one
 # side of a slash: "專案管理師/助理" offers either role and counts (decided 2026-11-27).
 ASSISTANT = _rx(["助理", "Assistant"])
-# "產品管理"／"專案管理" name the role even without 師／經理 (e.g. "新產品管理", decided 2026-11-27).
-ROLE_PHRASE = _rx(["產品管理", "專案管理", "Product Management", "Project Management"])
+# "產品管理"／"專案管理"／"產品企劃"／"專案企劃" name the role even without 師／經理／專員
+# (e.g. "新產品管理", "產品企劃"; decided 2026-11-27).
+ROLE_PHRASE = _rx(["產品管理", "專案管理", "產品企劃", "專案企劃", "Product Management", "Project Management",
+                   "Product Planning", "Product Planner", "Project Planning", "Project Planner"])
 _SLASH = re.compile(r"[/／]")
 
 # "產品 + 工程師" alone is usually an R&D role (產品開發／設計／品質工程師). Such titles count only

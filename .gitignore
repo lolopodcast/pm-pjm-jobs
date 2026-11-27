@@ -29,3 +29,6 @@ desktop.ini
 
 # Manual-input inbox: pasted 104 page text, deleted after processing (PRD 2.5, 11.5)
 inbox/
+
+# Local clone of the data branch used by tools/update-jobs.ps1 (PRD 2.5)
+/data/

@@ -111,14 +111,54 @@ last_usage = {}
 
 def analyze(title: str, jd_text: str, sleep=time.sleep, model=None) -> dict:
     """One Gemini call. Returns the parsed JSON (not yet validated)."""
+    return _call(system_text(), f"職稱：{title}\n<<<JD>>>\n{jd_text}\n<<<END>>>", schema(), sleep, model)
+
+
+# Manual input (PRD 2.5): the maintainer pastes a whole 104 job page; one call also reads the basic fields.
+MANUAL_EXTRA = """
+【人工貼上的頁面】<<<JD>>> 與 <<<END>>> 之間是維護者從 104 職缺頁面「整頁複製」的文字，可能夾雜選單、推薦職缺、廣告等與本職缺無關的內容。只分析「本職缺」的內容，忽略其他職缺與網站介面文字。
+13. basic：從頁面讀出本職缺的基本資料，必須照頁面原文，不得推測或翻譯：
+   - company：徵才公司名稱（逐字照抄頁面上的公司名稱）。
+   - title：職稱（逐字照抄）。
+   - industry：公司產業類別（例：半導體製造業）；沒有則為 null。
+   - location：上班地點的縣市與區（例：新竹市東區）；沒有則為 null。
+   - salary_text：工作待遇（例：月薪 40,000～50,000 元、待遇面議）；沒有則為 null。
+   - experience_years：工作經歷要求的年數（「2年以上」→ 2）；「不拘」或未提及為 null。
+   - edu_level：學歷要求的最低學歷：none 不拘、hs 高中、as 專科、ba 大學、ma 碩士、phd 博士。
+   - majors_104：「科系要求」欄位中的科系名稱（照原文）；「不拘」或未提及為空陣列。
+   - appear_date：職缺的刊登或更新日期，格式 YYYY-MM-DD；頁面上沒有則為 null。
+"""
+
+
+def manual_schema():
+    s = schema()
+    s["required"] = s["required"] + ["basic"]
+    s["properties"]["basic"] = {"type": "OBJECT",
+        "required": ["company", "title", "industry", "location", "salary_text", "experience_years", "edu_level", "majors_104", "appear_date"],
+        "properties": {
+            "company": {"type": "STRING"}, "title": {"type": "STRING"},
+            "industry": {"type": "STRING", "nullable": True}, "location": {"type": "STRING", "nullable": True},
+            "salary_text": {"type": "STRING", "nullable": True}, "experience_years": {"type": "INTEGER", "nullable": True},
+            "edu_level": _enum(["none", "hs", "as", "ba", "ma", "phd"], nullable=False),
+            "majors_104": {"type": "ARRAY", "items": {"type": "STRING"}},
+            "appear_date": {"type": "STRING", "nullable": True}}}
+    return s
+
+
+def analyze_page(page_text: str, sleep=time.sleep, model=None) -> dict:
+    """One Gemini call for a manually pasted job page: basic fields + the usual analysis (PRD 2.5 第 6 點)."""
+    return _call(system_text() + MANUAL_EXTRA, f"<<<JD>>>\n{page_text}\n<<<END>>>", manual_schema(), sleep, model)
+
+
+def _call(system: str, user_text: str, resp_schema: dict, sleep=time.sleep, model=None) -> dict:
     global last_usage
     key = env.get("GEMINI_API_KEY")
     if not key:
         raise LLMError("GEMINI_API_KEY is not set", config=True)
     body = {
-        "systemInstruction": {"parts": [{"text": system_text()}]},
-        "contents": [{"role": "user", "parts": [{"text": f"職稱：{title}\n<<<JD>>>\n{jd_text}\n<<<END>>>"}]}],
-        "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema(), "temperature": 0.2},
+        "systemInstruction": {"parts": [{"text": system}]},
+        "contents": [{"role": "user", "parts": [{"text": user_text}]}],
+        "generationConfig": {"responseMimeType": "application/json", "responseSchema": resp_schema, "temperature": 0.2},
     }
     req = urllib.request.Request(API.format(model=model or model_name()), data=json.dumps(body).encode("utf-8"), method="POST",
                                  headers={"Content-Type": "application/json", "x-goog-api-key": key})

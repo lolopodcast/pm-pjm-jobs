@@ -33,6 +33,12 @@ export function PageHead({ page, t, lede }) {
   );
 }
 
+// PRD 2.5 第 11 點, 5.1: shown while jobs are added by hand instead of crawled.
+export function ManualNotice({ db, t }) {
+  if (db.collection_mode !== "manual") return null;
+  return <div className="notice" role="status"><span>{t("manual_note", { d: db.last_full_crawl || "—" })}</span></div>;
+}
+
 export function StatusChip({ job, t }) {
   if (job.status === "open" && job.ai_status !== "done") return <span className="st pending">{t("analysing")}</span>;
   return <span className={"st " + job.status}>{t(job.status)}</span>;
